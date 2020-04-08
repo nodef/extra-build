@@ -1,4 +1,7 @@
 const fs = require('fs');
+const os = require('os');
+
+const {EOL} = os;
 
 
 // Update README.md based on scatter options.
