@@ -1,6 +1,6 @@
 {
   "name": "extra-build.min",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Common build tools for extra-* packages.",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/nodef/extra-build#readme",
   "dependencies": {
+    "@octokit/rest": "^17.2.0",
     "find-npm-prefix": "^1.0.2",
     "global-dirs": "^2.0.1",
     "recast": "^0.19.0",
