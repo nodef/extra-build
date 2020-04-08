@@ -17,6 +17,8 @@ function initGitignore(o={}, pth='.gitignore') {
     a += ls.join(EOL)+EOL+EOL;
   }
   if(!a) return;
+  console.log('initGitignore:', o, pth);
+  console.log(a);
   fs.writeFileSync(pth, a+d);
 }
 module.exports = initGitignore;

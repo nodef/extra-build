@@ -10,6 +10,7 @@ const NPMIGNORES = new Map([
 // Initializes npmignore file.
 function initNpmignore(o={}, pth='.npmignore') {
   var npmignores = o.npmignores||NPMIGNORES;
+  console.log('initNpmignore:', o, pth);
   initGitignore({gitignores: npmignores}, pth);
 }
 module.exports = initNpmignore;
