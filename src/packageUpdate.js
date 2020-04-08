@@ -1,5 +1,5 @@
 const dirJsdocs = require('./dirJsdocs');
-const docsUpdate = require('./docsUpdate');
+const wikiUpdate = require('./wikiUpdate');
 const readmeUpdate = require('./readmeUpdate');
 const jsonSetKeywords = require('./jsonSetKeywords');
 const path = require('path');
@@ -19,7 +19,7 @@ const OPTIONS = {
 function packageUpdate(pth, o) {
   var ot = Object.assign({}, OPTIONS, o);
   var os = dirJsdocs(path.join(pth, 'src'));
-  docsUpdate(path.join(pth, 'docs'), os, ot);
+  wikiUpdate(path.join(pth, 'wiki'), os, ot);
   readmeUpdate(os, ot);
   jsonSetKeywords(os.keys());
 };

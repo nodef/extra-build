@@ -1,6 +1,7 @@
 # parts
 src/
 docs/
+wiki/
 .gitmodules
 
 # build
