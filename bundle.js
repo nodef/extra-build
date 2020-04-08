@@ -5,6 +5,16 @@ const fs = require('fs');
 const os = require('os');
 const snakeCase = require('./src/snakeCase');
 const pathSplit = require('./src/pathSplit');
+const requireResolve = require('./src/requireResolve');
+const fsReadDirSync = require('./src/fsReadDirSync');
+const packageRoot = require('./src/packageRoot');
+const packageRequires = require('./src/packageRequires');
+const wikiDownload = require('./src/wikiDownload');
+const mdHeading = require('./src/mdHeading');
+const mdScatter = require('./src/mdScatter');
+const jsScatter = require('./src/jsScatter');
+const jsonScatter = require('./src/jsonScatter');
+const packageScatter = require('./src/packageScatter');
 
 // Global variables.
 const ORG = 'nodef';
@@ -15,120 +25,6 @@ const stdio = [0, 1, 2];
 const EOL = os.EOL;
 
 
-
-function fsReadDir(pth) {
-  return fs.existsSync(pth)? fs.readdirSync(pth):[];
-}
-
-// Get filename.
-function resolve(pth) {
-  var ext = path.extname(pth);
-  return ['.js', '.ts', '.json'].includes(ext)? pth:pth+'.js';
-}
-
-// Get path to root package.
-function packageRoot(pth) {
-  while(!fs.existsSync(path.join(pth, 'package.json')))
-    pth = path.dirname(pth);
-  return pth;
-}
-
-// Gets requires from code.
-function packageRequires(pth, a=[]) {
-  var d = fs.readFileSync(resolve(pth), 'utf8');
-  var re = re = /require\(\'(.*?)\'\)/g;
-  for(var m=null, reqs=[]; (m=re.exec(d))!=null;)
-  { reqs.push(m[1]); a.push(m[1]); }
-  if(reqs.length===0) return a;
-  var dir = path.dirname(pth);
-  for(var p of reqs)
-    if(/^\./.test(p)) packageRequires(path.join(dir, p), a);
-  return a;
-}
-
-// Download README.md from wiki.
-function downloadReadme(pth, o) {
-  console.log('downloadReadme:', pth, o);
-  var wiki = 'https://raw.githubusercontent.com/wiki/';
-  var url = `${wiki}${o.org}/${o.package_root}/${o.readme}.md`;
-  cp.execSync(BIN+`download ${url} > ${pth}`, {stdio});
-}
-
-function readmeHeading(pth) {
-  console.log('readmeHeading:', pth);
-  var d = fs.readFileSync(pth, 'utf8');
-  return d.replace(/\r?\n[\s\S]*/, '').replace(/[\_\*\[\]]/g, '');
-}
-
-// Update README.md based on scatter options.
-function scatterReadme(pth, o) {
-  console.log('scatterReadme:', pth, o);
-  var d = fs.readFileSync(pth, 'utf8');
-  d = d.replace(o.note_top||/\s+```/, '<br>'+EOL+
-    `> This is part of package [${o.package_root}].`+EOL+EOL+
-    `[${o.package_root}]: https://www.npmjs.com/package/${o.package_root}`+EOL+EOL+
-    (o.note_topvalue||'```')
-  );
-  fs.writeFileSync(pth, d);
-}
-
-// Update index.js to use README.md
-function scatterJs(pth, o) {
-  console.log('scatterJs:', pth, o);
-  var d = fs.readFileSync(pth, 'utf8');
-  d = d.replace(new RegExp(`less (.*?)${o.readme}.md`, 'g'), `less $1README.md`);
-  fs.writeFileSync(pth, d);
-}
-
-// Update package.json based on scatter options.
-function scatterJson(pth, o) {
-  console.log('scatterJson:', pth, o);
-  var d = JSON.parse(fs.readFileSync(pth, 'utf8'));
-  d.name = `@${o.package_root}/${o.package}`;
-  d.description = o.description;
-  d.main = o.main||'index.js';
-  d.scripts = {test: 'exit'};
-  d.keywords.push(...o.package.split(/\W/));
-  d.keywords = Array.from(new Set(d.keywords));
-  d.dependencies = Object.assign({}, o.dependencies, o.devDependencies);
-  var dep_pkgs = Object.keys(d.dependencies)||[];
-  for(var p of dep_pkgs)
-    if(!o.requires.includes(p)) d.dependencies[p] = undefined;
-  d.devDependencies = undefined;
-  fs.writeFileSync(pth, JSON.stringify(d, null, 2));
-}
-
-// Scatter a file as a package.
-function scatterPackage(pth, o) {
-  console.log('scatterPackage:', pth, o);
-  var o = Object.assign({}, o);
-  var tmp = tempy.directory();
-  var [dir, fil, ext] = pathSplit(pth);
-  var src = packageRoot(pth);
-  var nam = fil.replace(/\$/g, 'Update');
-  var json_src = path.join(src, 'package.json');
-  var readme = path.join(tmp, 'README.md');
-  var index = path.join(tmp, 'index'+ext);
-  var json = path.join(tmp, 'package.json');
-  o.package = o.package||snakeCase(nam);
-  o.readme = o.readme||fil.replace(/[?]+$/, '');
-  downloadReadme(readme, o);
-  o.description = o.description||readmeHeading(readme);
-  scatterReadme(readme, o);
-  fs.copyFileSync(pth, index);
-  scatterJs(index, o);
-  o.requires = packageRequires(pth);
-  fs.copyFileSync(json_src, json);
-  scatterJson(json, o);
-  for(var r of o.requires) {
-    if(!(/^[\.\/]/).test(r)) continue;
-    r = resolve(r);
-    var src = path.join(dir, r);
-    var dst = path.join(tmp, r);
-    fs.copyFileSync(src, dst);
-  }
-  return tmp;
-}
 
 // Minifies JS file in place.
 function minifyJs(pth, o) {
@@ -183,13 +79,13 @@ async function main(a) {
   console.log('main:', a);
   console.log({BIN, ORG, PACKAGE_ROOT, STANDALONE});
   var o = {org: ORG, package_root: PACKAGE_ROOT};
-  for(var f of fsReadDir('src')) {
+  for(var f of fsReadDirSync('src')) {
     if(path.extname(f)!=='.js') continue;
     if(f.startsWith('_')) continue;
     if(f==='index.js') continue;
     try {
     var pth = path.join('src', f);
-    var tmp = scatterPackage(pth, o);
+    var tmp = packageScatter(pth, o);
     cp.execSync('npm publish', {cwd: tmp, stdio});
     var standalone = snakeCase(f.replace(/\..*/, ''), '_');
     standalone = STANDALONE+'_'+standalone;

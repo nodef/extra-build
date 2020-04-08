@@ -1,3 +1,6 @@
+const path = require('path');
+
+
 function pathSplit(x) {
   var d = path.dirname(x);
   var e = path.extname(x);
