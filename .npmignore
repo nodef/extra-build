@@ -4,8 +4,7 @@ docs/
 .gitmodules
 
 # build
-build.js
-bundle.js
+rollup.config.js
 .travis.yml
 
 # others
