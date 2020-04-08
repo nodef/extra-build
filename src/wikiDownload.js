@@ -2,6 +2,7 @@ const globalDirs = require('global-dirs');
 const cp = require('child_process');
 
 const BIN = globalDirs.npm.binaries+'/';
+const stdio = [0, 1, 2];
 
 
 // Download page from wiki.

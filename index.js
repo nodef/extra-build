@@ -65,6 +65,7 @@ function snakeCase(x, sep='-') {
 var snakeCase_1 = snakeCase;
 
 const BIN = globalDirs.npm.binaries+'/';
+const stdio = [0, 1, 2];
 
 
 // Download page from wiki.
@@ -613,7 +614,7 @@ function mdSetLinks(md, o) {
 var mdSetLinks_1 = mdSetLinks;
 
 function docsUpdate(dir, os, ot) {
-  for(var f of fs.readdirSync(dir)) {
+  for(var f of fsReadDirSync_1(dir)) {
     if(!f.endsWith('.md')) continue;
     if(f.startsWith('_')) continue;
     if(f==='Home.md') continue;
@@ -670,7 +671,7 @@ var jsonSetKeywords_1 = jsonSetKeywords;
 
 const ORG$1 = 'nodef';
 const PACKAGE_ROOT$1 = path.basename(process.cwd());
-const NAME_ROOT = PACKAGE.replace(/.*?-/, '');
+const NAME_ROOT = PACKAGE_ROOT$1.replace(/.*?-/, '');
 const OPTIONS$1 = {
   org: ORG$1,
   package_root: PACKAGE_ROOT$1,

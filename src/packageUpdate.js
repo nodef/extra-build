@@ -6,7 +6,7 @@ const path = require('path');
 
 const ORG = 'nodef';
 const PACKAGE_ROOT = path.basename(process.cwd());
-const NAME_ROOT = PACKAGE.replace(/.*?-/, '');
+const NAME_ROOT = PACKAGE_ROOT.replace(/.*?-/, '');
 const OPTIONS = {
   org: ORG,
   package_root: PACKAGE_ROOT,
