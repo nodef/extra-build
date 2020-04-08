@@ -8,7 +8,7 @@ function mdSetJsdoc(md, o) {
   var pars = [...o.params].map(([k, v]) => `// ${(k.replace(/.*?\./, '.')+':').padEnd(pre+2)}${v.description}`);
   var def =
     '```javascript\n'+
-    `${o.rootname}.${o.name}(`+args.join(', ')+`);\n`+
+    `${o.name_root}.${o.name}(`+args.join(', ')+`);\n`+
     pars.join('\n')+'\n'+
     (o.returns? `// --> `+o.returns.description+'\n':'')+
     '```\n';

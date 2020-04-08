@@ -584,7 +584,7 @@ function mdSetJsdoc(md, o) {
   var pars = [...o.params].map(([k, v]) => `// ${(k.replace(/.*?\./, '.')+':').padEnd(pre+2)}${v.description}`);
   var def =
     '```javascript\n'+
-    `${o.rootname}.${o.name}(`+args.join(', ')+`);\n`+
+    `${o.name_root}.${o.name}(`+args.join(', ')+`);\n`+
     pars.join('\n')+'\n'+
     (o.returns? `// --> `+o.returns.description+'\n':'')+
     '```\n';
@@ -606,7 +606,7 @@ function mdSetLinks(md, o) {
     links.delete(m[1]);
   for(var l of links) {
     console.log('mdSetLinks: '+l);
-    md = md+`[${l}]: https://github.com/${o.org}/${o.package}/wiki/${l}\n`;
+    md = md+`[${l}]: https://github.com/${o.org}/${o.package_root}/wiki/${l}\n`;
   }
   return md;
 }
@@ -669,12 +669,14 @@ function jsonSetKeywords(ks) {
 var jsonSetKeywords_1 = jsonSetKeywords;
 
 const ORG$1 = 'nodef';
-const PACKAGE = path.basename(process.cwd());
-const ROOTNAME = PACKAGE.replace(/.*?-/, '');
+const PACKAGE_ROOT$1 = path.basename(process.cwd());
+const NAME_ROOT = PACKAGE.replace(/.*?-/, '');
 const OPTIONS$1 = {
   org: ORG$1,
-  package: PACKAGE,
-  rootname: ROOTNAME
+  package_root: PACKAGE_ROOT$1,
+  package: PACKAGE_ROOT$1,
+  name_root: NAME_ROOT,
+  name: NAME_ROOT
 };
 
 

@@ -5,12 +5,14 @@ const jsonSetKeywords = require('./jsonSetKeywords');
 const path = require('path');
 
 const ORG = 'nodef';
-const PACKAGE = path.basename(process.cwd());
-const ROOTNAME = PACKAGE.replace(/.*?-/, '');
+const PACKAGE_ROOT = path.basename(process.cwd());
+const NAME_ROOT = PACKAGE.replace(/.*?-/, '');
 const OPTIONS = {
   org: ORG,
-  package: PACKAGE,
-  rootname: ROOTNAME
+  package_root: PACKAGE_ROOT,
+  package: PACKAGE_ROOT,
+  name_root: NAME_ROOT,
+  name: NAME_ROOT
 };
 
 
