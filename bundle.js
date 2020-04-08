@@ -3,6 +3,8 @@ const cp = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+const snakeCase = require('./src/snakeCase');
+const pathSplit = require('./src/pathSplit');
 
 // Global variables.
 const ORG = 'nodef';
@@ -13,21 +15,6 @@ const stdio = [0, 1, 2];
 const EOL = os.EOL;
 
 
-
-function toSnakeCase(x, sep='-') {
-  x = x.replace(/([a-z0-9])([A-Z])/g, '$1'+sep+'$2');
-  x = x.replace(/[^A-Za-z0-9\.]+/g, sep);
-  x = x.replace(/^[^A-Za-z0-9\.]+/, '');
-  x = x.replace(/[^A-Za-z0-9\.]+$/, '');
-  return x.toLowerCase();
-}
-
-function pathSplit(x) {
-  var d = path.dirname(x);
-  var e = path.extname(x);
-  var f = x.substring(d.length, x.length-e.length).replace(/^\//, '');
-  return [d, f, e];
-}
 
 function fsReadDir(pth) {
   return fs.existsSync(pth)? fs.readdirSync(pth):[];
@@ -123,7 +110,7 @@ function scatterPackage(pth, o) {
   var readme = path.join(tmp, 'README.md');
   var index = path.join(tmp, 'index'+ext);
   var json = path.join(tmp, 'package.json');
-  o.package = o.package||toSnakeCase(nam);
+  o.package = o.package||snakeCase(nam);
   o.readme = o.readme||fil.replace(/[?]+$/, '');
   downloadReadme(readme, o);
   o.description = o.description||readmeHeading(readme);
@@ -204,7 +191,7 @@ async function main(a) {
     var pth = path.join('src', f);
     var tmp = scatterPackage(pth, o);
     cp.execSync('npm publish', {cwd: tmp, stdio});
-    var standalone = toSnakeCase(f.replace(/\..*/, ''), '_');
+    var standalone = snakeCase(f.replace(/\..*/, ''), '_');
     standalone = STANDALONE+'_'+standalone;
     minifyPackage(tmp, Object.assign({standalone}, o));
     cp.execSync('npm publish', {cwd: tmp, stdio});
