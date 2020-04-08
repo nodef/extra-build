@@ -1,0 +1,14 @@
+# parts
+src/
+docs/
+.gitmodules
+
+# build
+build.js
+bundle.js
+.travis.yml
+
+# others
+unused/
+unused.*
+TODO
