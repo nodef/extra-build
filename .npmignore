@@ -4,6 +4,7 @@ docs/
 .gitmodules
 
 # build
+build.js
 rollup.config.js
 .travis.yml
 
