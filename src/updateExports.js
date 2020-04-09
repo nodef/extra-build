@@ -1,5 +1,6 @@
 const dirFiles = require('./dirFiles');
 const fileName = require('./fileName');
+const fileSymbol = require('./fileSymbol');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -16,9 +17,10 @@ function updateExports(pth, o) {
   console.log('updateExports:', o, pth);
   var dir = path.dirname(pth), d = '';
   for(var f of dirFiles(dir)) {
-    var n = fileName(f);
-    if(o.format==='cjs') d += `exports.${n} = require('./${n}');`+EOL;
-    else d += `export {default as ${n}} from './${n}';`+EOL;
+    var file = fileName(f);
+    var symbol = fileSymbol(f);
+    if(o.format==='cjs') d += `exports.${symbol} = require('./${file}');`+EOL;
+    else d += `export {default as ${symbol}} from './${file}';`+EOL;
   }
   fs.writeFileSync(pth, d);
 }
