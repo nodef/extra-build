@@ -38,6 +38,7 @@ function scatterTs(pth, o) {
     if(o.declaration) cmd += ` --declaration`;
     if(o.declarationMap) cmd += ` --declarationMap`;
     if(o.sourceMap) cmd += ` --sourceMap`;
+    cmd += ` "${pth}"`;
     cpExec(cmd);
   }
 }

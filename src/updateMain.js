@@ -1,6 +1,6 @@
 const cpExec = require('./cpExec');
 const pathSplit = require('./pathSplit');
-const stripComments = require('strip-comments');
+const jsDecomment = require('./jsDecomment');
 const fs = require('fs');
 
 const OPTIONS = {
@@ -20,7 +20,7 @@ function updateMain(pth, o) {
   var dts1 = path.join(dir, fil+'.d.ts');
   if(fs.existsSync(dts1)) {
     var d = fs.readFileSync(pth, 'utf8');
-    d = stripComments(d);
+    d = jsDecomment(d);
     fs.writeFileSync(pth, d);
   }
 }
