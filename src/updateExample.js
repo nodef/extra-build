@@ -1,14 +1,14 @@
-const mdCodeBlocks = require('./mdCodeBlocks');
+const mdExample = require('./mdExample');
 const fs = require('fs');
 
 
-function updateExample(o={}, pth='example.js') {
-  var f = o.readme||'README.md';
-  var d = fs.readFileSync(f, 'utf8');
-  var re = o.example_lang||null;
-  var blocks = mdCodeBlocks(d, re);
-  if(blocks.length===0) return;
-  console.log('updateExample:', o, pth);
-  fs.writeFileSync(pth, blocks[0]);
+function updateExample(pth, o) {
+  var pth = pth||'example.js';
+  var o = Object.assign({readme: 'README.md'}, o);
+  var d = fs.readFileSync(o.readme, 'utf8');
+  var ex = mdExample(d, o.example_lang);
+  if(!ex) return;
+  console.log('updateExample:', pth, o);
+  fs.writeFileSync(pth, ex);
 }
 module.exports = updateExample;

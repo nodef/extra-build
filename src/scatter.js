@@ -18,10 +18,10 @@ const OPTIONS = {
 };
 
 
-function dirScatter(dir, o) {
+function scatter(dir, o) {
   var dir = dir||'src';
   var o = Object.assign({}, OPTIONS, o);
-  console.log('dirScatter:', dir, o);
+  console.log('scatter:', dir, o);
   for(var f of dirFiles(dir)) {
     try {
     var pth = path.join(dir, f);
@@ -39,4 +39,4 @@ function dirScatter(dir, o) {
   packageMinify('.', Object.assign({standalone}, o));
   cpExec('npm publish');
 }
-module.exports = dirScatter;
+module.exports = scatter;

@@ -1,6 +1,6 @@
 {
   "name": "extra-build",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Common build tools for extra-* packages.",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
     "find-npm-prefix": "^1.0.2",
     "global-dirs": "^2.0.1",
     "recast": "^0.19.0",
+    "strip-comments": "^2.0.1",
     "tempy": "^0.5.0"
   }
 }

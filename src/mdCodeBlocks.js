@@ -1,5 +1,5 @@
 // Gets code blocks from markdown string.
-function mdCodeBlocks(x='', re=null) {
+function mdCodeBlocks(x, re) {
   var re = re||/javascript/, a = [];
   var rex = /```(\w*)(.*?)```/gs, m = null;
   while((m=rex.exec(x))!=null) {

@@ -5,9 +5,9 @@ const {EOL} = os;
 
 
 // Update README.md based on scatter options.
-function mdScatter(pth, o) {
+function scatterMd(pth, o) {
   var pth = pth||'README.md', o = o||{};
-  console.log('mdScatter:', pth, o);
+  console.log('scatterMd:', pth, o);
   var d = fs.readFileSync(pth, 'utf8');
   d = d.replace(o.note_top||/\s+```/, '<br>'+EOL+
     `> This is part of package [${o.package_root}].`+EOL+EOL+
@@ -16,4 +16,4 @@ function mdScatter(pth, o) {
   );
   fs.writeFileSync(pth, d);
 }
-module.exports = mdScatter;
+module.exports = scatterMd;

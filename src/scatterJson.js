@@ -1,14 +1,14 @@
 const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');
-const fs = require('fs');
+const packageName = require('./packageName');
 
 
 // Update package.json based on scatter options.
-function jsonScatter(pth, o) {
+function scatterJson(pth, o) {
   var pth = pth||'package.json', o = o||{};
   console.log('jsonScatter:', pth, o);
   var x = jsonRead(pth);
-  x.name = `@${o.package_root}/${o.package}`;
+  x.name = packageName(o.package, o);
   x.description = o.description;
   x.main = o.main||'index.js';
   x.scripts = {test: 'exit'};
@@ -21,4 +21,4 @@ function jsonScatter(pth, o) {
   x.devDependencies = undefined;
   jsonWrite(pth, x);
 }
-module.exports = jsonScatter;
+module.exports = scatterJson;
