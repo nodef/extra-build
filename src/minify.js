@@ -1,7 +1,7 @@
 const jsonRead = require('./jsonRead');
 const minifyJson = require('./minifyJson');
-const mdMinify = require('./mdMinify');
-const jsMinify = require('./jsMinify');
+const minifyMd = require('./minifyMd');
+const minifyJs = require('./minifyJs');
 const path = require('path');
 
 
