@@ -6,6 +6,7 @@ const {EOL} = os;
 
 // Adds minified message to README.md in place.
 function mdMinify(pth, o) {
+  var pth = pth||'README.md', o = o||{};
   console.log('mdMinify: ', pth, o);
   var d = fs.readFileSync(pth, 'utf8');
   d = d.replace(o.note_minified||/^> .*?minified.*$/m, '');

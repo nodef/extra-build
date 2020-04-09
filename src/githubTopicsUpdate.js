@@ -1,12 +1,12 @@
-const org = require('./org');
-const packageName = require('./packageName');
+const ORG = require('./ORG');
+const PACKAGE = require('./PACKAGE');
 const jsonRead = require('./jsonRead');
 const octokit = require('./octokit');
 
 
 async function githubTopicsUpdate(o={}) {
-  var owner = o.org||org;
-  var repo = o.package_root||packageName;
+  var owner = o.org||ORG;
+  var repo = o.package_root||PACKAGE;
   var names = await octokit.repos.getAllTopics({owner, repo});
   var keywords_min = o.keywords_min||5;
   if(names.length<keywords_min) {

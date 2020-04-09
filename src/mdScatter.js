@@ -6,6 +6,7 @@ const {EOL} = os;
 
 // Update README.md based on scatter options.
 function mdScatter(pth, o) {
+  var pth = pth||'README.md', o = o||{};
   console.log('mdScatter:', pth, o);
   var d = fs.readFileSync(pth, 'utf8');
   d = d.replace(o.note_top||/\s+```/, '<br>'+EOL+

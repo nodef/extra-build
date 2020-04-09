@@ -14,6 +14,6 @@ function updateJson(o={}, pth=null) {
   var ks1 = dirKeywords(o.keywords_dir);
   var ks0 = jsonKeywords(x, ks1);
   x.keywords = ks0.concat(ks1);
-  jsonWrite(x, pth);
+  jsonWrite(pth, x);
 }
 module.exports = updateJson;

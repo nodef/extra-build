@@ -1,6 +1,5 @@
-- jsJsdocs => Map<name, Jsdoc>
-- dirJsdocs => Map<name, Jsdoc>
 - dirScatter
+- updateReadme
 
 use gitDiffCodeBlocks()
 to determine whether to upload it to asciinema again

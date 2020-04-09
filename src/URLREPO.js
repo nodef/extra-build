@@ -1,5 +1,5 @@
 const ORG = require('./ORG');
-const NAME = require('./NAME');
+const PACKAGE = require('./PACKAGE');
 
-const URLREPO = `https://github.com/${ORG}/${NAME}`;
+const URLREPO = `https://github.com/${ORG}/${PACKAGE}`;
 module.exports = URLREPO;

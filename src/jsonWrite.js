@@ -1,8 +1,9 @@
 const fs = require('fs');
 
 
-function jsonWrite(v, pth=null) {
+function jsonWrite(pth, v) {
+  var pth = pth||'package.json';
   var d = JSON.stringify(v, null, 2);
-  fs.writeFileSync(pth||'package.json', d);
+  fs.writeFileSync(pth, d);
 }
 module.exports = jsonWrite;
