@@ -6,6 +6,7 @@ const path = require('path');
 
 
 function dirJsdocs(dir) {
+  var dir = dir||'src';
   var a = new Map();
   for(var f of dirFiles(dir)) {
     var name = fileName(f);
