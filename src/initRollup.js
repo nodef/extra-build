@@ -2,6 +2,7 @@ const DIRBUILD = require('./DIRBUILD');
 const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');
 const path = require('path');
+const fs = require('fs');
 
 const FILEROLLUP = path.join(DIRBUILD, 'data', 'rollup.config.js');
 
