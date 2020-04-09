@@ -2,8 +2,8 @@ const githubRepoUpdate = require('./githubRepoUpdate');
 const githubTopicsUpdate = require('./githubTopicsUpdate');
 
 
-async function githubUpdate(o={}) {
+async function updateGithub(o={}) {
   await githubRepoUpdate(o);
   await githubTopicsUpdate(o);
 }
-module.exports = githubUpdate;
+module.exports = updateGithub;

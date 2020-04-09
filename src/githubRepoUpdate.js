@@ -5,7 +5,8 @@ const mdHeading = require('./mdHeading');
 const octokit = require('./octokit');
 
 
-async function githubRepoUpdate(o={}) {
+async function githubRepoUpdate(o) {
+  var o = o||{};
   var owner = o.org||ORG;
   var repo = o.package_root||PACKAGE;
   var description = o.description||mdHeading();
