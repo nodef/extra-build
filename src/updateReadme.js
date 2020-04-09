@@ -8,6 +8,6 @@ function updateReadme(pth, jsdocs, o) {
   var md = fs.readFileSync(pth, 'utf8');
   md = mdSetTable(md, jsdocs);
   md = mdSetLinks(md, o);
-  fs.writeFileSync(p, md);
+  fs.writeFileSync(pth, md);
 }
 module.exports = updateReadme;
