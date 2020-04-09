@@ -4,10 +4,10 @@ const SYMBOL = require('./SYMBOL');
 const STANDALONE = require('./STANDALONE');
 const cpExec = require('./cpExec');
 const dirFiles = require('./dirFiles');
-const fileName = require('./fileName');
-const packageScatter = require('./packageScatter');
-const packageMinify = require('./packageMinify');
-const snakeCase = require('./snakeCase');
+const fileSymbol = require('./fileSymbol');
+const standaloneName = require('./standaloneName');
+const scatterOne = require('./scatterOne');
+const minify = require('./minify');
 const path = require('path');
 
 const OPTIONS = {
@@ -25,18 +25,17 @@ function scatter(dir, o) {
   for(var f of dirFiles(dir)) {
     try {
     var pth = path.join(dir, f);
-    var tmp = packageScatter(pth, o);
+    var tmp = scatterOne(pth, o);
     cpExec('npm publish', {cwd: tmp});
-    var standalone = snakeCase(fileName(f), '_');
-    standalone = o.standalone_root+'_'+standalone;
-    packageMinify(tmp, Object.assign({standalone}, o));
+    var standalone = standaloneName(fileSymbol(f), o);
+    minify(tmp, Object.assign({standalone}, o));
     cpExec('npm publish', {cwd: tmp});
     cpExec(`rm -rf ${tmp}`);
     }
     catch(e) { console.error(e); }
   }
   standalone = o.standalone_root;
-  packageMinify('.', Object.assign({standalone}, o));
+  minify('.', Object.assign({standalone}, o));
   cpExec('npm publish');
 }
 module.exports = scatter;
