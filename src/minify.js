@@ -14,7 +14,7 @@ function minify(pth, o) {
   o.package = o.package||jsonRead(json).name;
   console.log('minify: ', pth, o);
   minifyJson(json, o);
-  mdMinify(readme, o);
-  jsMinify(main, o);
+  minifyMd(readme, o);
+  minifyJs(main, o);
 }
 module.exports = minify;
