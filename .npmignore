@@ -1,7 +1,7 @@
 # parts
-src/
-docs/
-wiki/
+#src/
+#docs/
+#wiki/
 .gitmodules
 
 # build
