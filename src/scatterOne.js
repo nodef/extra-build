@@ -1,4 +1,3 @@
-const cpExec = require('./cpExec');
 const pathSplit = require('./pathSplit');
 const pathReplace = require('./pathReplace');
 const fileSymbol = require('./fileSymbol');

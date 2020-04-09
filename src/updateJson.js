@@ -10,7 +10,7 @@ function updateJson(pth, o) {
   var pth = pth||'package.json', o = o||{};
   console.log('updateJson:', pth, o);
   var x = jsonRead(pth);
-  var md = mdRead(o.readme);
+  var md = mdRead(o.readme_path);
   x.description = mdHeading(md);
   var ks1 = dirKeywords(o.keywords_dir);
   var ks0 = jsonKeywords(x, ks1);
