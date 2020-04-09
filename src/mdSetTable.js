@@ -6,10 +6,10 @@ function mdSetTable(md, jsdocs) {
   var I = tab.search(/^[^\|]/m);
   var bot = tab.substring(I);
   var tab = tab.substring(0, I);
-  var rrow = /^(\|\s+\[(.*?)\]\s+\|\s+)(.*?)\n/gm, m = null;
+  var rrow = /^(\|\s+\[(.*?)\]\s+\|[^\S\n]*)(.*)$/gm, m = null;
   while((m=rrow.exec(tab))!=null) {
     var description = jsdocs.get(m[2])? jsdocs.get(m[2]).description: m[3];
-    tab = tab.replace(m[0], m[1]+description+'\n');
+    tab = tab.replace(m[0], m[1]+description);
   }
   return top+tab+bot;
 }
