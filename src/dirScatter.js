@@ -1,32 +1,30 @@
+const ORG = require('./ORG');
+const PACKAGE = require('./PACKAGE');
+const SYMBOL = require('./SYMBOL');
+const STANDALONE = require('./STANDALONE');
 const cpExec = require('./cpExec');
-const dirRead = require('./dirRead');
+const dirFiles = require('./dirFiles');
 const fileName = require('./fileName');
-const jsonRead = require('./jsonRead');
 const packageScatter = require('./packageScatter');
 const packageMinify = require('./packageMinify');
 const snakeCase = require('./snakeCase');
 const path = require('path');
 
-
-const ORG = 'nodef';
-const PACKAGE_ROOT = jsonRead().name;
-const STANDALONE_ROOT = PACKAGE_ROOT.replace(/extra-/, '').replace(/\W+/, '_');
 const OPTIONS = {
   org: ORG,
-  package_root: PACKAGE_ROOT,
-  standalone_root: STANDALONE_ROOT
+  package_root: PACKAGE,
+  symbol_root: SYMBOL,
+  standalone_root: STANDALONE
 };
 
 
-function dirScatter(pth, o) {
-  console.log('dirScatter:', pth, o);
+function dirScatter(dir, o) {
+  var dir = dir||'src';
   var o = Object.assign({}, OPTIONS, o);
-  for(var f of dirRead(pth)) {
-    if(path.extname(f)!=='.js') continue;
-    if(f.startsWith('_')) continue;
-    if(f==='index.js') continue;
+  console.log('dirScatter:', dir, o);
+  for(var f of dirFiles(dir)) {
     try {
-    var pth = path.join(pth, f);
+    var pth = path.join(dir, f);
     var tmp = packageScatter(pth, o);
     cpExec('npm publish', {cwd: tmp});
     var standalone = snakeCase(fileName(f), '_');
