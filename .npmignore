@@ -6,8 +6,8 @@
 
 # build
 build.js
-rollup.config.js
-.travis.yml
+#rollup.config.js
+#.travis.yml
 
 # others
 unused/
