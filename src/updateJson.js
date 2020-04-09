@@ -6,7 +6,8 @@ const mdHeading = require('./mdHeading');
 const dirKeywords = require('./dirKeywords');
 
 
-function updateJson(o={}, pth=null) {
+function updateJson(pth, o) {
+  var pth = pth||'package.json', o = o||{};
   console.log('updateJson:', o, pth);
   var x = jsonRead(pth);
   var md = mdRead(o.readme);

@@ -10,9 +10,9 @@ const OPTIONS = {
 const {EOL} = os;
 
 
-function updateExports(o={}, pth=null) {
-  var o = Object.assign({}, OPTIONS, o);
+function updateExports(pth, o) {
   var pth = pth||'src/index.js';
+  var o = Object.assign({}, OPTIONS, o);
   console.log('updateExports:', o, pth);
   var dir = path.dirname(pth), d = '';
   for(var f of dirFiles(dir)) {

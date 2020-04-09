@@ -1,8 +1,8 @@
 const pathSplit = require('./pathSplit');
 const packageRoot = require('./packageRoot');
 const packageRequires = require('./packageRequires');
+const packageName = require('./packageName');
 const requireResolve = require('./requireResolve');
-const snakeCase = require('./snakeCase');
 const wikiDownload = require('./wikiDownload');
 const mdHeading = require('./mdHeading');
 const mdScatter = require('./mdScatter');
@@ -15,23 +15,22 @@ const fs = require('fs');
 
 // Scatter a file as a package.
 function packageScatter(pth, o) {
+  var o = o||{};
   console.log('packageScatter:', pth, o);
-  var o = Object.assign({}, o);
   var tmp = tempy.directory();
   var [dir, fil, ext] = pathSplit(pth);
   var src = packageRoot(pth);
-  var nam = fil.replace(/\$/g, 'Update');
   var json_src = path.join(src, 'package.json');
   var readme = path.join(tmp, 'README.md');
-  var index = path.join(tmp, 'index'+ext);
+  var main = path.join(tmp, 'index'+ext);
   var json = path.join(tmp, 'package.json');
-  o.package = o.package||snakeCase(nam);
+  o.package = o.package||packageName(fil);
   o.readme = o.readme||fil.replace(/[?]+$/, '');
   wikiDownload(readme, o);
   o.description = o.description||mdHeading(readme);
   mdScatter(readme, o);
-  fs.copyFileSync(pth, index);
-  jsScatter(index, o);
+  fs.copyFileSync(pth, main);
+  jsScatter(main, o);
   o.requires = packageRequires(pth);
   fs.copyFileSync(json_src, json);
   jsonScatter(json, o);
