@@ -13,7 +13,7 @@ function updateWiki(dir, jsdocs, o) {
     var p = path.join(dir, f);
     var md = fs.readFileSync(p, 'utf8');
     var jsdoc = jsdocs.get(symbol);
-    if(!jsdoc) { console.log('docsUpdate: no jsdoc for '+p); continue; }
+    if(!jsdoc) { console.log('updateWiki: no jsdoc for '+p); continue; }
     md = mdSetJsdoc(md, jsdoc, Object.assign({}, o, {symbol}));
     md = mdSetLinks(md, o);
     fs.writeFileSync(p, md);
