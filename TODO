@@ -1,0 +1,7 @@
+- jsJsdocs => Map<name, Jsdoc>
+- dirJsdocs => Map<name, Jsdoc>
+- dirScatter
+
+use gitDiffCodeBlocks()
+to determine whether to upload it to asciinema again
+to update the wiki md file

@@ -1,9 +1,9 @@
-const dirRead = require('./dirRead');
+const dirFiles = require('./dirFiles');
+const fileKeyword = require('./fileKeyword');
 
 
-function dirKeywords(pth=null) {
-  return dirRead(pth||'src').filter(f => {
-    return /^_|^index\./.test(f)===false;
-  });
+// Gets keywords from directory.
+function dirKeywords(dir) {
+  return [...new Set(dirFiles(dir).map(fileKeyword))];
 }
 module.exports = dirKeywords;

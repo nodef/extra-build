@@ -3,8 +3,8 @@ const packageName = require('./packageName');
 const jsonRead = require('./jsonRead');
 const octokit = require('./octokit');
 
-async function githubTopicsUpdate(o) {
-  var o = o||{};
+
+async function githubTopicsUpdate(o={}) {
   var owner = o.org||org;
   var repo = o.package_root||packageName;
   var names = await octokit.repos.getAllTopics({owner, repo});

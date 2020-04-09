@@ -1,21 +1,20 @@
-const jsJsdoc = require('./jsJsdoc');
+const dirFiles = require('./dirFiles');
+const fileName = require('./fileName');
+const jsJsdocs = require('./jsJsdocs');
 const fs = require('fs');
 const path = require('path');
 
 
 function dirJsdocs(dir) {
-  var os = new Map();
-  for(var f of fs.readdirSync(dir)) {
-    if(!f.endsWith('.js')) continue;
-    if(f.startsWith('_')) continue;
-    if(f==='index.js') continue;
-    var name = f.replace(/[?]*\.js/, '');
+  var a = new Map();
+  for(var f of dirFiles(dir)) {
+    var name = fileName(f);
     var p = path.join(dir, f);
     var js = fs.readFileSync(p, 'utf8');
-    var o = jsJsdoc(js);
-    if(!o) { console.log('dirJsdocs: no jsdoc for '+p); }
-    os.set(name, o);
+    var b = jsJsdocs(js);
+    if(b.size===0) { console.log('dirJsdocs: no jsdoc for '+p); }
+    for([k, v] of b) a.set(k, v);
   }
-  return os;
+  return a;
 }
 module.exports = dirJsdocs;

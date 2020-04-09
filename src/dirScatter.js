@@ -1,4 +1,5 @@
 const dirRead = require('./dirRead');
+const fileName = require('./fileName');
 const packageScatter = require('./packageScatter');
 const packageMinify = require('./packageMinify');
 const snakeCase = require('./snakeCase');
@@ -29,7 +30,7 @@ function dirScatter(pth, o) {
     var pth = path.join(pth, f);
     var tmp = packageScatter(pth, o);
     cp.execSync('npm publish', {cwd: tmp, stdio});
-    var standalone = snakeCase(f.replace(/\..*/, ''), '_');
+    var standalone = snakeCase(fileName(f), '_');
     standalone = o.standalone_root+'_'+standalone;
     packageMinify(tmp, Object.assign({standalone}, o));
     cp.execSync('npm publish', {cwd: tmp, stdio});

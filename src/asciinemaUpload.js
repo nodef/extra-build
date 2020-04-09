@@ -2,7 +2,9 @@ const asciinema = require('extra-asciinema');
 const tempy = require('tempy');
 
 
-function asciinemaUpload(o={}, pth='example.js') {
+// Records execution of a js file, and gives its asciinema URL.
+function asciinemaUpload(pth, o) {
+  console.log('asciinemaUpload:', pth, o);
   var f = tempy.file({extension: 'cast'});
   asciinema.recSync(f, Object.assign({input: pth}, o));
   asciinema.retimeSync(f, o);
