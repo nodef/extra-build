@@ -14,7 +14,7 @@ async function githubRepoUpdate(o) {
   var md = fs.readFileSync(readme, 'utf8');
   var description = o.description||mdHeading(md);
   var homepage = o.homepage||URLNPM;
-  var c = {owner, repo, description, homepage, has_wiki};
+  var c = {owner, repo, description, homepage};
   console.log('githubRepoUpdate:', c);
   await octokit.repos.update(c);
 }
