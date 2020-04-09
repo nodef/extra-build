@@ -1,6 +1,5 @@
 exports.DIRBIN = require('./DIRBIN');
 exports.DIRBUILD = require('./DIRBUILD');
-exports.FILECI = require('./FILECI');
 exports.ORG = require('./ORG');
 exports.PACKAGE = require('./PACKAGE');
 exports.STANDALONE = require('./STANDALONE');
@@ -27,6 +26,8 @@ exports.init = require('./init');
 exports.initCi = require('./initCi');
 exports.initGitignore = require('./initGitignore');
 exports.initNpmignore = require('./initNpmignore');
+exports.initRollup = require('./initRollup');
+exports.initTs = require('./initTs');
 exports.initWiki = require('./initWiki');
 exports.jsBundle = require('./jsBundle');
 exports.jsJsdocs = require('./jsJsdocs');
