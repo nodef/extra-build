@@ -1,15 +1,15 @@
 const dirRead = require('./dirRead');
 const fileName = require('./fileName');
+const jsonRead = require('./jsonRead');
 const packageScatter = require('./packageScatter');
 const packageMinify = require('./packageMinify');
 const snakeCase = require('./snakeCase');
-const fs = require('fs');
 const path = require('path');
 const cp = require('child_process');
 
 
 const ORG = 'nodef';
-const PACKAGE_ROOT = JSON.parse(fs.readFileSync('package.json', 'utf8')).name;
+const PACKAGE_ROOT = jsonRead().name;
 const STANDALONE_ROOT = PACKAGE_ROOT.replace(/extra-/, '').replace(/\W+/, '_');
 const OPTIONS = {
   org: ORG,

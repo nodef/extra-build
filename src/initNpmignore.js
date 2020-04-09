@@ -1,4 +1,4 @@
-const initGitignore = require('./initGitignore');
+const ignoreAdd = require('./ignoreAdd');
 
 const NPMIGNORES = new Map([
   ['Parts', ['src/', 'docs/', 'wiki/', '.gitmodules']],
@@ -8,9 +8,10 @@ const NPMIGNORES = new Map([
 
 
 // Initializes npmignore file.
-function initNpmignore(o={}, pth='.npmignore') {
-  var npmignores = o.npmignores||NPMIGNORES;
-  console.log('initNpmignore:', o, pth);
-  initGitignore({gitignores: npmignores}, pth);
+function initNpmignore(pth, o) {
+  var pth = pth||'.npmignore';
+  var o = Object.assign({npmignores: NPMIGNORES}, o);
+  console.log('initNpmignore:', pth, o);
+  ignoreAdd(pth, o.npmignores);
 }
 module.exports = initNpmignore;

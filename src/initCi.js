@@ -1,15 +1,13 @@
-const buildRoot = require('./buildRoot');
+const FILECI = require('./FILECI');
 const fs = require('fs');
-const path = require('path');
-
-const CI_FILE = path.join(buildRoot, 'data', 'travis.yml.txt');
 
 
 // Initializes continuous integration file.
-function initCi(o={}, pth='.travis.yml') {
+function initCi(pth, o) {
+  var pth = pth||'.travis.yml', o = o||{};
   if(fs.existsSync(pth)) return;
+  o.cidata = o.cidata||fs.readFileSync(FILECI, 'utf8');
   console.log('initCi:', o, pth);
-  var ci = o.ci||fs.readFileSync(CI_FILE, 'utf8');
-  fs.writeFileSync(pth, ci);
+  fs.writeFileSync(pth, o.cidata);
 }
 module.exports = initCi;
