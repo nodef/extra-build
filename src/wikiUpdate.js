@@ -1,4 +1,4 @@
-const fsReadDirSync = require('./fsReadDirSync');
+const dirRead = require('./dirRead');
 const mdSetJsdoc = require('./mdSetJsdoc');
 const mdSetLinks = require('./mdSetLinks');
 const fs = require('fs');
@@ -6,7 +6,7 @@ const path = require('path');
 
 
 function docsUpdate(dir, os, ot) {
-  for(var f of fsReadDirSync(dir)) {
+  for(var f of dirRead(dir)) {
     if(!f.endsWith('.md')) continue;
     if(f.startsWith('_')) continue;
     if(f==='Home.md') continue;

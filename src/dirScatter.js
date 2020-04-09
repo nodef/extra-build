@@ -1,4 +1,4 @@
-const fsReadDirSync = require('./fsReadDirSync');
+const dirRead = require('./dirRead');
 const packageScatter = require('./packageScatter');
 const packageMinify = require('./packageMinify');
 const snakeCase = require('./snakeCase');
@@ -21,7 +21,7 @@ const stdio = [0, 1, 2];
 function dirScatter(pth, o) {
   console.log('dirScatter:', pth, o);
   var o = Object.assign({}, OPTIONS, o);
-  for(var f of fsReadDirSync(pth)) {
+  for(var f of dirRead(pth)) {
     if(path.extname(f)!=='.js') continue;
     if(f.startsWith('_')) continue;
     if(f==='index.js') continue;

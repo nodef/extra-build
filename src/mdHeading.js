@@ -1,9 +1,5 @@
-const fs = require('fs');
-
-
-function mdHeading(pth='README.md') {
-  console.log('mdHeading:', pth);
-  var d = fs.readFileSync(pth, 'utf8');
+// Gets heading from markdown text.
+function mdHeading(d) {
   d = d.replace(/\r?\n[\s\S]*/, '');
   d = d.replace(/[\_\[\]]/g, '');
   d = d.replace(/\*(.*?)\*/g, '$1');

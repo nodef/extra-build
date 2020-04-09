@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 
-function fsReadDirSync(pth) {
+function dirRead(pth) {
   return fs.existsSync(pth)? fs.readdirSync(pth):[];
 }
-module.exports = fsReadDirSync;
+module.exports = dirRead;
