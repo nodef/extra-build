@@ -9,7 +9,8 @@ const FILETS = path.join(DIRBUILD, 'data', 'tsconfig.json');
 
 // Initializes TS config file.
 function initTs(pth, o) {
-  var pth = pth||'tsconfig.json', o = o||{};
+  var pth = pth||'tsconfig.json';
+  var o = Object.assign({}, o);
   if(fs.existsSync(pth)) return;
   o.ts_config = o.ts_config||jsonRead(FILETS);
   console.log('initTs:', pth, o);

@@ -7,7 +7,8 @@ const FILEROLLUP = path.join(DIRBUILD, 'data', 'rollup.config.js');
 
 // Initializes Rollup config file.
 function initRollup(pth, o) {
-  var pth = pth||'rollup.config.js', o = o||{};
+  var pth = pth||'rollup.config.js';
+  var o = Object.assign({}, o);
   if(fs.existsSync(pth)) return;
   o.rollup_config = o.rollup_config||fs.readFileSync(FILEROLLUP, 'utf8');
   console.log('initRollup:', pth, o);
