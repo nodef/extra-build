@@ -1,5 +1,5 @@
 const jsonRead = require('./jsonRead');
-const jsonMinify = require('./jsonMinify');
+const minifyJson = require('./minifyJson');
 const mdMinify = require('./mdMinify');
 const jsMinify = require('./jsMinify');
 const path = require('path');
@@ -13,7 +13,7 @@ function minify(pth, o) {
   var main = path.join(pth, 'index.js');
   o.package = o.package||jsonRead(json).name;
   console.log('minify: ', pth, o);
-  jsonMinify(json, o);
+  minifyJson(json, o);
   mdMinify(readme, o);
   jsMinify(main, o);
 }
