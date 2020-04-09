@@ -9,9 +9,7 @@ const updateJson = require('./updateJson');
 const OPTIONS = {
   org: ORG,
   package_root: PACKAGE,
-  package: PACKAGE,
-  symbol_root: SYMBOL,
-  symbol: SYMBOL
+  symbol_root: SYMBOL
 };
 
 
