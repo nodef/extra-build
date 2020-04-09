@@ -1,3 +1,4 @@
+const cpExec = require('./cpExec');
 const dirRead = require('./dirRead');
 const fileName = require('./fileName');
 const jsonRead = require('./jsonRead');
@@ -5,7 +6,6 @@ const packageScatter = require('./packageScatter');
 const packageMinify = require('./packageMinify');
 const snakeCase = require('./snakeCase');
 const path = require('path');
-const cp = require('child_process');
 
 
 const ORG = 'nodef';
@@ -16,7 +16,6 @@ const OPTIONS = {
   package_root: PACKAGE_ROOT,
   standalone_root: STANDALONE_ROOT
 };
-const stdio = [0, 1, 2];
 
 
 function dirScatter(pth, o) {
@@ -29,17 +28,17 @@ function dirScatter(pth, o) {
     try {
     var pth = path.join(pth, f);
     var tmp = packageScatter(pth, o);
-    cp.execSync('npm publish', {cwd: tmp, stdio});
+    cpExec('npm publish', {cwd: tmp});
     var standalone = snakeCase(fileName(f), '_');
     standalone = o.standalone_root+'_'+standalone;
     packageMinify(tmp, Object.assign({standalone}, o));
-    cp.execSync('npm publish', {cwd: tmp, stdio});
-    cp.execSync(`rm -rf ${tmp}`);
+    cpExec('npm publish', {cwd: tmp});
+    cpExec(`rm -rf ${tmp}`);
     }
     catch(e) { console.error(e); }
   }
   standalone = o.standalone_root;
   packageMinify('.', Object.assign({standalone}, o));
-  cp.execSync('npm publish', {stdio});
+  cpExec('npm publish');
 }
 module.exports = dirScatter;
