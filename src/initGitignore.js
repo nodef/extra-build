@@ -5,7 +5,6 @@ const GITIGNORES = new Map([
 ]);
 
 
-// Initializes gitignore file.
 function initGitignore(pth, o) {
   var pth = pth||'.gitignore';
   var o = Object.assign({gitignores: GITIGNORES}, o);

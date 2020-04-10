@@ -10,9 +10,10 @@ const OPTIONS = {
 
 function execRollup(pth, o) {
   var pth = pth||'index.js';
-  var o = Object.assign({output: pth}, OPTIONS, o);
+  var o = Object.assign({output: pth, config: true}, OPTIONS, o);
+  if(!o.config) Object.assign({}, o, OPTIONS);
   console.log('execRollup:', pth, o);
-  var cwd = packageRoot(pth);
+  var cwd = packageRoot(pth), cmd = '.rollup';
   if(o.config) cpExec(`.rollup -c`, {cwd});
   else cpExec(`.rollup -f ${o.format} --file=${o.output} -- "${o.input}"`, {cwd});
 }

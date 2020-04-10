@@ -5,7 +5,6 @@ const fs = require('fs');
 const FILECI = path.join(DIRBUILD, 'data', 'travis.yml');
 
 
-// Initializes continuous integration file.
 function initCi(pth, o) {
   var pth = pth||'.travis.yml';
   var o = Object.assign({}, o);

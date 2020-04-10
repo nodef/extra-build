@@ -7,7 +7,6 @@ const NPMIGNORES = new Map([
 ]);
 
 
-// Initializes npmignore file.
 function initNpmignore(pth, o) {
   var pth = pth||'.npmignore';
   var o = Object.assign({npmignores: NPMIGNORES}, o);

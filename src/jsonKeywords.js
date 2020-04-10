@@ -1,3 +1,4 @@
+// Removes non-base keywords from package.json.
 function jsonKeywords(x, ks) {
   var ks0 = x.keywords.slice();
   var ks1 = ks||[];

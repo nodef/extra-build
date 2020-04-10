@@ -1,4 +1,3 @@
-// Parses jsdoc comment.
 function jsdocParse(c) {
   var description = c.match(/\s+\*\s+(.*?)\n/)[1];
   var rparam = /\s+\*\s+@param\s+(?:\{(.*?)\}\s+)(.*?)\s+(.*?)\n/g;

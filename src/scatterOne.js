@@ -10,6 +10,7 @@ const scatterMd = require('./scatterMd');
 const scatterTs = require('./scatterTs');
 const scatterJs = require('./scatterJs');
 const scatterJson = require('./scatterJson');
+const updateExample = require('./updateExample');
 const tempy = require('tempy');
 const path = require('path');
 const fs = require('fs');
@@ -31,7 +32,7 @@ function scatterOne(pth, o) {
   var md1 = path.join(tmp, 'README.md');
   if(fs.existsSync(md0)) fs.copyFileSync(md0, md1);
   var ex1 = path.join(tmp, 'example.js');
-  if(fs.existsSync(md1)) updateExample(ex1, {readme: md1});
+  if(fs.existsSync(md1)) updateExample(ex1, {readme_path: md1});
   var ext0 = path.join(src, fil+ext);
   var ext1 = path.join(tmp, 'index'+ext);
   if(fs.existsSync(ext0)) fs.copyFileSync(ext0, ext1);
@@ -42,10 +43,9 @@ function scatterOne(pth, o) {
   o.requires = packageRequires(pth);
   for(var r of o.requires) {
     if(!(/^[\.\/]/).test(r)) continue;
-    r = requireResolve(r);
-    var src = path.join(dir, r);
-    var dst = path.join(tmp, r);
-    fs.copyFileSync(src, dst);
+    var s = requireResolve(path.join(dir, r));
+    var d = path.join(tmp, path.relative(dir, s));
+    fs.copyFileSync(s, d);
   }
   if(ext==='.ts') scatterTs(ext1, o);
   var js1 = path.join(tmp, fil+'.js');

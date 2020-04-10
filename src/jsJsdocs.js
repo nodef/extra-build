@@ -1,7 +1,7 @@
 const jsdocParse = require('./jsdocParse');
 
 
-// Reads JSDoc in js file.
+// Reads JSDocs in js file.
 function jsJsdocs(js) {
   var a = new Map();
   var rjsdoc = /(\/\*\*.*?\*\/).*?(function\*?|const|var|let)\s+([\w$]+)/gs, m = null;

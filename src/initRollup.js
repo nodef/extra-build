@@ -5,7 +5,6 @@ const fs = require('fs');
 const FILEROLLUP = path.join(DIRBUILD, 'data', 'rollup.config.js');
 
 
-// Initializes Rollup config file.
 function initRollup(pth, o) {
   var pth = pth||'rollup.config.js';
   var o = Object.assign({}, o);
