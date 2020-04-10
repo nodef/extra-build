@@ -1,21 +1,13 @@
-const cpExec = require('./cpExec');
+const execRollup = require('./execRollup');
 const pathSplit = require('./pathSplit');
 const jsDecomment = require('./jsDecomment');
 const fs = require('fs');
 
-const OPTIONS = {
-  config: true,
-  format: 'es',
-  input: 'src/index.js'
-};
-
 
 function updateMain(pth, o) {
-  var pth = pth||'index.js';
-  var o = Object.assign({output: pth}, OPTIONS, o);
+  var pth = pth||'index.js', o = o||{};
   console.log('updateMain:', pth, o);
-  if(o.config) cpExec(`.rollup -c`);
-  else cpExec(`.rollup -f ${o.format} --file=${o.output} -- "${o.input}"`);
+  execRollup(pth, o);
   var [dir, fil,] = pathSplit(pth);
   var dts1 = path.join(dir, fil+'.d.ts');
   if(fs.existsSync(dts1)) {

@@ -1,5 +1,5 @@
 export default {
-  input: 'src/index.js',
+  input: 'out/index.js',
   output: {
     dir: '.',
     format: 'es'
