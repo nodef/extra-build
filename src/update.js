@@ -8,6 +8,8 @@ const updateReadme = require('./updateReadme');
 const updateExample = require('./updateExample');
 const updateJson = require('./updateJson');
 const updateGithub = require('./updateGithub');
+const updateSrc = require('./updateSrc');
+const updateMain = require('./updateMain');
 
 const OPTIONS = {
   org: ORG,
@@ -20,11 +22,13 @@ async function update(o) {
   var o = Object.assign({}, OPTIONS, o);
   console.log('update:', o);
   var jsdocs = dirJsdocs();
-  updateExports(o.exports_path, o);
-  updateWiki(o.wiki_path, jsdocs, o);
-  updateReadme(o.readme_path, jsdocs, o);
-  updateExample(o.example_path, o);;
   updateJson(o.json_path, o);
+  updateReadme(o.readme_path, jsdocs, o);
+  updateExample(o.example_path, o);
+  updateWiki(o.wiki_path, jsdocs, o);
+  updateExports(o.exports_path, o);
+  updateSrc(o.src_path, o);
+  updateMain(o.main_path, o);
   await updateGithub(o);
 };
 module.exports = update;
