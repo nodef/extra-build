@@ -1,8 +1,9 @@
 const cpExec = require('./cpExec');
 const packageRoot = require('./packageRoot');
+const fs = require('fs');
 
 const OPTIONS = {
-  config: true,
+  config: fs.existsSync('tsconfig.json'),
   target: 'es2018',
   module: 'es2015',
   declaration: true,
