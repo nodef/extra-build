@@ -28,14 +28,15 @@ function scatterOne(pth, o) {
   var json0 = path.join(pkg, 'package.json');
   var json1 = path.join(tmp, 'package.json');
   fs.copyFileSync(json0, json1);
+  var ext0 = path.join(src, fil+ext);
+  var ext1 = path.join(tmp, 'index'+ext);
+  fs.copyFileSync(ext0, ext1);
   var md0 = path.join(wiki, fil+'.md');
   var md1 = path.join(tmp, 'README.md');
   if(fs.existsSync(md0)) fs.copyFileSync(md0, md1);
+  else console.log('scatterOne:', md0, 'not found');
   var ex1 = path.join(tmp, 'example.js');
   if(fs.existsSync(md1)) updateExample(ex1, {readme_path: md1});
-  var ext0 = path.join(src, fil+ext);
-  var ext1 = path.join(tmp, 'index'+ext);
-  if(fs.existsSync(ext0)) fs.copyFileSync(ext0, ext1);
   var readme = fs.readFileSync(md1, 'utf8');
   o.package = o.package||packageName(fil);
   o.readme = o.readme||fileSymbol(fil+ext);
