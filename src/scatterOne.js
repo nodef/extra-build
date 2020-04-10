@@ -4,7 +4,6 @@ const fileSymbol = require('./fileSymbol');
 const packageRoot = require('./packageRoot');
 const packageRequires = require('./packageRequires');
 const packageName = require('./packageName');
-const requireResolve = require('./requireResolve');
 const mdHeading = require('./mdHeading');
 const scatterMd = require('./scatterMd');
 const scatterTs = require('./scatterTs');
