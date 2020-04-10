@@ -4,16 +4,17 @@ const path = require('path');
 
 
 // Gets requires from code.
-function packageRequires(pth, rs=[], ps=new Set()) {
-  var p = requireResolve(pth); ps.add(p);
+function packageRequires(pth, a=new Set()) {
+  var p = requireResolve(pth); a.add('./'+p);
   var d = fs.readFileSync(p, 'utf8');
   var re = /require\(\'(.*?)\'\)|^(?:import|export).*?from\s*\'(.*?)\';?$/gm, m = null;
   for(var reqs=[]; (m=re.exec(d))!=null;)
-  { reqs.push(m[1]||m[2]); rs.push(m[1]||m[2]); }
-  if(reqs.length===0) return rs;
+    reqs.push(m[1]||m[2]);
   var dir = path.dirname(pth);
-  for(var p of reqs)
-    if(/^\./.test(p)) packageRequires(path.join(dir, p), rs, ps);
-  return [rs, ps];
+  for(var p of reqs) {
+    if(/^\./.test(p)) packageRequires(path.join(dir, p), a);
+    else a.add(p);
+  }
+  return a;
 }
 module.exports = packageRequires;

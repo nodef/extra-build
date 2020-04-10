@@ -40,12 +40,12 @@ function scatterOne(pth, o) {
   o.package = o.package||packageName(fil);
   o.readme = o.readme||fileSymbol(fil+ext);
   o.description = o.description||mdHeading(readme);
-  o.requires = packageRequires(pth);
+  o.requires = [...packageRequires(pth)];
   for(var r of o.requires) {
     if(!(/^[\.\/]/).test(r)) continue;
-    var s = requireResolve(path.join(dir, r));
-    var d = path.join(tmp, path.relative(dir, s));
-    fs.copyFileSync(s, d);
+    if(path.normalize(r)===ext0) continue;
+    var d = path.join(tmp, path.relative(dir, r));
+    fs.copyFileSync(r, d);
   }
   if(ext==='.ts') scatterTs(ext1, o);
   var js1 = path.join(tmp, fil+'.js');
