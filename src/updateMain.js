@@ -1,6 +1,7 @@
 const execRollup = require('./execRollup');
 const pathSplit = require('./pathSplit');
 const jsDecomment = require('./jsDecomment');
+const path = require('path');
 const fs = require('fs');
 
 
