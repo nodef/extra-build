@@ -74,6 +74,5 @@ exports.updateGithub = require('./updateGithub');
 exports.updateJson = require('./updateJson');
 exports.updateMain = require('./updateMain');
 exports.updateReadme = require('./updateReadme');
-exports.updateSrc = require('./updateSrc');
 exports.updateWiki = require('./updateWiki');
 exports.wikiDownload = require('./wikiDownload');

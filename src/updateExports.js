@@ -12,7 +12,8 @@ const {EOL} = os;
 
 
 function updateExports(pth, o) {
-  var pth = pth||'src/index.ts';
+  var ext = fs.existsSync('src/index.ts')? '.ts' : '.js';
+  var pth = pth||`src/index${ext}`;
   var o = Object.assign({}, OPTIONS, o);
   console.log('updateExports:', o, pth);
   var dir = path.dirname(pth), d = '';
