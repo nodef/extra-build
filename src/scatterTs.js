@@ -10,16 +10,16 @@ function scatterTs(pth, o) {
   var o = Object.assign({}, o);
   console.log('scatterTs:', pth, o);
   var dir = path.dirname(pth);
-  var cfg = path.join(dir, 'tsconfig.json');
-  if(!fs.existsSync(cfg)) o.config = false;
-  if(o.config) {
-    var c = jsonRead(cfg);
+  var build = path.join(dir, 'tsconfig.json');
+  if(!fs.existsSync(build)) o.build = undefined;
+  if(o.build) {
+    var c = jsonRead(build);
     var co = c.compilerOptions||{};
     co.outFile = undefined;
     co.outDir = undefined;
     c.include = undefined;
     c.exclude = undefined;
-    jsonWrite(cfg, c);
+    jsonWrite(build, c);
   }
   execTsc(pth, o);
 }

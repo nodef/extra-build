@@ -47,7 +47,7 @@ function scatterOne(pth, o) {
     var d = path.join(tmp, path.relative(dir, r));
     fs.copyFileSync(r, d);
   }
-  if(ext==='.ts') scatterTs(ext1, o);
+  if(ext==='.ts') scatterTs(ext1, o.tsc);
   var js1 = path.join(tmp, 'index.js');
   scatterMd(md1, o);
   scatterJs(js1, o);
