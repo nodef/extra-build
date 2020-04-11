@@ -1,3 +1,6 @@
+const ORG = require('./ORG');
+const PACKAGE = require('./PACKAGE');
+const SYMBOL = require('./SYMBOL');
 const pathSplit = require('./pathSplit');
 const pathReplace = require('./pathReplace');
 const fileSymbol = require('./fileSymbol');
@@ -14,10 +17,16 @@ const tempy = require('tempy');
 const path = require('path');
 const fs = require('fs');
 
+const OPTIONS = {
+  org: ORG,
+  package_root: PACKAGE,
+  symbol_root: SYMBOL
+};
+
 
 // Scatter a file as a package.
 function scatterOne(pth, o) {
-  var o = Object.assign({}, o);
+  var o = Object.assign({}, OPTIONS, o);
   console.log('scatterOne:', pth, o);
   var tmp = tempy.directory();
   var [dir, fil, ext] = pathSplit(pth);
@@ -38,7 +47,7 @@ function scatterOne(pth, o) {
   if(fs.existsSync(md1)) updateExample(ex1, {readme_path: md1});
   var readme = fs.readFileSync(md1, 'utf8');
   o.package = o.package||packageName(fil);
-  o.readme = o.readme||fileSymbol(fil+ext);
+  o.symbol = o.symbol||fileSymbol(fil+ext);
   o.description = o.description||mdHeading(readme);
   o.requires = [...packageRequires(pth)];
   for(var r of o.requires) {
