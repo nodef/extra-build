@@ -2,7 +2,7 @@ const DIRBUILD = require('./DIRBUILD');
 const path = require('path');
 const fs = require('fs');
 
-const FILECI = path.join(DIRBUILD, 'data', 'travis.yml');
+const FILECI = path.join(DIRBUILD, 'data', '.travis.yml');
 
 
 function initCi(pth, o) {
