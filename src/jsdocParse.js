@@ -4,7 +4,7 @@ function jsdocParse(com, def) {
   var rparam = /\s+\*\s+@param\s+(?:\{(.*?)\}\s+)?(.*?)\s+(.*?)\n/g;
   var params = new Map(), m = null;
   while((m=rparam.exec(com))!=null) {
-    params.set(m[2], {type: m[1]||'', description: m[3]});
+    params.set(m[2], {type: m[1]||'*', description: m[3]});
     if(!m[2].includes('.')) continue;
     var k = m[2].replace(/\..*/, '');
     params.get(k).type += '?';
