@@ -4,22 +4,29 @@ const snakeCase = require('./snakeCase');
 const fs = require('fs');
 const os = require('os');
 
+const OPTIONS = {
+  outFile: 'index.d.ts',
+  noBanner: true,
+  module: PACKAGE
+};
 const {EOL} = os;
 
 
 function execDts(pth, o) {
   var pth = pth||'src/index.ts';
-  var o = Object.assign({outFile: 'index.d.ts', noBanner: true}, o);
+  var o = Object.assign({}, OPTIONS, o);
   var cmd = '.dts-bundle-generator', dts = o.outFile;
   for(var k in o) {
+    if(k==='module') continue;
     var f = snakeCase(k);
     if(typeof o[k]==='boolean') cmd += ` --${f}`;
     else cmd += ` --${f} "${o[k]}"`;
   }
   cmd += ` "${pth}"`;
   cpExec(cmd);
+  if(!o.module) return;
   var d = fs.readFileSync(dts, 'utf8');
-  d = `declare module '${PACKAGE}' {`+EOL+d+`}`+EOL;
+  d = `declare module '${o.module}' {`+EOL+d+`}`+EOL;
   fs.writeFileSync(dts, d);
 }
 module.exports = execDts;
