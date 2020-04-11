@@ -11,8 +11,8 @@ function initTs(pth, o) {
   var pth = pth||'tsconfig.json';
   var o = Object.assign({}, o);
   if(fs.existsSync(pth)) return;
-  o.ts_config = o.ts_config||jsonRead(FILETS);
+  o.config = o.config||jsonRead(FILETS);
   console.log('initTs:', pth, o);
-  jsonWrite(pth, o.ts_config);
+  jsonWrite(pth, o.config);
 }
 module.exports = initTs;

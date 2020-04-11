@@ -9,8 +9,8 @@ function initCi(pth, o) {
   var pth = pth||'.travis.yml';
   var o = Object.assign({}, o);
   if(fs.existsSync(pth)) return;
-  o.cidata = o.cidata||fs.readFileSync(FILECI, 'utf8');
+  o.data = o.data||fs.readFileSync(FILECI, 'utf8');
   console.log('initCi:', pth, o);
-  fs.writeFileSync(pth, o.cidata);
+  fs.writeFileSync(pth, o.data);
 }
 module.exports = initCi;

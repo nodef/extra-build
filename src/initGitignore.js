@@ -1,14 +1,14 @@
 const ignoreAdd = require('./ignoreAdd');
 
-const GITIGNORES = new Map([
+const SECTIONS = new Map([
   ['Generated files', ['build/', '*.d.ts', '*.map', 'index.js']]
 ]);
 
 
 function initGitignore(pth, o) {
   var pth = pth||'.gitignore';
-  var o = Object.assign({gitignores: GITIGNORES}, o);
+  var o = Object.assign({sections: GITIGNORES}, o);
   console.log('initGitignore:', pth, o);
-  ignoreAdd(pth, o.gitignores);
+  ignoreAdd(pth, o.sections);
 }
 module.exports = initGitignore;

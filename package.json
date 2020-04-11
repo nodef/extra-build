@@ -1,8 +1,12 @@
 {
   "name": "extra-build",
-  "version": "1.0.78",
+  "version": "1.0.79",
   "description": "Common build tools for extra-* packages.",
   "main": "index.js",
+  "preferGlobal": true,
+  "bin": {
+    "ebuild": "bin.js"
+  },
   "scripts": {
     "test": "exit"
   },
@@ -24,6 +28,7 @@
     "@octokit/rest": "^17.2.0",
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
+    "dot-prop": "^5.2.0",
     "extra-asciinema": "^1.0.4",
     "find-npm-prefix": "^1.0.2",
     "global-dirs": "^2.0.1",

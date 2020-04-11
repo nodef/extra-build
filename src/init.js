@@ -5,14 +5,24 @@ const initGitignore = require('./initGitignore');
 const initNpmignore = require('./initNpmignore');
 const initWiki = require('./initWiki');
 
+const OPTIONS = {
+  ci: {},
+  ts: {},
+  rollup: {},
+  gitignore: {},
+  npmignore: {},
+  wiki: {}
+};
+
+
 function init(o) {
-  var o = o||{};
+  var o = Object.assign({}, OPTIONS, o);
   console.log('init:', o);
-  initCi(o.ci_path, o);
-  initTs(o.ts_path, o);
-  initRollup(o.rollup_path, o);
-  initGitignore(o.gitignore_path, o);
-  initNpmignore(o.npmignore_path, o);
-  initWiki(o.wiki_path, o);
+  if(o.ci) initCi(o.ci_path, o.ci);
+  if(o.ts) initTs(o.ts_path, o.ts);
+  if(o.rollup) initRollup(o.rollup_path, o.rollup);
+  if(o.gitignore) initGitignore(o.gitignore_path, o.gitignore);
+  if(o.npmignore) initNpmignore(o.npmignore_path, o.npmignore);
+  if(o.wiki) initWiki(o.wiki_path, o.wiki);
 }
 module.exports = init;
