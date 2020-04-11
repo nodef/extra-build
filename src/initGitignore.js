@@ -1,7 +1,7 @@
 const ignoreAdd = require('./ignoreAdd');
 
 const GITIGNORES = new Map([
-  ['Generated files', ['build/', '*.d.ts', '*.map']]
+  ['Generated files', ['build/', '*.d.ts', '*.map', 'index.js']]
 ]);
 
 
