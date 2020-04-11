@@ -8,4 +8,4 @@ before_script:
   - npm install -g typescript download-cli browserify uglify-es
   - git submodule update --init
   - npm install
-script: node ./build
+script: npm run ebuild scatter
