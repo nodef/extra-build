@@ -1,3 +1,6 @@
+const ORG = require('./ORG');
+const PACKAGE = require('./PACKAGE');
+const SYMBOL = require('./SYMBOL');
 const dirFiles = require('./dirFiles');
 const fileSymbol = require('./fileSymbol');
 const mdSetJsdoc = require('./mdSetJsdoc');
@@ -5,9 +8,17 @@ const mdSetLinks = require('./mdSetLinks');
 const fs = require('fs');
 const path = require('path');
 
+const OPTIONS = {
+  org: ORG,
+  package: PACKAGE,
+  symbol: SYMBOL
+};
+
 
 function updateWiki(dir, jsdocs, o) {
-  var dir = dir||'wiki', o = o||{};
+  var dir = dir||'wiki';
+  var o = Object.assign({}, OPTIONS, o);
+  console.log('updateWiki:', dir, o);
   for(var f of dirFiles(dir)) {
     var symbol = fileSymbol(f);
     var p = path.join(dir, f);
