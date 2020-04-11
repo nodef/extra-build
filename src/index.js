@@ -12,6 +12,7 @@ exports.dirFiles = require('./dirFiles');
 exports.dirJsdocs = require('./dirJsdocs');
 exports.dirKeywords = require('./dirKeywords');
 exports.dirRead = require('./dirRead');
+exports.execDts = require('./execDts');
 exports.execRollup = require('./execRollup');
 exports.execTsc = require('./execTsc');
 exports.fileIs = require('./fileIs');
