@@ -14,7 +14,7 @@ function scatterJson(pth, o) {
   x.description = o.description;
   x.main = o.main||'index.js';
   x.scripts = {test: 'exit'};
-  x.keywords = jsonKeywords(x.keywords, dirKeywords(o.keywords_dir));
+  x.keywords = jsonKeywords(x, dirKeywords(o.keywords_dir));
   x.keywords.push(...o.package.split(/\W/));
   x.keywords = Array.from(new Set(x.keywords));
   x.dependencies = Object.assign({}, o.dependencies, o.devDependencies);
