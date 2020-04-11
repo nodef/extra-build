@@ -1,12 +1,11 @@
-import ts from 'rollup-plugin-ts';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
 export default {
-  input: 'src/index.ts',
+  input: 'src/index.js',
   output: {
     dir: '.',
     format: 'es'
   },
-  plugins: [ts({}), resolve(), commonjs()]
+  plugins: [resolve(), commonjs()]
 };
