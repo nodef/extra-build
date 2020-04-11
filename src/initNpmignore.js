@@ -1,8 +1,8 @@
 const ignoreAdd = require('./ignoreAdd');
 
 const NPMIGNORES = new Map([
-  ['Parts', ['src/', 'docs/', 'wiki/', '.gitmodules']],
-  ['Build', ['out/', 'build.js', '.travis.yml', 'tsconfig.json', 'rollup.config.js']],
+  ['Parts', ['src/', 'wiki/', '.gitmodules']],
+  ['Build', ['build/', 'build.js', '.travis.yml', 'tsconfig.json', 'rollup.config.js']],
   ['Others', ['unused/', 'unused.*', 'TODO']]
 ]);
 

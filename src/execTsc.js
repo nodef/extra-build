@@ -14,8 +14,8 @@ const OPTIONS = {
 function execTsc(pth, o) {
   var pth = pth||'index.ts';
   var {build} = Object.assign({build: 'tsconfig.json'}, o);
-  var hasBuild = fs.existsSync(build);
-  var o = Object.assign({}, hasBuild? {build}:OPTIONS, o);
+  var hasBuild = build? fs.existsSync(build) : false;
+  var o = Object.assign({}, hasBuild? {build} : OPTIONS, o);
   console.log('execTsc:', pth, o);
   var cwd = packageRoot(pth), cmd = '.tsc';
   for(var k in o) {
