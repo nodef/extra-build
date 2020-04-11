@@ -27,7 +27,6 @@ async function update(o) {
   updateExample(o.example_path, o);
   updateWiki(o.wiki_path, jsdocs, o);
   updateExports(o.exports_path, o);
-  // updateSrc(o.src_path, o);
   updateMain(o.main_path, o);
   await updateGithub(o);
 };
