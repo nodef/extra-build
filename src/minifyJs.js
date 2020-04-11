@@ -9,9 +9,11 @@ function minifyJs(pth, o) {
   var pth = pth||'index.js', o = o||{};
   console.log('minifyJs: ', pth, o);
   var s = fs.statSync(pth);
-  cpExec(`.browserify ${pth} -s ${o.standalone} -o ${pth}.tmp`);
-  if(s.size<UGLIFYLIMIT) cpExec(`.uglifyjs -c -m -o ${pth} ${pth}.tmp`);
-  else cpExec(`mv ${pth}.tmp ${pth}`);
-  cpExec(`rm -f ${pth}.tmp`);
+  cpExec(`.rollup --format=cjs --file=${pth}.1 -- ${pth}`);
+  cpExec(`.browserify ${pth}.1 -s ${o.standalone} -o ${pth}.2`);
+  if(s.size<UGLIFYLIMIT) cpExec(`.uglifyjs -c -m -o ${pth} ${pth}.2`);
+  else cpExec(`mv ${pth}.2 ${pth}`);
+  cpExec(`rm -f ${pth}.1`);
+  cpExec(`rm -f ${pth}.2`);
 }
 module.exports = minifyJs;
