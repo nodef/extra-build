@@ -5,6 +5,7 @@ const dirFiles = require('./dirFiles');
 const fileSymbol = require('./fileSymbol');
 const mdSetJsdoc = require('./mdSetJsdoc');
 const mdSetLinks = require('./mdSetLinks');
+const mdSetEmoji = require('./mdSetEmoji');
 const fs = require('fs');
 const path = require('path');
 
@@ -25,8 +26,10 @@ function updateWiki(dir, jsdocs, o) {
     var md = fs.readFileSync(p, 'utf8');
     var jsdoc = jsdocs.get(symbol);
     if(!jsdoc) { console.log('updateWiki: no jsdoc for '+p); continue; }
-    md = mdSetJsdoc(md, jsdoc, Object.assign({}, o, {symbol}));
-    md = mdSetLinks(md, o);
+    var o1 = Object.assign({}, o, {symbol});
+    md = mdSetJsdoc(md, jsdoc, o1);
+    md = mdSetLinks(md, o1);
+    md = mdSetEmoji(md, o1);
     fs.writeFileSync(p, md);
   }
 }

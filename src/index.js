@@ -43,6 +43,7 @@ exports.mdExample = require('./mdExample');
 exports.mdHeading = require('./mdHeading');
 exports.mdRead = require('./mdRead');
 exports.mdReplace = require('./mdReplace');
+exports.mdSetEmoji = require('./mdSetEmoji');
 exports.mdSetJsdoc = require('./mdSetJsdoc');
 exports.mdSetLinks = require('./mdSetLinks');
 exports.mdSetTable = require('./mdSetTable');
