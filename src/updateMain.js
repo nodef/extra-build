@@ -19,7 +19,7 @@ function updateMain(pth, o) {
   execTsc(pth, o.tsc);
   execRollup(o.build, o.rollup);
   execDts(pth, o.dts);
-  var js1 = o.otuput;
+  var js1 = o.output;
   var [dir, fil,] = pathSplit(js1);
   var dts1 = path.join(dir, fil+'.d.ts');
   if(fs.existsSync(dts1)) {
