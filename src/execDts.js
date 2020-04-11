@@ -1,3 +1,4 @@
+const PACKAGE = require('./PACKAGE');
 const cpExec = require('./cpExec');
 const snakeCase = require('./snakeCase');
 const fs = require('fs');
@@ -17,9 +18,8 @@ function execDts(pth, o) {
   }
   cmd += ` "${pth}"`;
   cpExec(cmd);
-  if(!o.package_root) return;
   var d = fs.readFileSync(dts, 'utf8');
-  d = `declare module '${o.package_root}' {`+EOL+d+`}`+EOL;
+  d = `declare module '${PACKAGE}' {`+EOL+d+`}`+EOL;
   fs.writeFileSync(dts, d);
 }
 module.exports = execDts;
