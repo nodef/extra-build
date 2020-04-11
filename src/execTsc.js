@@ -19,6 +19,7 @@ function execTsc(pth, o) {
   console.log('execTsc:', pth, o);
   var cwd = packageRoot(pth), cmd = '.tsc';
   for(var k in o) {
+    if(o[k]==null) continue;
     if(typeof k==='boolean') cmd += ` --${k}`;
     else cmd += ` --${k} "${o[k]}"`;
   }

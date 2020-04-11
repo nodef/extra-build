@@ -15,6 +15,7 @@ function execRollup(pth, o) {
   console.log('execRollup:', pth, o);
   var cwd = packageRoot(pth), cmd = '.rollup';
   for(var k in o) {
+    if(o[k]==null) continue;
     if(typeof k==='boolean') cmd += ` --${k}`;
     else cmd += ` --${k} "${o[k]}"`;
   }

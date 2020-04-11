@@ -18,6 +18,7 @@ function execDts(pth, o) {
   var cmd = '.dts-bundle-generator', dts = o.outFile;
   for(var k in o) {
     if(k==='module') continue;
+    if(o[k]==null) continue;
     var f = snakeCase(k);
     if(typeof o[k]==='boolean') cmd += ` --${f}`;
     else cmd += ` --${f} "${o[k]}"`;
