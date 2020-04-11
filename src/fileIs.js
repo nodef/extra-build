@@ -1,4 +1,5 @@
 function fileIs(f) {
-  return /^\.|^_|^index\.|^Home\./.test(f)===false;
+  if(f.endsWith('.md')) return /^\.|^_|^Home\./.test(f)===false;
+  else return /^\.|^_|^index\./.test(f)===false;
 }
 module.exports = fileIs;
