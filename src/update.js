@@ -8,7 +8,6 @@ const updateReadme = require('./updateReadme');
 const updateExample = require('./updateExample');
 const updateJson = require('./updateJson');
 const updateGithub = require('./updateGithub');
-const updateSrc = require('./updateSrc');
 const updateMain = require('./updateMain');
 
 const OPTIONS = {
