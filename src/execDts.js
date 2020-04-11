@@ -26,6 +26,7 @@ function execDts(pth, o) {
   cpExec(cmd);
   if(!o.module) return;
   var d = fs.readFileSync(dts, 'utf8');
+  d = d.replace(/export declare/g, 'export');
   d = `declare module '${o.module}' {`+EOL+d+`}`+EOL;
   fs.writeFileSync(dts, d);
 }
