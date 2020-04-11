@@ -1,8 +1,8 @@
 const packageName = require('./packageName');
 
+const RUN = ':running:';
 const PKG = ':package:';
 const MIN = ':moon:';
-const RUN = ':running:';
 
 
 function mdSetEmoji(md, o) {
