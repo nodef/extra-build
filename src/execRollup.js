@@ -3,7 +3,7 @@ const packageRoot = require('./packageRoot');
 const fs = require('fs');
 
 const OPTIONS = {
-  format: 'es'
+  format: 'cjs'
 };
 
 
