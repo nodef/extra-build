@@ -13,6 +13,7 @@ function scatterJson(pth, o) {
   x.name = packageName(o.package, o);
   x.description = o.description;
   x.main = o.main||'index.js';
+  x.type = o.type||'module';
   x.scripts = {test: 'exit'};
   x.keywords = jsonKeywords(x, dirKeywords(o.keywords_dir));
   x.keywords.push(...o.package.split(/\W/));
