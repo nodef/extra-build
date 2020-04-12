@@ -9,6 +9,7 @@ function minifyJson(pth, o) {
   var x = jsonRead(pth);
   x.name += '.min';
   x.description = x.description.replace('.$', ' (browserified, minifined).');
+  x.type = undefined;
   x.scripts = {test: 'exit'};
   x.devDependencies = undefined;
   jsonWrite(pth, x);
