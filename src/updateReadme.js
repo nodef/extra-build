@@ -9,7 +9,7 @@ function updateReadme(pth, jsdocs, o) {
   var pth = pth||'README.md';
   console.log('updateReadme:', pth, o);
   var md = fs.readFileSync(pth, 'utf8');
-  var diff_code_blocks = gitDiffCodeBlocks(p).length>0;
+  var diff_code_blocks = gitDiffCodeBlocks(pth).length>0;
   var o = Object.assign({}, o, {diff_code_blocks});
   md = mdSetTable(md, jsdocs);
   md = mdSetLinks(md, o);
