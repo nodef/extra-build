@@ -1,4 +1,3 @@
-const packageName = require('./packageName');
 const mdAsciinema = require('./mdAsciinema');
 
 const RUN = ':running:';
