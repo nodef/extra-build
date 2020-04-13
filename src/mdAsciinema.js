@@ -1,12 +1,13 @@
 const mdExample = require('./mdExample');
 const asciinemaUpload = require('./asciinemaUpload');
-const tempy = require('tempy');
+const path = require('path');
 const fs = require('fs');
 
 
-function mdAsciinema(md, re) {
-  var ex = mdExample(md, re);
-  var f = tempy.file();
+function mdAsciinema(md, o) {
+  var ex = mdExample(md);
+  var cwd = o.example_dir;
+  var f = path.join(cwd, 'example.js');
   fs.writeFileSync(f, ex);
   return asciinemaUpload(f);
 }

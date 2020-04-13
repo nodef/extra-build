@@ -12,7 +12,7 @@ function mdSetEmoji(md, o) {
   var rcin = /\[:cin:\]\: (.*)\n/, m = rcin.exec(md);
   if(o.diff_code_blocks) md = md.replace(rcin, '');
   var run = `[${RUN}]: https://npm.runkit.com/${p}`;
-  var cin = `[${CIN}]: ${m && !o.diff_code_blocks? m[1] : mdAsciinema(md)}`;
+  var cin = `[${CIN}]: ${m && !o.diff_code_blocks? m[1] : mdAsciinema(md, o)}`;
   var pkg = `[${PKG}]: https://www.npmjs.com/package/${p}`;
   var min = `[${MIN}]: https://www.npmjs.com/package/${p}.min`;
   md = md.replace(/^([^\.\n]*\.?).*?\n/, `$1 [${RUN}] [${CIN}] [${PKG}] [${MIN}]\n`);
