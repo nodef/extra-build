@@ -6,6 +6,7 @@ const fileSymbol = require('./fileSymbol');
 const mdSetJsdoc = require('./mdSetJsdoc');
 const mdSetLinks = require('./mdSetLinks');
 const mdSetEmoji = require('./mdSetEmoji');
+const packageName = require('./packageName');
 const gitDiffCodeBlocks = require('./gitDiffCodeBlocks')
 const fs = require('fs');
 const path = require('path');
@@ -23,12 +24,13 @@ function updateWiki(dir, jsdocs, o) {
   console.log('updateWiki:', dir, o);
   for(var f of dirFiles(dir)) {
     var symbol = fileSymbol(f);
+    var package = packageName(symbol, o);
     var p = path.join(dir, f);
     var md = fs.readFileSync(p, 'utf8');
     var jsdoc = jsdocs.get(symbol);
     if(!jsdoc) { console.log('updateWiki: no jsdoc for '+p); continue; }
     var diff_code_blocks = gitDiffCodeBlocks(p).length>0;
-    var o1 = Object.assign({}, o, {symbol, diff_code_blocks});
+    var o1 = Object.assign({}, o, {symbol, package, diff_code_blocks});
     md = mdSetJsdoc(md, jsdoc, o1);
     md = mdSetLinks(md, o1);
     md = mdSetEmoji(md, o1);
