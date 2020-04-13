@@ -3,6 +3,7 @@ const PACKAGE = require('./PACKAGE');
 const SYMBOL = require('./SYMBOL');
 const STANDALONE = require('./STANDALONE');
 const cpExec = require('./cpExec');
+const cpExecStr = require('./cpExecStr');
 const dirFiles = require('./dirFiles');
 const fileSymbol = require('./fileSymbol');
 const standaloneName = require('./standaloneName');
@@ -35,6 +36,12 @@ function scatter(dir, o) {
     catch(e) { console.error(e); }
   }
   standalone = o.standalone_root;
+  cpExec('npm pack '+o.package_root);
+  var tgz = cpExecStr('ls *.tgz');
+  cpExec('tar -xvf '+tgz);
+  cpExec('rm -rf '+tgz)
+  cpExec('mv package/* .');
+  cpExec('rmdir package')
   minify('.', Object.assign({standalone}, o));
   cpExec('npm publish');
 }
