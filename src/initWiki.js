@@ -3,6 +3,7 @@ const cpExec = require('./cpExec');
 const dirFiles = require('./dirFiles');
 const fileSymbol = require('./fileSymbol');
 const fs = require('fs');
+const path = require('path');
 
 
 async function initWiki(pth, o) {
