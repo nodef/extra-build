@@ -3,6 +3,7 @@ function mdHeading(d) {
   d = d.replace(/\r?\n[\s\S]*/, '');
   d = d.replace(/[\_\[\]]/g, '');
   d = d.replace(/\*(.*?)\*/g, '$1');
-  return d;
+  d = d.replace(/\:.*?\:/g, '');
+  return d.trim();
 }
 module.exports = mdHeading;
