@@ -36,7 +36,7 @@ async function update(o) {
   if(o.json) updateJson(o.json_path, o);
   if(o.readme) updateReadme(o.readme_path, jsdocs, o);
   if(o.example) updateExample(o.example_path, o);
-  if(o.wiki) updateWiki(o.wiki_path, jsdocs, o);
+  if(o.wiki) updateWiki(o.wiki_dir, jsdocs, o);
   if(o.exports) updateExports(o.exports_path, o);
   if(o.main) updateMain(o.main_path, o);
   if(o.github) await updateGithub(o);

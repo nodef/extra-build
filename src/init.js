@@ -23,6 +23,6 @@ function init(o) {
   if(o.rollup) initRollup(o.rollup_path, o.rollup);
   if(o.gitignore) initGitignore(o.gitignore_path, o.gitignore);
   if(o.npmignore) initNpmignore(o.npmignore_path, o.npmignore);
-  if(o.wiki) initWiki(o.wiki_path, o.wiki);
+  if(o.wiki) initWiki(o.wiki_dir, o.wiki);
 }
 module.exports = init;
