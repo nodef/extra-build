@@ -8,7 +8,7 @@ const MIN = ':moon:';
 
 function mdSetEmoji(md, o) {
   var p = o.package;
-  var rcin = /\[:cin:\]\: (.*)\n/, m = rcin.exec(md);
+  var rcin = /\[:vhs:\]\:\s*([^\n]*)\n/, m = rcin.exec(md);
   if(o.diff_code_blocks) md = md.replace(rcin, '');
   var run = `[${RUN}]: https://npm.runkit.com/${p}`;
   var cin = `[${CIN}]: ${m && !o.diff_code_blocks? m[1] : mdAsciinema(md, o)}`;
