@@ -8,6 +8,7 @@ exports.URLNPM = require('./URLNPM');
 exports.URLREPO = require('./URLREPO');
 exports.asciinemaUpload = require('./asciinemaUpload');
 exports.cpExec = require('./cpExec');
+exports.cpExecStr = require('./cpExecStr');
 exports.dirFiles = require('./dirFiles');
 exports.dirJsdocs = require('./dirJsdocs');
 exports.dirKeywords = require('./dirKeywords');
