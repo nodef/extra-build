@@ -38,10 +38,8 @@ function scatter(dir, o) {
   standalone = o.standalone_root;
   cpExec('npm pack '+o.package_root);
   var tgz = cpExecStr('ls *.tgz');
-  cpExec('tar -xvf '+tgz);
+  cpExec(`tar -xvf ${tgz} package/ --strip-components=1`);
   cpExec('rm -rf '+tgz)
-  cpExec('mv package/* .');
-  cpExec('rmdir package')
   minify('.', Object.assign({standalone}, o));
   cpExec('npm publish');
 }
