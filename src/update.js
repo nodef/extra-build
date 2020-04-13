@@ -28,10 +28,10 @@ const OPTIONS = {
 
 async function update(o) {
   var cwd = tempy.directory();
-  cpExec('npm init -y', {cwd});
-  cpExec('npm install '+o.package_root, {cwd});
   var o = Object.assign({example_dir: cwd}, OPTIONS, o);
   console.log('update:', o);
+  cpExec('npm init -y', {cwd});
+  cpExec('npm install '+o.package_root, {cwd});
   var jsdocs = dirJsdocs();
   if(o.json) updateJson(o.json_path, o);
   if(o.readme) updateReadme(o.readme_path, jsdocs, o);
