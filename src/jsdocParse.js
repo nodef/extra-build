@@ -15,9 +15,10 @@ function jsdocParse(com, def) {
   var returns = m? {type: m[1], description: m[2]}:null;
   // definition
   var rarg = /\s*([\.\w$?]+)\s*(\:[^=]+)?=?(.*)/;
-  var args = def.replace(/.*?\((.*)\).*/, '$1');
+  var args = def.replace(/[^(]*\(?/, '').replace(/\).*/, '');
+  var type = args? 'function' : 'variable';
   args = args.replace(/<.*?>/g, '');
-  for(var a of args.split(/,\s*/g)) {
+  if(args) for(var a of args.split(/,\s*/g)) {
     var m = rarg.exec(a);
     if(m==null) continue;
     var [, id,, val] = m;
@@ -26,6 +27,6 @@ function jsdocParse(com, def) {
     if(id.startsWith('...')) f.type = '...'+f.type;
     if(id.endsWith('?') || val) f.type += '?';
   }
-  return {description, params, returns};
+  return {type, description, params, returns};
 }
 module.exports = jsdocParse;
