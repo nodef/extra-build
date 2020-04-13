@@ -38,6 +38,7 @@ exports.jsdocParse = require('./jsdocParse');
 exports.jsonKeywords = require('./jsonKeywords');
 exports.jsonRead = require('./jsonRead');
 exports.jsonWrite = require('./jsonWrite');
+exports.mdAsciinema = require('./mdAsciinema');
 exports.mdCodeBlocks = require('./mdCodeBlocks');
 exports.mdExample = require('./mdExample');
 exports.mdHeading = require('./mdHeading');
