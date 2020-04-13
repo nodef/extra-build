@@ -3,6 +3,7 @@ const initTs = require('./initTs');
 const initRollup = require('./initRollup');
 const initGitignore = require('./initGitignore');
 const initNpmignore = require('./initNpmignore');
+const initJson = require('./initJson');
 const initWiki = require('./initWiki');
 
 const OPTIONS = {
@@ -11,6 +12,7 @@ const OPTIONS = {
   rollup: {},
   gitignore: {},
   npmignore: {},
+  json: {},
   wiki: {}
 };
 
@@ -23,6 +25,7 @@ function init(o) {
   if(o.rollup) initRollup(o.rollup_path, o.rollup);
   if(o.gitignore) initGitignore(o.gitignore_path, o.gitignore);
   if(o.npmignore) initNpmignore(o.npmignore_path, o.npmignore);
+  if(o.json) initJson(o.json_path, o.json);
   if(o.wiki) initWiki(o.wiki_dir, o.wiki);
 }
 module.exports = init;

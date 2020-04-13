@@ -28,6 +28,7 @@ exports.ignoreAdd = require('./ignoreAdd');
 exports.init = require('./init');
 exports.initCi = require('./initCi');
 exports.initGitignore = require('./initGitignore');
+exports.initJson = require('./initJson');
 exports.initNpmignore = require('./initNpmignore');
 exports.initRollup = require('./initRollup');
 exports.initTs = require('./initTs');
