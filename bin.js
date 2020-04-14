@@ -15,9 +15,9 @@ async function main(a) {
   for(var i=2, I=a.length; i<I;)
     i = options(o, a[i], a, i);
   if(o.help) return cp.execSync('less README.md', {cwd: process.cwd(), stdio: STDIO});
-  if(o.command==='init') return build.init(o.init);
-  if(o.command==='update') return build.update(o.update);
-  if(o.command==='scatter') return build.scatter(o.scatter_dir, o.scatter);
+  if(o.command==='init') return build.init(o);
+  if(o.command==='update') return build.update(o);
+  if(o.command==='scatter') return build.scatter(o.dir, o);
 }
 
 function options(o, k, a, i) {

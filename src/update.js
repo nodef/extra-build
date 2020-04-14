@@ -16,13 +16,8 @@ const OPTIONS = {
   org: ORG,
   package_root: PACKAGE,
   symbol_root: SYMBOL,
-  json: true,
-  readme: true,
-  example: true,
-  wiki: true,
-  exports: true,
-  main: true,
-  github: true
+  code: true,
+  docs: true
 };
 
 
@@ -33,12 +28,12 @@ async function update(o) {
   cpExec('npm init -y', {cwd});
   cpExec('npm install '+o.package_root, {cwd});
   var jsdocs = dirJsdocs();
-  if(o.json) updateJson(o.json_path, o);
-  if(o.readme) updateReadme(o.readme_path, jsdocs, o);
-  if(o.example) updateExample(o.example_path, o);
-  if(o.wiki) updateWiki(o.wiki_dir, jsdocs, o);
-  if(o.exports) updateExports(o.exports_path, o);
-  if(o.main) updateMain(o.main_path, o);
-  if(o.github) await updateGithub(o);
+  if(o.docs || o.json) updateJson(o.json_path, o);
+  if(o.docs || o.readme) updateReadme(o.readme_path, jsdocs, o);
+  if(o.docs || o.example) updateExample(o.example_path, o);
+  if(o.docs || o.wiki) updateWiki(o.wiki_dir, jsdocs, o);
+  if(o.code || o.exports) updateExports(o.exports_path, o);
+  if(o.code || o.main) updateMain(o.main_path, o);
+  if(o.docs || o.github) await updateGithub(o);
 };
 module.exports = update;
