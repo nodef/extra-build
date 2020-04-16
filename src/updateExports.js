@@ -16,7 +16,10 @@ function updateExports(pth, o) {
   var pth = pth||`src/index${ext}`;
   var o = Object.assign({}, OPTIONS, o);
   console.log('updateExports:', o, pth);
-  var dir = path.dirname(pth), d = '';
+  var d = fs.existsSync(pth)? fs.readFileSync(pth, 'utf8') : '';
+  d = d.replace(/exports\.\S+ = require\(\'\.\/.*?\n/g, '');
+  d = d.replace(/export \{default as \S+\} from \'\..*?\n/g, '');
+  var dir = path.dirname(pth);
   for(var f of dirFiles(dir)) {
     var file = fileName(f);
     var symbol = fileSymbol(f);
