@@ -30,6 +30,7 @@ function scatterOne(pth, o) {
   console.log('scatterOne:', pth, o);
   var tmp = tempy.directory();
   var [dir, fil, ext] = pathSplit(pth);
+  var sym = fileSymbol(fil);
   var pkg = o.package_dir||packageRoot(pth);
   var src = o.src_dir||pathReplace(pkg, dir, 'src');
   var wiki = o.wiki_dir||pathReplace(pkg, dir, 'wiki');
@@ -39,14 +40,14 @@ function scatterOne(pth, o) {
   var ext0 = path.join(src, fil+ext);
   var ext1 = path.join(tmp, 'index'+ext);
   fs.copyFileSync(ext0, ext1);
-  var md0 = path.join(wiki, fil+'.md');
+  var md0 = path.join(wiki, sym+'.md');
   var md1 = path.join(tmp, 'README.md');
   if(fs.existsSync(md0)) fs.copyFileSync(md0, md1);
   else console.log('scatterOne:', md0, 'not found');
   var ex1 = path.join(tmp, 'example.js');
   if(fs.existsSync(md1)) updateExample(ex1, {readme_path: md1});
   var readme = fs.readFileSync(md1, 'utf8');
-  o.package = o.package||packageName(fil);
+  o.package = o.package||packageName(sym);
   o.symbol = o.symbol||fileSymbol(fil+ext);
   o.description = o.description||mdHeading(readme);
   o.requires = [...packageRequires(pth)];
