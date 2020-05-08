@@ -7,7 +7,7 @@ function exportsJsdocs(pth) {
   var ext = fs.existsSync('src/index.ts')? '.ts' : '.js';
   var pth = pth||`src/index${ext}`;
   var dir = path.dirname(pth);
-  var cwd = process.cwd;
+  var cwd = process.cwd();
   process.chdir(dir);
   console.log('exportsJsdocs:', pth);
   var d = fs.existsSync(pth)? fs.readFileSync(pth, 'utf8') : '';
