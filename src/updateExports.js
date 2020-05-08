@@ -15,7 +15,7 @@ function updateExports(pth, o) {
   var ext = fs.existsSync('src/index.ts')? '.ts' : '.js';
   var pth = pth||`src/index${ext}`;
   var o = Object.assign({}, OPTIONS, o);
-  console.log('updateExports:', o, pth);
+  console.log('updateExports:', pth, o);
   var d = fs.existsSync(pth)? fs.readFileSync(pth, 'utf8') : '';
   d = d.replace(/exports\.\S+ = require\(\'\.\/.*?\n/g, '');
   d = d.replace(/export \{default as \S+\} from \'\..*?\n/g, '');
