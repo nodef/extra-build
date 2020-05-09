@@ -24,6 +24,11 @@ function jsdocParse(com, def) {
     var [, id,, val] = m;
     var k = id.replace(/[^\w$]/g, '');
     var f = params.get(k);
+    if(!f) {
+      console.error('jsdocParse:', com, def);
+      console.error('could not find field '+k);
+      continue;
+    }
     if(id.startsWith('...')) f.type = '...'+f.type;
     if(id.endsWith('?') || val) f.type += '?';
   }
