@@ -30,7 +30,7 @@ async function update(o) {
   cpExec('npm install '+o.package_root, {cwd});
   if(o.code || o.exports) updateExports(o.exports_path, o);
   if(o.code || o.main) updateMain(o.main_path, o);
-  var jsdocs = [...exportsJsdocs(o.exports_path), ...dirJsdocs(o.src_dir)];
+  var jsdocs = new Map([...exportsJsdocs(o.exports_path), ...dirJsdocs(o.src_dir)]);
   if(o.docs || o.json) updateJson(o.json_path, o);
   if(o.docs || o.readme) updateReadme(o.readme_path, jsdocs, o);
   if(o.docs || o.example) updateExample(o.example_path, o);
