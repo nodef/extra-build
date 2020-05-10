@@ -19,10 +19,14 @@ function updateExports(pth, o) {
   var d = fs.existsSync(pth)? fs.readFileSync(pth, 'utf8') : '';
   d = d.replace(/exports\.\S+ = require\(\'\.\/.*?\n/g, '');
   d = d.replace(/export \{default as \S+\} from \'\..*?\n/g, '');
+  var symbols = new Set();
+  while((m=/exports\.(\S+)\s*=/g.exec(d))!=null) symbols.add(m[1]);
+  while((m=/export\s+\{\s*\S+\s+as\s+(\S+)\s*\}/g.exec(d))!=null) symbols.add(m[1]);
   var dir = path.dirname(pth);
   for(var f of dirFiles(dir)) {
     var file = fileName(f);
     var symbol = fileSymbol(f);
+    if(symbols.has(symbol)) { console.log('updateExports: skipping symbol '+symbol); continue; }
     if(o.format!=='es') d += `exports.${symbol} = require('./${file}');`+EOL;
     else d += `export {default as ${symbol}} from './${file}';`+EOL;
   }
