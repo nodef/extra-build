@@ -9,14 +9,16 @@ const packageName = require('./packageName');
 function scatterJson(pth, o) {
   var pth = pth||'package.json', o = o||{};
   console.log('jsonScatter:', pth, o);
+  var pkg = o.package || o.package_root;
+  var sym = o.symbol  || o.symbol_root;
   var x = jsonRead(pth);
-  x.name = packageName(o.package, o);
+  x.name = packageName(pkg, o);
   x.description = o.description;
   x.main = o.main||'index.js';
   x.type = o.type||'module';
   x.scripts = {test: 'exit'};
   x.keywords = jsonKeywords(x, dirKeywords(o.keywords_dir));
-  x.keywords.push(...o.package.split(/\W/));
+  x.keywords.push(...pkg.split(/\W/), sym);
   x.keywords = Array.from(new Set(x.keywords));
   x.dependencies = Object.assign({}, o.dependencies, o.devDependencies);
   var dep_pkgs = Object.keys(x.dependencies)||[];
