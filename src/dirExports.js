@@ -15,5 +15,6 @@ function dirExports(dir, fmt='es', exc=new Set()) {
     if(exc.has(sym)) continue;
     a += jsExportsDefine(sym, fil, fmt)+EOL;
   }
+  return a;
 }
 module.exports = dirExports;
