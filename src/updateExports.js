@@ -20,6 +20,7 @@ function updateExports(pth, o) {
   console.log('updateExports:', pth, o);
   var d = jsExportsRemove(fileRead(pth));
   var custom = jsExports(d);
+  console.info({dec});
   fs.writeFileSync(pth, d + dirExports(dir, o.format, custom));
   fs.writeFileSync(dec, dirExports(dir, o.format));
 }
