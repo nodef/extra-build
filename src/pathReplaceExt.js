@@ -2,6 +2,6 @@ const path = require('path');
 
 function pathReplaceExt(p, ext) {
   var e = path.extname(p);
-  return path.basename(p, e) + ext;
+  return p.slice(0, p.length-e.length) + ext;
 }
 module.exports = pathReplaceExt;
