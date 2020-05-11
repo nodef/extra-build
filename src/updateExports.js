@@ -1,6 +1,7 @@
 const dirFiles = require('./dirFiles');
 const fileName = require('./fileName');
 const fileSymbol = require('./fileSymbol');
+const fileRead = require('./fileRead');
 const jsExports = require('./jsExports');
 const path = require('path');
 const fs = require('fs');
@@ -17,7 +18,7 @@ function updateExports(pth, o) {
   var pth = pth||`src/index${ext}`;
   var o = Object.assign({}, OPTIONS, o);
   console.log('updateExports:', pth, o);
-  var d = fs.existsSync(pth)? fs.readFileSync(pth, 'utf8') : '';
+  var d = fileRead(pth);
   d = d.replace(/exports\.\S+ = require\(\'\.\/.*?\n/g, '');
   d = d.replace(/export \{default as \S+\} from \'\..*?\n/g, '');
   var symbols = jsExports(d);
