@@ -60,12 +60,12 @@ function scatterOne(pth, o) {
   }
   if(ext==='.ts') scatterTs(ext1, o.tsc);
   var js1 = path.join(tmp, 'index.js');
-  var js2 = path.join(tmp, 'index.mjs');
-  fs.renameSync(js1, js2);
+  var mjs1 = path.join(tmp, 'index.mjs');
+  fs.renameSync(js1, mjs1);
   scatterMd(md1, o);
-  scatterJs(js2, o);
+  scatterJs(mjs1, o);
   scatterJson(json1, o);
-  cpExec(`.rollup --format=cjs --file=${js1} -- ${js2}`);
+  cpExec(`.rollup --format=cjs --file=${js1} -- ${mjs1}`);
   return tmp;
 }
 module.exports = scatterOne;
