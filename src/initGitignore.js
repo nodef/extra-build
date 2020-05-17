@@ -1,7 +1,7 @@
 const ignoreAdd = require('./ignoreAdd');
 
 const SECTIONS = new Map([
-  ['Generated files', ['build/', '*.d.ts', '*.map', 'example.js', 'index.js']]
+  ['Generated files', ['build/', '*.d.ts', '*.map', 'example.js', 'index.js', 'index.?js']]
 ]);
 
 
