@@ -65,7 +65,7 @@ function scatterOne(pth, o) {
   scatterMd(md1, o);
   scatterJs(js2, o);
   scatterJson(json1, o);
-  cpExec(`.rollup --format=cjs --file=${js1} -- ${js1}`);
+  cpExec(`.rollup --format=cjs --file=${js1} -- ${js2}`);
   return tmp;
 }
 module.exports = scatterOne;
