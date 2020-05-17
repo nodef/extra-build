@@ -15,7 +15,12 @@ function scatterJson(pth, o) {
   x.name = packageName(pkg, o);
   x.description = o.description;
   x.main = o.main||'index.js';
-  x.type = o.type||'module';
+  x.module = o.module||'index.mjs';
+  x.exports = Object.assign({
+    require: './'+x.main,
+    import: './'+x.module
+  }, o.exports);
+  // x.type = o.type||'module';
   x.scripts = {test: 'exit'};
   x.keywords = jsonKeywords(x, dirKeywords(o.keywords_dir));
   x.keywords.push(...pkg.split(/\W/), sym);
