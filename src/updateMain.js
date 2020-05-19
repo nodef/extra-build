@@ -19,6 +19,8 @@ function updateMain(pth, o) {
   var dec = pathReplaceExt(pth, '.d'+ext);
   var o = Object.assign({}, OPTIONS, o);
   console.log('updateMain:', pth, o);
+  var mjs = pathReplaceExt(o.output, '.mjs');
+  var dec = fs.existsSync(mjs)? mjs : dec;
   execTsc(pth, o.tsc);
   execRollup(o.build, o.rollup);
   execDts(dec, o.dts);
