@@ -1,5 +1,5 @@
 function jsdocParse(com, def) {
-  var description = com.match(/\s+\*\s+(.*?)\n/)[1];
+  var description = com.match(/\s+\*\s+(.*?)\n/)[1], err = null;
   // params
   var rparam = /\s+\*\s+@param\s+(?:\{(.*?)\}\s+)?(.*?)\s+(.*?)\n/g;
   var params = new Map(), m = null;
@@ -7,7 +7,8 @@ function jsdocParse(com, def) {
     params.set(m[2], {type: m[1]||'*', description: m[3]});
     if(!m[2].includes('.')) continue;
     var k = m[2].replace(/\..*/, '');
-    params.get(k).type += '?';
+    if(params.has(k)) params.get(k).type += '?';
+    else console.error('jsdocParse: could not find field', err=k);
   }
   // returns
   var rreturns = /\s+\*\s+@returns\s+(?:\{(.*?)\}\s+)?(.*?)\n/;
@@ -25,14 +26,11 @@ function jsdocParse(com, def) {
     var [, id,, val] = m;
     var k = id.replace(/[^\w$]/g, '');
     var f = params.get(k);
-    if(!f) {
-      console.error('jsdocParse:', com, def);
-      console.error('could not find field '+k);
-      continue;
-    }
+    if(!f) { console.error('jsdocError: could not find field', err=k); continue; }
     if(id.startsWith('...')) f.type = '...'+f.type;
     if(id.endsWith('?') || val) f.type += '?';
   }
+  if(err) { console.error('jsdocParse:', com, def); throw 0; }
   return {type, description, params, returns};
 }
 module.exports = jsdocParse;
