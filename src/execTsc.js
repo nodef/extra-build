@@ -7,7 +7,8 @@ const OPTIONS = {
   module: 'es2015',
   declaration: true,
   declarationMap: true,
-  sourceMap: true
+  sourceMap: true,
+  moduleResolution: 'node'
 };
 
 
