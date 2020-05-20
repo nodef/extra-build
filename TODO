@@ -1,6 +1,0 @@
-- dirScatter
-- updateReadme
-
-use gitDiffCodeBlocks()
-to determine whether to upload it to asciinema again
-to update the wiki md file
