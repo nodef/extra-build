@@ -16,7 +16,8 @@ function mdSetEmoji(md, o) {
   var pkg = `[${PKG}]: https://www.npmjs.com/package/${p}`;
   var min = `[${MIN}]: https://www.npmjs.com/package/${p}.min`;
   var lst = `[${LST}]: https://unpkg.com/${p}/`;
-  md = md.replace(/^([^\.\n]*\.?).*?\n/, `$1 [${RUN}] [${CIN}] [${PKG}] [${MIN}] [${LST}]\n`);
+  var lnk = [RUN, ...(o.asciinema? [CIN]:[]), PKG, MIN, LST];
+  md = md.replace(/^([^\.\n]*\.?).*?\n/, '$1 '+lnk.map(l => `[${l}]`).join(' ')+'\n');
   if(!md.includes(run)) md += run+'\n';
   if(!md.includes(cin) && o.asciinema) md += cin+'\n';
   if(!md.includes(pkg)) md += pkg+'\n';
