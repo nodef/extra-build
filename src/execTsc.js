@@ -21,7 +21,7 @@ function execTsc(pth, o) {
   var cwd = packageRoot(pth), cmd = '.tsc';
   for(var k in o) {
     if(o[k]==null) continue;
-    if(typeof k==='boolean') cmd += ` --${k}`;
+    if(typeof o[k]==='boolean') cmd += ` --${k}`;
     else cmd += ` --${k} "${o[k]}"`;
   }
   if(!hasBuild) cmd += ` "${pth}"`;
