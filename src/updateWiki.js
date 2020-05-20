@@ -14,7 +14,8 @@ const path = require('path');
 const OPTIONS = {
   org: ORG,
   package: PACKAGE,
-  symbol: SYMBOL
+  symbol: SYMBOL,
+  asciinema: true
 };
 
 
