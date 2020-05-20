@@ -35,6 +35,9 @@ function scatterOne(pth, o) {
   var pkg = o.package_dir||packageRoot(pth);
   var src = o.src_dir||pathReplace(pkg, dir, 'src');
   var wiki = o.wiki_dir||pathReplace(pkg, dir, 'wiki');
+  var node_modules0 = path.join(pkg, 'node_modules');
+  var node_modules1 = path.join(tmp, 'node_modules');
+  cpExec(`cp -r "${node_modules0}" "${node_modules1}"`);
   var json0 = path.join(pkg, 'package.json');
   var json1 = path.join(tmp, 'package.json');
   fs.copyFileSync(json0, json1);
