@@ -1,7 +1,7 @@
 function jsdocParse(com, def) {
-  var description = com.match(/\s+\*\s+(.*?)\n/)[1], err = null;
+  var description = com.match(/\s+\*\s+(.*?)\r?\n/)[1], err = null;
   // params
-  var rparam = /\s+\*\s+@param\s+(?:\{(.*?)\}\s+)?(.*?)\s+(.*?)\n/g;
+  var rparam = /\s+\*\s+@param\s+(?:\{(.*?)\}\s+)?(.*?)\s+(.*?)\r?\n/g;
   var params = new Map(), m = null;
   while((m=rparam.exec(com))!=null) {
     params.set(m[2], {type: m[1]||'*', description: m[3]});
@@ -11,7 +11,7 @@ function jsdocParse(com, def) {
     else console.error('jsdocParse: could not find field', err=k);
   }
   // returns
-  var rreturns = /\s+\*\s+@returns\s+(?:\{(.*?)\}\s+)?(.*?)\n/;
+  var rreturns = /\s+\*\s+@returns\s+(?:\{(.*?)\}\s+)?(.*?)\r?\n/;
   var m = rreturns.exec(com);
   var returns = m? {type: m[1], description: m[2]}:null;
   // definition

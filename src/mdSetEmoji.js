@@ -1,4 +1,5 @@
 const mdAsciinema = require('./mdAsciinema');
+const {EOL} = require('os');
 
 const RUN = ':running:';
 const CIN = ':vhs:';
@@ -9,7 +10,7 @@ const LST = ':ledger:';
 
 function mdSetEmoji(md, o) {
   var p = o.package||o.package_root;
-  var rcin = /\[:vhs:\]\:\s*([^\n]*)\n/, m = rcin.exec(md);
+  var rcin = /\[:vhs:\]\:\s*([^\r\n]*)\r?\n/, m = rcin.exec(md);
   if(o.diff_code_blocks) md = md.replace(rcin, '');
   var run = `[${RUN}]: https://npm.runkit.com/${p}`;
   var cin = o.asciinema? `[${CIN}]: ${m && !o.diff_code_blocks? m[1]:mdAsciinema(md, o)}`:'';
@@ -17,12 +18,12 @@ function mdSetEmoji(md, o) {
   var min = `[${MIN}]: https://www.npmjs.com/package/${p}.min`;
   var lst = `[${LST}]: https://unpkg.com/${p}/`;
   var lnk = [RUN, ...(o.asciinema? [CIN]:[]), PKG, MIN, LST];
-  md = md.replace(/^([^\.\n]*\.?).*?\n/, '$1 '+lnk.map(l => `[${l}]`).join(' ')+'\n');
-  if(!md.includes(run)) md += run+'\n';
-  if(!md.includes(cin) && o.asciinema) md += cin+'\n';
-  if(!md.includes(pkg)) md += pkg+'\n';
-  if(!md.includes(min)) md += min+'\n';
-  if(!md.includes(lst)) md += lst+'\n';
+  md = md.replace(/^([^\.\r\n]*\.?).*?\r?\n/, '$1 '+lnk.map(l => `[${l}]`).join(' ')+EOL);
+  if(!md.includes(run)) md += run+EOL;
+  if(!md.includes(cin) && o.asciinema) md += cin+EOL;
+  if(!md.includes(pkg)) md += pkg+EOL;
+  if(!md.includes(min)) md += min+EOL;
+  if(!md.includes(lst)) md += lst+EOL;
   return md;
 }
 module.exports = mdSetEmoji;

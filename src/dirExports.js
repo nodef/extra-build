@@ -2,9 +2,8 @@ const dirFiles = require('./dirFiles');
 const fileName = require('./fileName');
 const fileSymbol = require('./fileSymbol');
 const jsExportsDefine = require('./jsExportsDefine');
-const os = require('os');
+const {EOL} = require('os');
 
-const {EOL} = os;
 
 // Gets exports for a directory.
 function dirExports(dir, fmt='es', exc=new Set()) {

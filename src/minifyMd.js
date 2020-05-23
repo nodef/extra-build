@@ -1,7 +1,5 @@
 const fs = require('fs');
-const os = require('os');
-
-const {EOL} = os;
+const {EOL} = require('os');
 
 
 // Adds minified message to README.md in place.

@@ -2,14 +2,13 @@ const PACKAGE = require('./PACKAGE');
 const cpExec = require('./cpExec');
 const snakeCase = require('./snakeCase');
 const fs = require('fs');
-const os = require('os');
+const {EOL} = require('os');
 
 const OPTIONS = {
   outFile: 'index.d.ts',
   noBanner: true,
   module: PACKAGE
 };
-const {EOL} = os;
 
 
 function execDts(pth, o) {

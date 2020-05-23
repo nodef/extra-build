@@ -1,4 +1,5 @@
 const mdReplace = require('./mdReplace');
+const {EOL} = require('os');
 
 
 // Sets wiki from JSDoc.
@@ -9,14 +10,14 @@ function mdSetJsdoc(md, jsdoc, o) {
   var args = [...params].filter(([k]) => k.indexOf('.')<0).map(([k, v]) => v.type.startsWith('...')? `...${k}`:(v.type.endsWith('?')? `[${k}]`:k));
   var pars = [...params].map(([k, v]) => `// ${(k.replace(/.*?\./, '.')+':').padEnd(pre+2)}${v.description}`);
   var def =
-    '```javascript\n'+
-    `${o.symbol_root}.${o.symbol}` + (isFn? `(`+args.join(', ')+`)`:'') + `;\n`+
-    (isFn? pars.join('\n')+'\n' : '')+
-    (returns? `// --> `+returns.description+'\n':'')+
-    '```\n';
-  md = md||'Blank.\n\n```javascript\n```\n';
-  md = md.replace(/^.*?\n/, m => mdReplace(m, description)+'\n');
-  md = md.replace(/```javascript[\s\S]*?```\n/, def);
+    '```javascript'+EOL+
+    `${o.symbol_root}.${o.symbol}` + (isFn? `(`+args.join(', ')+`)`:'') + ';'+EOL+
+    (isFn? pars.join(EOL)+EOL : '')+
+    (returns? `// --> `+returns.description+EOL:'')+
+    '```'+EOL;
+  md = md||'Blank.'+EOL+EOL+'```javascript'+EOL+'```'+EOL;
+  md = md.replace(/^.*?\r?\n/, m => mdReplace(m, description)+EOL);
+  md = md.replace(/```javascript[\s\S]*?```\r?\n/, def);
   return md;
 }
 module.exports = mdSetJsdoc;

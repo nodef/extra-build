@@ -1,9 +1,10 @@
 const stripComments = require('strip-comments');
+const {EOL} = require('os');
 
 
 function jsDecomment(x) {
   x = stripComments(x);
   x = x.replace(/(\r?\n)(\r?\n)+/g, '$1$2');
-  return x.trim()+'\n';
+  return x.trim()+EOL;
 }
 module.exports = jsDecomment;

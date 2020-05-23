@@ -1,3 +1,6 @@
+const {EOL} = require('os');
+
+
 function mdSetLinks(md, o) {
   var txt = md.replace(/```.*?```/gs, '');
   var links = new Set();
@@ -9,7 +12,7 @@ function mdSetLinks(md, o) {
     links.delete(m[1]);
   for(var l of links) {
     console.log('mdSetLinks: '+l);
-    md = md+`[${l}]: https://github.com/${o.org}/${o.package_root}/wiki/${l}\n`;
+    md = md+`[${l}]: https://github.com/${o.org}/${o.package_root}/wiki/${l}`+EOL;
   }
   return md;
 }
