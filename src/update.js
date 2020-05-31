@@ -17,6 +17,7 @@ const OPTIONS = {
   org: ORG,
   package_root: PACKAGE,
   symbol_root: SYMBOL,
+  asciinema: true,
   code: true,
   docs: true
 };
