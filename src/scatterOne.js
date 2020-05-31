@@ -42,7 +42,7 @@ function scatterOne(pth, o) {
   var json1 = path.join(tmp, 'package.json');
   fs.copyFileSync(json0, json1);
   var ext0 = path.join(src, fil+ext);
-  var ext1 = path.join(tmp, 'index'+ext);
+  var ext1 = path.join(tmp, fil+ext);
   fs.copyFileSync(ext0, ext1);
   var md0 = path.join(wiki, sym+'.md');
   var md1 = path.join(tmp, 'README.md');
