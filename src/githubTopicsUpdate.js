@@ -8,7 +8,7 @@ async function githubTopicsUpdate(o) {
   var o = o||{};
   var owner = o.org||ORG;
   var repo = o.package_root||PACKAGE;
-  var names = await octokit.repos.getAllTopics({owner, repo});
+  var {names} = (await octokit.repos.getAllTopics({owner, repo})).data;
   var keywords_min = o.keywords_min||10;
   console.log({names, keywords_min});
   if(names.length<keywords_min) {
