@@ -22,7 +22,7 @@ const OPTIONS = {
 };
 
 
-async function update(o) {
+function update(o) {
   var cwd = tempy.directory(), jsdocs = null;
   var o = Object.assign({example_dir: cwd}, OPTIONS, o);
   console.log('update:', o);
@@ -40,6 +40,7 @@ async function update(o) {
   if(o.docs || o.readme) updateReadme(o.readme_path, jsdocs, o);
   if(o.docs || o.example) updateExample(o.example_path, o);
   if(o.docs || o.wiki) updateWiki(o.wiki_dir, jsdocs, o);
-  if(o.docs || o.github) await updateGithub(o);
+  if(o.docs || o.github) return updateGithub(o);
+  return Promise.resolve();
 };
 module.exports = update;

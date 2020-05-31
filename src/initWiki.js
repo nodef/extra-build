@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 
-async function initWiki(pth, o) {
+function initWiki(pth, o) {
   var pth = pth||'wiki';
   var o = Object.assign({url: URLREPO+'.wiki'}, o);
   console.log('initWiki:', pth, o);

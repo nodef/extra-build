@@ -10,7 +10,7 @@ const OPTIONS = {
 const STDIO = [0, 1, 2];
 
 
-async function main(a) {
+function main(a) {
   var o = Object.assign({}, OPTIONS);
   for(var i=2, I=a.length; i<I;)
     i = options(o, a[i], a, i);
