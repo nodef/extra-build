@@ -17,9 +17,9 @@ function jsdocParse(com, def) {
   // definition
   var rarg = /\s*([\.\w$?]+)\s*(\:[^=]+)?=?(.*)/;
   var args = def.replace(/[^(]*\(?/, '').replace(/\).*/, '');
+  args = args.replace(/<.*?>/g, '').replace(/\[.*?\]/g, '');
+  args = /^const|var|let/.test(def)? '' : args;
   var type = args? 'function' : 'variable';
-  args = args.replace(/<.*?>/g, '');
-  args = args.replace(/\[.*?\]/g, '');
   if(args) for(var a of args.split(/,\s*/g)) {
     var m = rarg.exec(a);
     if(m==null) continue;
