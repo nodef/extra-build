@@ -8,7 +8,7 @@ function jsdocParse(com, def) {
     if(!m[2].includes('.')) continue;
     var k = m[2].replace(/\..*/, '');
     if(params.has(k)) params.get(k).type += '?';
-    else console.error('jsdocParse: could not find field', err=k);
+    else console.error('jsdocParse: no such @param', err=k);
   }
   // returns
   var rreturns = /\s+\*\s+@returns\s+(?:\{(.*?)\}\s+)?(.*?)\r?\n/;
@@ -26,7 +26,7 @@ function jsdocParse(com, def) {
     var [, id,, val] = m;
     var k = id.replace(/[^\w$]/g, '');
     var f = params.get(k);
-    if(!f) { console.error('jsdocError: could not find field', err=k); continue; }
+    if(!f) { console.error('jsdocParse: no such argument', err=k); continue; }
     if(id.startsWith('...')) f.type = '...'+f.type;
     if(id.endsWith('?') || val) f.type += '?';
   }
