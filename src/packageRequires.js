@@ -12,7 +12,7 @@ function packageRequires(pth, a=new Set()) {
     reqs.push(m[1]||m[2]);
   var dir = path.dirname(pth);
   for(var p of reqs) {
-    if(/^\./.test(p)) packageRequires(path.join(dir, p), a);
+    if(/^\./.test(p) && !a.has(p)) packageRequires(path.join(dir, p), a);
     else a.add(p);
   }
   return a;
