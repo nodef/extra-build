@@ -30,7 +30,7 @@ function jsdocParse(com, def) {
     if(id.startsWith('...')) f.type = '...'+f.type;
     if(id.endsWith('?') || val) f.type += '?';
   }
-  if(err) { console.error('jsdocParse:', com, def); throw 0; }
+  if(err) { console.error('jsdocParse:', com, def); }
   return {type, description, params, returns};
 }
 module.exports = jsdocParse;
