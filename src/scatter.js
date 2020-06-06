@@ -35,6 +35,7 @@ function scatter(dir, o) {
     }
     catch(e) { console.error(e); }
   }
+  try {
   standalone = o.standalone_root;
   cpExec('npm pack '+o.package_root);
   var tgz = cpExecStr('ls *.tgz');
@@ -42,5 +43,7 @@ function scatter(dir, o) {
   cpExec('rm -rf '+tgz)
   minify('.', Object.assign({standalone}, o));
   cpExec('npm publish');
+  }
+  catch(e) { console.error(e); }
 }
 module.exports = scatter;
