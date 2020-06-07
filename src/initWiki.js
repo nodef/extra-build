@@ -12,6 +12,7 @@ function initWiki(pth, o) {
   console.log('initWiki:', pth, o);
   if(fs.existsSync(pth)) cpExec('git submodule update --init');
   else cpExec(`git submodule add ${o.url} ${pth}`);
+  cpExec('git submodule foreach --recursive git checkout master');
   var src = o.src_dir||'src';
   for(var f of dirFiles(src)) {
     f = path.join(pth, fileSymbol(f)+'.md');
