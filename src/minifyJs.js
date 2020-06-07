@@ -10,10 +10,12 @@ function minifyJs(pth, o) {
   console.log('minifyJs: ', pth, o);
   var s = fs.statSync(pth);
   // cpExec(`.rollup --format=cjs --file=${pth}.1 -- ${pth}`);
-  cpExec(`.browserify ${pth} -s ${o.standalone} -o ${pth}.2`);
-  if(s.size<UGLIFYLIMIT) cpExec(`.uglifyjs -c -m -o ${pth} ${pth}.2`);
-  else cpExec(`mv ${pth}.2 ${pth}`);
-  cpExec(`rm -f ${pth}.1`);
-  cpExec(`rm -f ${pth}.2`);
+  cpExec(`.browserify ${pth} -s ${o.standalone} -o ${pth}.1`);
+  cpExec(`mv ${pth}.1 ${pth}`);
+  try {
+  if(s.size<UGLIFYLIMIT) cpExec(`.uglifyjs -c -m -o ${pth} ${pth}.1`);
+  if(s.size<UGLIFYLIMIT) cpExec(`mv ${pth}.1 ${pth}`);
+  }
+  catch(e) { console.error(e); }
 }
 module.exports = minifyJs;
