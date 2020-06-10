@@ -13,7 +13,7 @@ function minifyJs(pth, o) {
   cpExec(`.browserify ${pth} -s ${o.standalone} -o ${pth}.1`);
   cpExec(`mv ${pth}.1 ${pth}`);
   try {
-  if(s.size<UGLIFYLIMIT) cpExec(`.uglifyjs -c -m -o ${pth} ${pth}.1`);
+  if(s.size<UGLIFYLIMIT) cpExec(`.uglifyjs -c -m -o ${pth}.1 ${pth}`);
   if(s.size<UGLIFYLIMIT) cpExec(`mv ${pth}.1 ${pth}`);
   }
   catch(e) { console.error(e); }
