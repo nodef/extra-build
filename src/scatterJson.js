@@ -8,7 +8,7 @@ const packageName = require('./packageName');
 // Update package.json based on scatter options.
 function scatterJson(pth, o) {
   var pth = pth||'package.json', o = o||{};
-  console.log('jsonScatter:', pth, o);
+  console.log('scatterJson:', pth, o);
   var pkg = o.package || o.package_root;
   var sym = o.symbol  || o.symbol_root;
   var x = jsonRead(pth);
@@ -25,7 +25,8 @@ function scatterJson(pth, o) {
   x.keywords = jsonKeywords(x, dirKeywords(o.keywords_dir));
   x.keywords.push(...pkg.split(/\W/), sym);
   x.keywords = Array.from(new Set(x.keywords));
-  x.dependencies = Object.assign({}, o.dependencies, o.devDependencies);
+  Object.assign(x.dependencies, x.devDependencies);
+  Object.assign(x.dependencies, o.dependencies, o.devDependencies);
   var dep_pkgs = Object.keys(x.dependencies)||[];
   for(var p of dep_pkgs)
     if(!o.requires.includes(p)) x.dependencies[p] = undefined;
