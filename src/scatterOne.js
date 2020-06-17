@@ -35,6 +35,7 @@ function scatterOne(pth, o) {
   var pkg = o.package_dir||packageRoot(pth);
   var src = o.src_dir||pathReplace(pkg, dir, 'src');
   var wiki = o.wiki_dir||pathReplace(pkg, dir, 'wiki');
+  var build = o.build_dir||pathReplace(pkg, dir, 'build');
   var node_modules0 = path.join(pkg, 'node_modules');
   var node_modules1 = path.join(tmp, 'node_modules');
   cpExec(`cp -r "${node_modules0}" "${node_modules1}"`);
@@ -64,12 +65,12 @@ function scatterOne(pth, o) {
   if(ext==='.ts') scatterTs(ext1, o.tsc);
   var js1 = path.join(tmp, 'index.js');
   var mjs1 = path.join(tmp, 'index.mjs');
+  var rjs1 = path.join(build, fil+'.js');
   fs.renameSync(js1, mjs1);
   scatterMd(md1, o);
   scatterJs(mjs1, o);
   scatterJson(json1, o);
-  cpExec(`npm install`, {cwd: dir});
-  cpExec(`.rollup --format=cjs --file=${js1} -- ${mjs1}`);
+  cpExec(`.rollup --format=cjs --file=${js1} -- ${rjs1}`);
   return tmp;
 }
 module.exports = scatterOne;

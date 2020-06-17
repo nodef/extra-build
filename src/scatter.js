@@ -7,6 +7,7 @@ const cpExecStr = require('./cpExecStr');
 const dirFiles = require('./dirFiles');
 const fileSymbol = require('./fileSymbol');
 const standaloneName = require('./standaloneName');
+const updateMain = require('./updateMain');
 const scatterOne = require('./scatterOne');
 const minify = require('./minify');
 const path = require('path');
@@ -23,6 +24,7 @@ function scatter(dir, o) {
   var dir = dir||'src';
   var o = Object.assign({}, OPTIONS, o);
   console.log('scatter:', dir, o);
+  updateMain(o.main_path, o);
   for(var f of dirFiles(dir)) {
     try {
     var pth = path.join(dir, f);
