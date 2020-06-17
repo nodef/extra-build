@@ -25,8 +25,10 @@ function scatterJson(pth, o) {
   x.keywords = jsonKeywords(x, dirKeywords(o.keywords_dir));
   x.keywords.push(...pkg.split(/\W/), sym);
   x.keywords = Array.from(new Set(x.keywords));
-  Object.assign(x.dependencies, x.devDependencies);
-  Object.assign(x.dependencies, o.dependencies, o.devDependencies);
+  x.dependencies = Object.assign({},
+    x.dependencies, x.devDependencies,
+    o.dependencies, o.devDependencies
+  );
   var dep_pkgs = Object.keys(x.dependencies)||[];
   for(var p of dep_pkgs)
     if(!o.requires.includes(p)) x.dependencies[p] = undefined;
