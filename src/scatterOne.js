@@ -68,6 +68,7 @@ function scatterOne(pth, o) {
   scatterMd(md1, o);
   scatterJs(mjs1, o);
   scatterJson(json1, o);
+  cpExec(`npm install`);
   cpExec(`.rollup --format=cjs --file=${js1} -- ${mjs1}`);
   return tmp;
 }

@@ -11,7 +11,8 @@ function minifyJson(pth, o) {
   x.description = x.description.replace('.$', ' (browserified, minifined).');
   x.type = undefined;
   x.scripts = {test: 'exit'};
-  x.devDependencies = undefined;
+  x.devDependencies = x.dependencies;
+  x.dependencies = undefined;
   jsonWrite(pth, x);
 }
 module.exports = minifyJson;
