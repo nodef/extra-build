@@ -3,7 +3,7 @@ const packageRoot = require('./packageRoot');
 const fs = require('fs');
 
 const OPTIONS = {
-  target: 'es2018',
+  target: 'es2020',
   module: 'es2015',
   declaration: true,
   declarationMap: true,
