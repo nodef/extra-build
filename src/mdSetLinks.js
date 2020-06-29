@@ -11,7 +11,7 @@ function mdSetLinks(md, o) {
   while((m=rlink.exec(txt))!=null)
     links.delete(m[1]);
   for(var l of links) {
-    console.log('mdSetLinks: '+l);
+    console.log('mdSetLinks:', l);
     md = md+`[${l}]: https://github.com/${o.org}/${o.package_root}/wiki/${l}`+EOL;
   }
   return md;

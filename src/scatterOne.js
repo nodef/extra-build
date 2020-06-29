@@ -56,6 +56,7 @@ function scatterOne(pth, o) {
   o.symbol = o.symbol||fileSymbol(fil+ext);
   o.description = o.description||mdHeading(readme);
   o.requires = [...packageRequires(pth)];
+  console.log('scatterOne:', o);
   for(var r of o.requires) {
     if(!(/^[\.\/]/).test(r)) continue;
     if(path.normalize(r)===ext0) continue;

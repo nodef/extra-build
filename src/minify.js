@@ -12,7 +12,7 @@ function minify(pth, o) {
   var readme = path.join(pth, 'README.md');
   var main = path.join(pth, 'index.js');
   o.package = o.package||jsonRead(json).name;
-  console.log('minify: ', pth, o);
+  console.log('minify:', pth, o);
   minifyJson(json, o);
   minifyMd(readme, o);
   minifyJs(main, o);
