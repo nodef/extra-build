@@ -1,6 +1,6 @@
 {
   "name": "extra-build",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "description": "Common build tools for extra-* packages.",
   "main": "index.js",
   "preferGlobal": true,
