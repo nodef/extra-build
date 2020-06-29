@@ -32,7 +32,7 @@ function update(o) {
     var pkgs = Object.keys(jsonRead().devDependencies||{});
     pkgs = pkgs.filter(p => p!=='extra-build');
     pkgs.push(o.package_root);
-    cpExec('npm init -y', {cwd});
+    cpExec('npm init -y', {cwd, stdio: null});
     cpExec('npm install '+pkgs.join(' '), {cwd});
     jsdocs = new Map([
       ...exportsJsdocs(o.exports_path),
