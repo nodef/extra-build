@@ -7,7 +7,7 @@ const fs = require('fs');
 
 function updateReadme(pth, jsdocs, o) {
   var pth = pth||'README.md';
-  console.log('updateReadme:', pth, o);
+  console.log('updateReadme:', pth);
   var md = fs.readFileSync(pth, 'utf8');
   var diff_code_blocks = gitDiffCodeBlocks(pth).length>0;
   var o = Object.assign({}, o, {diff_code_blocks});

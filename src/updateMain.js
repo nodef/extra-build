@@ -18,7 +18,7 @@ function updateMain(pth, o) {
   var ext = path.extname(pth);
   var dec = pathReplaceExt(pth, '.d'+ext);
   var o = Object.assign({}, OPTIONS, o);
-  console.log('updateMain:', pth, o);
+  console.log('updateMain:', pth);
   // var mjs = pathReplaceExt(o.output, '.mjs');
   // var dec = fs.existsSync(mjs)? mjs : dec;
   execTsc(pth, o.tsc);
@@ -29,10 +29,8 @@ function updateMain(pth, o) {
   var mjs1 = path.join(dir, fil+'.mjs');
   var dts1 = path.join(dir, fil+'.d.ts');
   if(fs.existsSync(dts1)) {
-    console.log('updateMain: cleaning '+mjs1);
     var d = fs.readFileSync(mjs1, 'utf8');
     fs.writeFileSync(mjs1, jsClean(d, true));
-    console.log('updateMain: cleaning '+js1);
     var d = fs.readFileSync(js1, 'utf8');
     fs.writeFileSync(js1, jsClean(d, true));
   }

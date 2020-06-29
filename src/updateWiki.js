@@ -11,18 +11,10 @@ const gitDiffCodeBlocks = require('./gitDiffCodeBlocks')
 const fs = require('fs');
 const path = require('path');
 
-const OPTIONS = {
-  org: ORG,
-  package: PACKAGE,
-  symbol: SYMBOL,
-  asciinema: true
-};
-
 
 function updateWiki(dir, jsdocs, o) {
-  var dir = dir||'wiki';
-  var o = Object.assign({}, OPTIONS, o);
-  console.log('updateWiki:', dir, o);
+  var dir = dir||'wiki', o = o||{};
+  console.log('updateWiki:', dir);
   for(var f of dirFiles(dir)) {
     var symbol = fileSymbol(f);
     var package = packageName(symbol, o);
