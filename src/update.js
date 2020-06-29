@@ -39,6 +39,7 @@ function update(o) {
       ...exportsJsdocs(o.exports_path),
       ...dirJsdocs(o.src_dir)
     ]);
+    console.log();
   }
   if(o.code || o.exports) updateExports(o.exports_path, o);
   if(o.code || o.main) updateMain(o.main_path, o);
