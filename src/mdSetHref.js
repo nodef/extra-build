@@ -4,6 +4,7 @@ const RLAST = /(\r?\n)(\r?\n)+$|\[.*?\]:\s+.*?\n$/;
 const RHREF = /\[(.*?)\]:\s+([^\r\n]+)\r?\n/g;
 
 function mdSetHref(x, k, v) {
+  var has = false;
   x = x.replace(RHREF, (m, p1, p2) => {
     if(p1!==k) return m;
     if(!has && p1===v) { has = true; return m; }
