@@ -10,7 +10,7 @@ function mdSetHref(x, k, v) {
   });
   if(has || v==null) return x;
   console.log('mdSetHref: add', k, v);
-  if(RLAST.test(x)) x += EOL;
+  if(!RLAST.test(x)) x += EOL;
   x += `[${k}]: ${v}`+EOL;
   return x;
 }
