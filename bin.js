@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 const build = require('./');
 const dotProp = require('dot-prop');
+const pokemon = require('pokemon');
+const figlet = require('figlet');
+const kleur = require('kleur');
 
 const E = process.env;
 const OPTIONS = {
@@ -15,6 +18,7 @@ function main(a) {
   for(var i=2, I=a.length; i<I;)
     i = options(o, a[i], a, i);
   if(o.help) return cp.execSync('less README.md', {cwd: process.cwd(), stdio: STDIO});
+  console.log(kleur.bold().yellow(figlet.textSync(pokemon.random())));
   if(o.command==='init') return build.init(o);
   if(o.command==='update') return build.update(o);
   if(o.command==='scatter') return build.scatter(o.dir, o);
