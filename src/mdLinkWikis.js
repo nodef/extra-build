@@ -9,7 +9,7 @@ function mdLinkWikis(x, o) {
   var ls = mdLinks(x), ws = new Set();
   x = mdFilterHrefs(x, (v, k) => {
     if(!ls.has(k)) return false;
-    if(RWIKI.test(v)) ws.add(ws);
+    if(RWIKI.test(v)) ws.add(k);
     return true;
   });
   for(var k of ws)
