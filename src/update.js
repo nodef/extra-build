@@ -3,6 +3,7 @@ const PACKAGE = require('./PACKAGE');
 const SYMBOL = require('./SYMBOL');
 const cpExec = require('./cpExec');
 const dirJsdocs = require('./dirJsdocs');
+const jsonRead = require('./jsonRead');
 const exportsJsdocs = require('./exportsJsdocs');
 const updateExports = require('./updateExports');
 const updateWiki = require('./updateWiki');
@@ -28,8 +29,11 @@ function update(o) {
   var o = Object.assign({example_dir: cwd}, OPTIONS, o);
   console.log('update:', o);
   if(o.docs || o.readme || o.wiki) {
+    var pkgs = Object.keys(jsonRead().devDependencies||{});
+    pkgs = pkgs.filter(p => p!=='extra-build');
+    pkgs.push(o.package_root);
     cpExec('npm init -y', {cwd});
-    cpExec('npm install '+o.package_root, {cwd});
+    cpExec('npm install '+pkgs.join(' '), {cwd});
     jsdocs = new Map([
       ...exportsJsdocs(o.exports_path),
       ...dirJsdocs(o.src_dir)
