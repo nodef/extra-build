@@ -8,7 +8,7 @@ function mdSetHref(x, k, v) {
   x = x.replace(RHREF, (m, p1, p2) => {
     if(p1!==k) return m;
     if(!has && p2===v) { has = true; return m; }
-    console.log('mdSetHref: remove', k, v); return '';
+    console.log('mdSetHref: remove', p1, p2); return '';
   });
   if(has || v==null) return x;
   console.log('mdSetHref: add', k, v);
