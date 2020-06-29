@@ -18,7 +18,7 @@ function updateExports(pth, o) {
   var dec = pathReplaceExt(pth, '.d'+ext);
   var dir = path.dirname(pth);
   var o = Object.assign({}, OPTIONS, o);
-  console.log(kleur.cyan('updateExports:'), pth);
+  console.log(kleur.bold().cyan('updateExports:'), pth);
   var d = jsExportsRemove(fileRead(pth));
   var custom = jsExports(d);
   fs.writeFileSync(pth, d + dirExports(dir, o.format, custom));

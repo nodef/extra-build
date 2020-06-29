@@ -9,7 +9,7 @@ function updateExample(pth, o) {
   var d = fs.readFileSync(readme, 'utf8');
   var ex = mdExample(d, o.example_lang);
   if(!ex) return;
-  console.log(kleur.cyan('updateExample:'), pth);
+  console.log(kleur.bold().cyan('updateExample:'), pth);
   fs.writeFileSync(pth, ex);
 }
 module.exports = updateExample;

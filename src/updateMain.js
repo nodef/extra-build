@@ -20,7 +20,7 @@ function updateMain(pth, o) {
   var ext = path.extname(pth);
   var dec = pathReplaceExt(pth, '.d'+ext);
   var o = Object.assign({}, OPTIONS, o);
-  console.log(kleur.cyan('updateMain:'), pth);
+  console.log(kleur.bold().cyan('updateMain:'), pth);
   // var mjs = pathReplaceExt(o.output, '.mjs');
   // var dec = fs.existsSync(mjs)? mjs : dec;
   execTsc(pth, o.tsc);

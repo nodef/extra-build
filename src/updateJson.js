@@ -9,7 +9,7 @@ const kleur = require('kleur');
 
 function updateJson(pth, o) {
   var pth = pth||'package.json', o = o||{};
-  console.log(kleur.cyan('updateJson:'), pth);
+  console.log(kleur.bold().cyan('updateJson:'), pth);
   var x = jsonRead(pth);
   var md = mdRead(o.readme_path);
   x.description = mdHeading(md);

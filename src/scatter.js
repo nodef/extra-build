@@ -24,7 +24,7 @@ const OPTIONS = {
 function scatter(dir, o) {
   var dir = dir||'src';
   var o = Object.assign({}, OPTIONS, o);
-  console.log(kleur.magenta('scatter:'), dir, o);
+  console.log(kleur.bold().magenta('scatter:'), dir, o);
   var pth = path.join(dir, 'index.ts');
   execTsc(pth, o.tsc);
   for(var f of dirFiles(dir)) {

@@ -28,7 +28,7 @@ const OPTIONS = {
 function update(o) {
   var cwd = tempy.directory(), jsdocs = null;
   var o = Object.assign({example_dir: cwd}, OPTIONS, o);
-  console.log(kleur.magenta('update:'), o);
+  console.log(kleur.bold().magenta('update:'), o);
   if(o.docs || o.readme || o.wiki) {
     var pkgs = Object.keys(jsonRead().devDependencies||{});
     pkgs = pkgs.filter(p => p!=='extra-build');

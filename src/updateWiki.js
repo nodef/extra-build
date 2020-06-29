@@ -12,7 +12,7 @@ const path = require('path');
 
 function updateWiki(dir, jsdocs, o) {
   var dir = dir||'wiki', o = o||{};
-  console.log(kleur.cyan('updateWiki:'), dir);
+  console.log(kleur.bold().cyan('updateWiki:'), dir);
   for(var f of dirFiles(dir)) {
     var symbol = fileSymbol(f);
     var package = packageName(symbol, o);

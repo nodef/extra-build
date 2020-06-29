@@ -18,7 +18,7 @@ function main(a) {
   for(var i=2, I=a.length; i<I;)
     i = options(o, a[i], a, i);
   if(o.help) return cp.execSync('less README.md', {cwd: process.cwd(), stdio: STDIO});
-  console.log(kleur.bold().yellow(figlet.textSync(pokemon.random())));
+  console.log(kleur.bold().bold().yellow(figlet.textSync(pokemon.random())));
   if(o.command==='init') return build.init(o);
   if(o.command==='update') return build.update(o);
   if(o.command==='scatter') return build.scatter(o.dir, o);

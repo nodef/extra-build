@@ -20,7 +20,7 @@ const OPTIONS = {
 
 function init(o) {
   var o = Object.assign({}, OPTIONS, o);
-  console.log(kleur.magenta('init:'), o);
+  console.log(kleur.bold().magenta('init:'), o);
   if(o.ci) initCi(o.ci_path, o.ci);
   if(o.ts) initTs(o.ts_path, o.ts);
   if(o.rollup) initRollup(o.rollup_path, o.rollup);
