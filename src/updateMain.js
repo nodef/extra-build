@@ -3,7 +3,7 @@ const execRollup = require('./execRollup');
 const execDts = require('./execDts');
 const pathSplit = require('./pathSplit');
 const pathReplaceExt = require('./pathReplaceExt');
-const jsDecomment = require('./jsDecomment');
+const jsClean = require('./jsClean');
 const path = require('path');
 const fs = require('fs');
 
@@ -30,9 +30,9 @@ function updateMain(pth, o) {
   var dts1 = path.join(dir, fil+'.d.ts');
   if(fs.existsSync(dts1)) {
     var d = fs.readFileSync(mjs1, 'utf8');
-    fs.writeFileSync(mjs1, jsDecomment(d));
+    fs.writeFileSync(mjs1, jsClean(d, true));
     var d = fs.readFileSync(js1, 'utf8');
-    fs.writeFileSync(js1, jsDecomment(d));
+    fs.writeFileSync(js1, jsClean(d, true));
   }
 }
 module.exports = updateMain;
