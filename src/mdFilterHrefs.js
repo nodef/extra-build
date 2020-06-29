@@ -1,4 +1,4 @@
-const RHREF = /\[(.*?)\]:\s+(\w+:\/\/.*?)[\r\n]/g;
+const RHREF = /\[(.*?)\]:\s+([^\r\n]+)\r?\n/g;
 
 function mdFilterHrefs(x, fn) {
   return x.replace(RHREF, (m, p1, p2) => {
