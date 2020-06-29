@@ -1,13 +1,13 @@
-const RLINK = /\[(.*?)\]/g;
+const RLINK = /(.?)\[(.*?)\](.?)/g;
 
 function mdLinks(x, dir=false) {
   var a = new Set(), m = null;
   var x = x.replace(/```.*?```/gs, '');
   while((m=RLINK.exec(x))!=null) {
-    var p = x[m.index-1], q = x[m.index+m[0].length];
-    if(p==='!' || q===':') continue;
-    if(q==='(' && !dir) continue;
-    a.add(m[1]);
+    console.log(m.slice(1, 4));
+    if(m[1]==='!') continue;
+    if(m[3]==='(' && !dir) continue;
+    if(x.indexOf(`[${m[2]}]`)<m.index) a.add(m[2]);
   }
   return a;
 }
