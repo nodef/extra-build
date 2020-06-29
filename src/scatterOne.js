@@ -14,6 +14,7 @@ const scatterTs = require('./scatterTs');
 const scatterJs = require('./scatterJs');
 const scatterJson = require('./scatterJson');
 const updateExample = require('./updateExample');
+const jsLinkWiki = require('./jsLinkWiki');
 const tempy = require('tempy');
 const path = require('path');
 const fs = require('fs');
@@ -67,6 +68,8 @@ function scatterOne(pth, o) {
   var js1 = path.join(tmp, 'index.js');
   var mjs1 = path.join(tmp, 'index.mjs');
   var rjs1 = path.join(build, fil+'.js');
+  var d = fs.readFileSync(js1, 'utf8');
+  fs.writeFileSync(js1, jsLinkWiki(d, o));
   fs.renameSync(js1, mjs1);
   scatterMd(md1, o);
   scatterJs(mjs1, o);

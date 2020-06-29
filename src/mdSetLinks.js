@@ -1,3 +1,4 @@
+const wikiLink = require('./wikiLink');
 const {EOL} = require('os');
 
 
@@ -11,7 +12,7 @@ function mdSetLinks(md, o) {
   // find references (indirect links)
   while((m=rref.exec(txt))!=null) {
     if(m[1]==='!' || m[3]==='(') continue;
-    links.set(m[2], `https://github.com/${o.org}/${o.package_root}/wiki/${m[2]}`);
+    links.set(m[2], wikiLink(m[2], o));
   }
   // clean old hrefs
   md = md.replace(rhref, (m, p1, p2) => {

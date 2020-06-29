@@ -4,6 +4,7 @@ const execDts = require('./execDts');
 const pathSplit = require('./pathSplit');
 const pathReplaceExt = require('./pathReplaceExt');
 const jsClean = require('./jsClean');
+const jsLinkWiki = require('./jsLinkWiki');
 const path = require('path');
 const fs = require('fs');
 
@@ -33,6 +34,8 @@ function updateMain(pth, o) {
     fs.writeFileSync(mjs1, jsClean(d, true));
     var d = fs.readFileSync(js1, 'utf8');
     fs.writeFileSync(js1, jsClean(d, true));
+    var d = fs.readFileSync(dts1, 'utf8');
+    fs.writeFileSync(dts1, jsLinkWiki(d, o));
   }
 }
 module.exports = updateMain;
