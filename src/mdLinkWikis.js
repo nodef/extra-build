@@ -6,15 +6,13 @@ const wikiLink = require('./wikiLink');
 const RWIKI = /github\.com.*?\/wiki\//;
 
 function mdLinkWikis(x, o) {
-  var ls = mdLinks(x);
-  var y = mdFilterHrefs(x, (v, k) => {
+  var ls = mdLinks(x), ws = new Set();
+  x = mdFilterHrefs(x, (v, k) => {
     if(!ls.has(k)) return false;
-    if(!RWIKI.test(v)) ls.delete(k);
+    if(RWIKI.test(v)) ws.add(ws);
     return true;
   });
-  if(y!==x) console.log(y);
-  x = y;
-  for(var k of ls)
+  for(var k of ws)
     x = mdSetHref(x, k, wikiLink(k, o));
   return x;
 }
