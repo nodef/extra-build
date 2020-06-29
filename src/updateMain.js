@@ -25,12 +25,14 @@ function updateMain(pth, o) {
   execRollup(o.build, o.rollup);
   execDts(dec, o.dts);
   var js1 = o.output;
-  var [dir, fil,] = pathSplit(js1);
+  var [dir, fil] = pathSplit(js1);
   var mjs1 = path.join(dir, fil+'.mjs');
   var dts1 = path.join(dir, fil+'.d.ts');
   if(fs.existsSync(dts1)) {
+    console.log('updateMain: cleaning '+mjs1);
     var d = fs.readFileSync(mjs1, 'utf8');
     fs.writeFileSync(mjs1, jsClean(d, true));
+    console.log('updateMain: cleaning '+js1);
     var d = fs.readFileSync(js1, 'utf8');
     fs.writeFileSync(js1, jsClean(d, true));
   }
