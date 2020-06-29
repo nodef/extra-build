@@ -8,12 +8,16 @@ var i = 0;
 
 function mdLinkWikis(x, o) {
   var ls = mdLinks(x), ws = new Set();
+  if(i===0) console.log(ws);
   x = mdFilterHrefs(x, (v, k) => {
-    if(i===0) console.log(k, v, RWIKI.test(v));
     if(!ls.has(k)) return false;
-    if(RWIKI.test(v)) ws.add(k);
+    if(RWIKI.test(v)) {
+      if(i===0) console.log(k, v);
+      ws.add(k);
+    }
     return true;
   });
+  if(i===0) console.log(ws);
   i++;
   for(var k of ws)
     x = mdSetHref(x, k, wikiLink(k, o));
