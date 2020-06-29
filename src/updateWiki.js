@@ -1,11 +1,8 @@
-const ORG = require('./ORG');
-const PACKAGE = require('./PACKAGE');
-const SYMBOL = require('./SYMBOL');
 const dirFiles = require('./dirFiles');
 const fileSymbol = require('./fileSymbol');
 const mdSetJsdoc = require('./mdSetJsdoc');
-const mdSetLinks = require('./mdSetLinks');
-const mdSetEmoji = require('./mdSetEmoji');
+const mdLinkWikis = require('./mdLinkWikis');
+const mdLinkBasics = require('./mdLinkBasics');
 const packageName = require('./packageName');
 const gitDiffCodeBlocks = require('./gitDiffCodeBlocks')
 const fs = require('fs');
@@ -25,8 +22,8 @@ function updateWiki(dir, jsdocs, o) {
     var diff_code_blocks = gitDiffCodeBlocks(p).length>0;
     var o1 = Object.assign({}, o, {symbol, package, diff_code_blocks});
     md = mdSetJsdoc(md, jsdoc, o1);
-    md = mdSetLinks(md, o1);
-    md = mdSetEmoji(md, o1);
+    md = mdLinkWikis(md, o1);
+    md = mdLinkBasics(md, o1);
     fs.writeFileSync(p, md);
   }
 }
