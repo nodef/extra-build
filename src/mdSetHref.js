@@ -1,10 +1,11 @@
 const {EOL} = require('os');
 
 const RLAST = /(\r?\n)(\r?\n)+$|\[.*?\]:\s+.*?\n$/;
+const RHREF = /\[(.*?)\]:\s+([^\r\n]+)\r?\n/g;
 
 function mdSetHref(x, k, v) {
-  var re = new RegExp(`\\[${k}\\]:\\s+([^\\r\\n]+)\r?\n`, 'g'), has = false;
-  x = x.replace(re, (m, p1) => {
+  x = x.replace(RHREF, (m, p1, p2) => {
+    if(p1!==k) return m;
     if(!has && p1===v) { has = true; return m; }
     console.log('mdSetHref: remove', k, v); return '';
   });
