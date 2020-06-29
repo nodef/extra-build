@@ -4,11 +4,12 @@ const jsonKeywords = require('./jsonKeywords');
 const mdRead = require('./mdRead');
 const mdHeading = require('./mdHeading');
 const dirKeywords = require('./dirKeywords');
+const kleur = require('kleur');
 
 
 function updateJson(pth, o) {
   var pth = pth||'package.json', o = o||{};
-  console.log('updateJson:', pth);
+  console.log(kleur.cyan('updateJson:'), pth);
   var x = jsonRead(pth);
   var md = mdRead(o.readme_path);
   x.description = mdHeading(md);

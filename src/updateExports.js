@@ -3,6 +3,7 @@ const fileRead = require('./fileRead');
 const jsExports = require('./jsExports');
 const jsExportsRemove = require('./jsExportsRemove');
 const pathReplaceExt = require('./pathReplaceExt');
+const kleur = require('kleur');
 const path = require('path');
 const fs = require('fs');
 
@@ -17,7 +18,7 @@ function updateExports(pth, o) {
   var dec = pathReplaceExt(pth, '.d'+ext);
   var dir = path.dirname(pth);
   var o = Object.assign({}, OPTIONS, o);
-  console.log('updateExports:', pth);
+  console.log(kleur.cyan('updateExports:'), pth);
   var d = jsExportsRemove(fileRead(pth));
   var custom = jsExports(d);
   fs.writeFileSync(pth, d + dirExports(dir, o.format, custom));

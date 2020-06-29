@@ -5,6 +5,7 @@ const pathSplit = require('./pathSplit');
 const pathReplaceExt = require('./pathReplaceExt');
 const jsClean = require('./jsClean');
 const jsLinkWiki = require('./jsLinkWiki');
+const kleur = require('kleur');
 const path = require('path');
 const fs = require('fs');
 
@@ -19,7 +20,7 @@ function updateMain(pth, o) {
   var ext = path.extname(pth);
   var dec = pathReplaceExt(pth, '.d'+ext);
   var o = Object.assign({}, OPTIONS, o);
-  console.log('updateMain:', pth);
+  console.log(kleur.cyan('updateMain:'), pth);
   // var mjs = pathReplaceExt(o.output, '.mjs');
   // var dec = fs.existsSync(mjs)? mjs : dec;
   execTsc(pth, o.tsc);
@@ -37,5 +38,6 @@ function updateMain(pth, o) {
     var d = fs.readFileSync(dts1, 'utf8');
     fs.writeFileSync(dts1, jsLinkWiki(d, o));
   }
+  console.log();
 }
 module.exports = updateMain;

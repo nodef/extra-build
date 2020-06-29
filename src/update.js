@@ -12,6 +12,7 @@ const updateExample = require('./updateExample');
 const updateJson = require('./updateJson');
 const updateGithub = require('./updateGithub');
 const updateMain = require('./updateMain');
+const kleur = require('kleur');
 const tempy = require('tempy');
 
 const OPTIONS = {
@@ -27,7 +28,7 @@ const OPTIONS = {
 function update(o) {
   var cwd = tempy.directory(), jsdocs = null;
   var o = Object.assign({example_dir: cwd}, OPTIONS, o);
-  console.log('update:', o);
+  console.log(kleur.magenta('update:'), o);
   if(o.docs || o.readme || o.wiki) {
     var pkgs = Object.keys(jsonRead().devDependencies||{});
     pkgs = pkgs.filter(p => p!=='extra-build');

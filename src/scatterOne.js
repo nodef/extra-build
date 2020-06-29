@@ -15,6 +15,7 @@ const scatterJs = require('./scatterJs');
 const scatterJson = require('./scatterJson');
 const updateExample = require('./updateExample');
 const jsLinkWiki = require('./jsLinkWiki');
+const kleur = require('kleur');
 const tempy = require('tempy');
 const path = require('path');
 const fs = require('fs');
@@ -29,7 +30,7 @@ const OPTIONS = {
 // Scatter a file as a package.
 function scatterOne(pth, o) {
   var o = Object.assign({}, OPTIONS, o);
-  console.log('scatterOne:', pth);
+  console.log(kleur.cyan('scatterOne:'), pth);
   var tmp = tempy.directory();
   var [dir, fil, ext] = pathSplit(pth);
   var sym = fileSymbol(fil);

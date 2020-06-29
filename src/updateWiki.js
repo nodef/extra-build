@@ -5,13 +5,14 @@ const mdLinkWikis = require('./mdLinkWikis');
 const mdLinkBasics = require('./mdLinkBasics');
 const packageName = require('./packageName');
 const gitDiffCodeBlocks = require('./gitDiffCodeBlocks')
+const kleur = require('kleur');
 const fs = require('fs');
 const path = require('path');
 
 
 function updateWiki(dir, jsdocs, o) {
   var dir = dir||'wiki', o = o||{};
-  console.log('updateWiki:', dir);
+  console.log(kleur.cyan('updateWiki:'), dir);
   for(var f of dirFiles(dir)) {
     var symbol = fileSymbol(f);
     var package = packageName(symbol, o);
@@ -26,5 +27,6 @@ function updateWiki(dir, jsdocs, o) {
     md = mdLinkBasics(md, o1);
     fs.writeFileSync(p, md);
   }
+  console.log();
 }
 module.exports = updateWiki;

@@ -10,6 +10,7 @@ const fileSymbol = require('./fileSymbol');
 const standaloneName = require('./standaloneName');
 const scatterOne = require('./scatterOne');
 const minify = require('./minify');
+const kleur = require('kleur');
 const path = require('path');
 
 const OPTIONS = {
@@ -23,7 +24,7 @@ const OPTIONS = {
 function scatter(dir, o) {
   var dir = dir||'src';
   var o = Object.assign({}, OPTIONS, o);
-  console.log('scatter:', dir, o);
+  console.log(kleur.magenta('scatter:'), dir, o);
   var pth = path.join(dir, 'index.ts');
   execTsc(pth, o.tsc);
   for(var f of dirFiles(dir)) {
@@ -37,6 +38,7 @@ function scatter(dir, o) {
     cpExec(`rm -rf ${tmp}`);
     }
     catch(e) { console.error(e); }
+    console.log();
   }
   try {
   standalone = o.standalone_root;

@@ -1,4 +1,5 @@
 const mdExample = require('./mdExample');
+const kleur = require('kleur');
 const fs = require('fs');
 
 
@@ -8,7 +9,7 @@ function updateExample(pth, o) {
   var d = fs.readFileSync(readme, 'utf8');
   var ex = mdExample(d, o.example_lang);
   if(!ex) return;
-  console.log('updateExample:', pth);
+  console.log(kleur.cyan('updateExample:'), pth);
   fs.writeFileSync(pth, ex);
 }
 module.exports = updateExample;
