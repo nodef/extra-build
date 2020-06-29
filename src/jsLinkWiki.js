@@ -4,7 +4,7 @@ const wikiLink = require('./wikiLink');
 function jsLinkWiki(js, o) {
   var re = /(\/\*\*.*?\*\/).*?((export\s+)?(?:(function\*?|class|const|var|let)\s+)?([\w$]+)([^\{;]*))/gs;
   var rdesc = /(\s+\*\s+)(.*?)(\r?\n)/, cls = '';
-  return js.replace(re, (m, com, exp, def, typ, nam, arg) => {
+  return js.replace(re, (m, com, def, exp, typ, nam, arg) => {
     if(!exp) return m;
     if(typ==='class') cls = nam;
     if(nam==='constructor') nam = cls;
