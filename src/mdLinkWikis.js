@@ -12,6 +12,7 @@ function mdLinkWikis(x, o) {
     if(RWIKI.test(v)) ws.add(k);
     return true;
   });
+  console.log(ls, ws);
   for(var k of ws)
     x = mdSetHref(x, k, wikiLink(k, o));
   return x;
