@@ -1,4 +1,4 @@
-const RLINK = /(.?)\[([\(\)\w\-$:.]+)\](.?)/g;
+const RLINK = /(.?)\[([\(\)\s\w\-$:.]+)\](.?)/g;
 
 function mdLinks(x, dir=false) {
   var a = new Set(), m = null;
