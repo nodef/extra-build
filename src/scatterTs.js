@@ -8,7 +8,7 @@ const fs = require('fs');
 function scatterTs(pth, o) {
   var pth = pth||'index.ts';
   var o = Object.assign({}, o);
-  console.log('scatterTs:', pth, o);
+  console.log('scatterTs:', pth);
   var dir = path.dirname(pth);
   var build = path.join(dir, 'tsconfig.json');
   if(!fs.existsSync(build)) o.build = undefined;

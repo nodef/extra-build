@@ -8,7 +8,7 @@ const packageName = require('./packageName');
 // Update package.json based on scatter options.
 function scatterJson(pth, o) {
   var pth = pth||'package.json', o = o||{};
-  console.log('scatterJson:', pth, o);
+  console.log('scatterJson:', pth);
   var pkg = o.package || o.package_root;
   var sym = o.symbol  || o.symbol_root;
   var x = jsonRead(pth);

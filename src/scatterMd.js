@@ -5,7 +5,7 @@ const {EOL} = require('os');
 // Update README.md based on scatter options.
 function scatterMd(pth, o) {
   var pth = pth||'README.md', o = o||{};
-  console.log('scatterMd:', pth, o);
+  console.log('scatterMd:', pth);
   var d = fs.readFileSync(pth, 'utf8');
   d = d.replace(o.note_top||/\s+```/, '<br>'+EOL+
     `> This is part of package [${o.package_root}].`+EOL+EOL+

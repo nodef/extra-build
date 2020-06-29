@@ -28,7 +28,7 @@ const OPTIONS = {
 // Scatter a file as a package.
 function scatterOne(pth, o) {
   var o = Object.assign({}, OPTIONS, o);
-  console.log('scatterOne:', pth, o);
+  console.log('scatterOne:', pth);
   var tmp = tempy.directory();
   var [dir, fil, ext] = pathSplit(pth);
   var sym = fileSymbol(fil);
