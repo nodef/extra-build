@@ -4,7 +4,7 @@ const {EOL} = require('os');
 
 function jsClean(x, ln=false) {
   x = stripComments(x);
-  x = x.replace(/\s+(\r?\n), '$1'/);
+  x = x.replace(/\s+(\r?\n)/g, '$1');
   if(ln) x = x.replace(/(\r?\n)\s*(\r?\n)+/g, '$1$2');
   return x.trim()+EOL;
 }
