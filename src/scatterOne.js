@@ -49,11 +49,12 @@ function scatterOne(pth, o) {
   fs.copyFileSync(ext0, ext1);
   var md0 = path.join(wiki, sym+'.md');
   var md1 = path.join(tmp, 'README.md');
-  if(fs.existsSync(md0)) fs.copyFileSync(md0, md1);
+  var hasMd = fs.existsSync(md0);
+  if(hasMd) fs.copyFileSync(md0, md1);
   else console.log('scatterOne:', md0, 'not found');
   var ex1 = path.join(tmp, 'example.js');
-  if(fs.existsSync(md1)) updateExample(ex1, {readme_path: md1});
-  var readme = fs.readFileSync(md1, 'utf8');
+  if(hasMd) updateExample(ex1, {readme_path: md1});
+  var readme = hasMd? fs.readFileSync(md1, 'utf8'):'';
   o.package = o.package||packageName(sym);
   o.symbol = o.symbol||fileSymbol(fil+ext);
   o.description = o.description||mdHeading(readme);
@@ -72,7 +73,7 @@ function scatterOne(pth, o) {
   var d = fs.readFileSync(js1, 'utf8');
   fs.writeFileSync(js1, jsLinkWiki(d, o));
   fs.renameSync(js1, mjs1);
-  scatterMd(md1, o);
+  if(hasMd) scatterMd(md1, o);
   scatterJs(mjs1, o);
   scatterJson(json1, o);
   cpExec(`.rollup -c --format=cjs --file=${js1} -- ${rjs1}`);
