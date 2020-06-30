@@ -4,7 +4,7 @@ const SYMBOL = require('./SYMBOL');
 const STANDALONE = require('./STANDALONE');
 const cpExec = require('./cpExec');
 const cpExecStr = require('./cpExecStr');
-const update = require('./update');
+const execTsc = require('./execTsc');
 const dirFiles = require('./dirFiles');
 const fileSymbol = require('./fileSymbol');
 const standaloneName = require('./standaloneName');
@@ -26,7 +26,7 @@ function scatter(dir, o) {
   var o = Object.assign({}, OPTIONS, o);
   console.log(kleur.bold().magenta('scatter:'), dir, o);
   var pth = path.join(dir, 'index.ts');
-  update(o);
+  execTsc(pth, o.tsc);
   for(var f of dirFiles(dir)) {
     try {
     var pth = path.join(dir, f);
