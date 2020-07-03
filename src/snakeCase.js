@@ -1,8 +1,11 @@
+const RDELTA = /([^A-Z])([A-Z])|(\D)(\d)/g;
+const RTRIM  = /^[^a-zA-Z0-9\.]+|[^a-zA-Z0-9\.]+$/g;
+const RSEP   = /[^a-zA-Z0-9\.]+/g;
+
 function snakeCase(x, sep='-') {
-  x = x.replace(/([a-z0-9])([A-Z])/g, '$1'+sep+'$2');
-  x = x.replace(/[^A-Za-z0-9\.]+/g, sep);
-  x = x.replace(/^[^A-Za-z0-9\.]+/, '');
-  x = x.replace(/[^A-Za-z0-9\.]+$/, '');
+  x = x.replace(RDELTA, '$1$3'+sep+'$2$4');
+  x = x.replace(RSEP, sep);
+  x = x.replace(RTRIM, '');
   return x.toLowerCase();
 }
 module.exports = snakeCase;
