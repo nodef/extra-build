@@ -4,7 +4,8 @@ const {EOL} = require('os');
 
 // Initializes gitignore file.
 function ignoreAdd(pth, sections) {
-  var d = fs.readFileSync(pth, 'utf8'), a = '';
+  var e = fs.existsSync(pth), a = '';
+  var d = e? fs.readFileSync(pth, 'utf8') : '';
   for(var [k, ls] of sections) {
     if(d.includes('# '+k)) continue;
     a += '# '+k+EOL;
