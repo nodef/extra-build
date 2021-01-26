@@ -1,4 +1,8 @@
-// Sets README table from JSDoc.
+/**
+ * Set README table from JSDoc details.
+ * @param {string} md markdown data
+ * @param {Set<object>} jsdocs jsdoc details
+ */
 function mdSetTable(md, jsdocs) {
   var i = md.search(/\|\s+Method\s+\|/);
   var top = md.substring(0, i);

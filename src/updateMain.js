@@ -3,41 +3,40 @@ const execRollup = require('./execRollup');
 const execDts = require('./execDts');
 const pathSplit = require('./pathSplit');
 const pathReplaceExt = require('./pathReplaceExt');
-const jsClean = require('./jsUncomment');
+const jsUncomment = require('./jsUncomment');
 const jsLinkWiki = require('./jsLinkWiki');
-const kleur = require('kleur');
 const path = require('path');
 const fs = require('fs');
 
 var OPTIONS = {
   build: 'build/index.js',
-  output: 'index.js'
+  out: 'index.js'
 };
 
 
-function updateMain(pth, o) {
-  var pth = pth||'src/index.ts';
-  var ext = path.extname(pth);
-  var dec = pathReplaceExt(pth, '.d'+ext);
-  var o = Object.assign({}, OPTIONS, o);
-  console.log(kleur.bold().cyan('updateMain:'), pth);
+/**
+ * Update main javascript file.
+ * @param {string} ts path of main typescript file
+ * @param {object} opt options
+ */
+function updateMain(pth, opt) {
+  var o = Object.assign({}, OPTIONS, opt);
+  var ts = pth||'src/index.ts';
+  var dts = pathReplaceExt(ts, '.d.ts');
   // var mjs = pathReplaceExt(o.output, '.mjs');
   // var dec = fs.existsSync(mjs)? mjs : dec;
-  execTsc(pth, o.tsc);
+  execTsc(ts, o.tsc);
   execRollup(o.build, o.rollup);
-  execDts(dec, o.dts);
-  var js1 = o.output;
-  var [dir, fil] = pathSplit(js1);
-  var mjs1 = path.join(dir, fil+'.mjs');
-  var dts1 = path.join(dir, fil+'.d.ts');
-  if(fs.existsSync(dts1)) {
-    var d = fs.readFileSync(mjs1, 'utf8');
-    fs.writeFileSync(mjs1, jsClean(d, true));
-    var d = fs.readFileSync(js1, 'utf8');
-    fs.writeFileSync(js1, jsClean(d, true));
-    var d = fs.readFileSync(dts1, 'utf8');
-    fs.writeFileSync(dts1, jsLinkWiki(d, o));
-  }
-  console.log();
+  execDts(dts, o.dts);
+  var js1 = o.out;
+  var mjs1 = pathReplaceExt(js1, '.mjs');
+  var dts1 = pathReplaceExt(js1, '.d.ts');
+  if(!fs.existsSync(dts1)) return;
+  var d = fs.readFileSync(mjs1, 'utf8');
+  fs.writeFileSync(mjs1, jsUncomment(d, true));
+  var d = fs.readFileSync(js1, 'utf8');
+  fs.writeFileSync(js1, jsUncomment(d, true));
+  var d = fs.readFileSync(dts1, 'utf8');
+  fs.writeFileSync(dts1, jsLinkWiki(d, o));
 }
 module.exports = updateMain;

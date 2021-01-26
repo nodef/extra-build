@@ -1,6 +1,6 @@
 const PACKAGE = require('./PACKAGE');
 const cpExec = require('./cpExec');
-const snakeCase = require('./snakeCase');
+const kebabCase = require('./kebabCase');
 const fs = require('fs');
 const {EOL} = require('os');
 
@@ -18,7 +18,7 @@ function execDts(pth, o) {
   for(var k in o) {
     if(k==='module') continue;
     if(o[k]==null) continue;
-    var f = snakeCase(k);
+    var f = kebabCase(k);
     if(typeof o[k]==='boolean') cmd += ` --${f}`;
     else cmd += ` --${f} "${o[k]}"`;
   }

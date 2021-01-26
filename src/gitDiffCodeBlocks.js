@@ -2,7 +2,11 @@ const gitDiff = require('./gitDiff');
 const mdCodeBlocks = require('./mdCodeBlocks');
 
 
-// Gets git diff in code blocks.
+/**
+ * Get git diff in code blocks.
+ * @param {string} pth path of file
+ * @param {RegExp} re language (javascript)
+ */
 function gitDiffCodeBlocks(pth, re=null) {
   var d = gitDiff(pth);
   var bs = mdCodeBlocks(d, re);

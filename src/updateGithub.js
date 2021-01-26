@@ -1,14 +1,12 @@
-const githubRepoUpdate = require('./githubRepoUpdate');
-const githubTopicsUpdate = require('./githubTopicsUpdate');
-const kleur = require('kleur');
+const githubUpdateDetails = require('./githubUpdateDetails');
+const githubUpdateTopics = require('./githubUpdateTopics');
 
 
 function updateGithub(o) {
   var o = o||{};
-  console.log(kleur.bold().cyan('updateGithub:'));
   return Promise.all([
-    githubRepoUpdate(o),
-    githubTopicsUpdate(o)
+    githubUpdateDetails(o),
+    githubUpdateTopics(o)
   ]);
 }
 module.exports = updateGithub;

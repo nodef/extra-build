@@ -6,8 +6,8 @@ const octokit = require('./octokit');
 const fs = require('fs');
 
 
-async function githubRepoUpdate(o) {
-  var o = o||{};
+async function githubUpdateDetails(opt={}) {
+  var o = opt||{};
   var owner = o.org||ORG;
   var repo = o.package_root||PACKAGE;
   var readme = o.readme_path||'README.md';
@@ -15,7 +15,7 @@ async function githubRepoUpdate(o) {
   var description = o.description||mdHeading(md);
   var homepage = o.homepage||URLNPM;
   var c = {owner, repo, description, homepage};
-  console.log('githubRepoUpdate:', c);
   await octokit.repos.update(c);
+  return c;
 }
-module.exports = githubRepoUpdate;
+module.exports = githubUpdateDetails;

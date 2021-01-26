@@ -1,4 +1,7 @@
-// Gets heading from markdown text.
+/**
+ * Get heading from markdown text.
+ * @param {string} d markdown data
+ */
 function mdHeading(d) {
   d = d.replace(/\r?\n[\s\S]*/, '');
   d = d.replace(/[\_\[\]]/g, '');

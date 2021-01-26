@@ -1,4 +1,8 @@
-// Removes non-base keywords from package.json.
+/**
+ * Get base keywords from package.json.
+ * @param {object} x JSON object
+ * @param {Array<string>} ks non-base keywords
+ */
 function jsonKeywords(x, ks) {
   var ks0 = x.keywords.slice();
   var ks1 = ks||[];

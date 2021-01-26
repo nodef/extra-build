@@ -1,4 +1,4 @@
-const { Octokit } = require('@octokit/rest');
+const {Octokit} = require('@octokit/rest');
 
 const E = process.env;
 const octokit = new Octokit({

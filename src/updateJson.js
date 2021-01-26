@@ -4,16 +4,20 @@ const jsonKeywords = require('./jsonKeywords');
 const mdRead = require('./mdRead');
 const mdHeading = require('./mdHeading');
 const dirKeywords = require('./dirKeywords');
-const kleur = require('kleur');
 
 
-function updateJson(pth, o) {
-  var pth = pth||'package.json', o = o||{};
-  console.log(kleur.bold().cyan('updateJson:'), pth);
+/**
+ * Update description, keywords in package.json.
+ * @param {string} pth path of package.json
+ * @param {object} opt options {readmePath, keywordsDir, srcDir}
+ */
+function updateJson(pth, opt) {
+  var o = opt||{};
+  var pth = pth||'package.json';
   var x = jsonRead(pth);
-  var md = mdRead(o.readme_path);
+  var md = mdRead(o.readmePath);
   x.description = mdHeading(md);
-  var ks1 = dirKeywords(o.keywords_dir);
+  var ks1 = dirKeywords(o.keywordsDir||o.srcDir);
   var ks0 = jsonKeywords(x, ks1);
   x.keywords = ks0.concat(ks1);
   jsonWrite(pth, x);

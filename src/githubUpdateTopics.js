@@ -4,7 +4,7 @@ const jsonRead = require('./jsonRead');
 const octokit = require('./octokit');
 
 
-async function githubTopicsUpdate(o) {
+async function githubUpdateTopics(o) {
   var o = o||{};
   var owner = o.org||ORG;
   var repo = o.package_root||PACKAGE;
@@ -14,7 +14,7 @@ async function githubTopicsUpdate(o) {
   names.length = Math.min(names.length, keywords_min);
   names = names.map(n => n.toLowerCase().replace(/_/g, '-').replace(/[^\w-]/g, ''));
   var c = {owner, repo, names};
-  console.log('githubTopicsUpdate:', c);
   await octokit.repos.replaceAllTopics(c);
+  return c;
 }
-module.exports = githubTopicsUpdate;
+module.exports = githubUpdateTopics;
