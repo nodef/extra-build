@@ -1,22 +1,24 @@
 const cpExec = require('./cpExec');
 const gitCommit = require('./gitCommit');
 const gitBranch = require('./gitBranch');
-const jsdocInit = require('./jsdocInit');
+const initJsdoc = require('./initJsdoc');
 const fs = require('fs');
 
 
 /**
- * Publish JSDoc to gh-pages branch.
+ * Update JSDoc on gh-pages branch.
+ * @param {string} pth main typescript file path
+ * @param {object} o options
  */
-function jsdoc() {
-  var src = 'src/index.ts';
+function updateJsdoc(pth, o={}) {
+  var src = pth||'src/index.ts';
   var dir = fs.mkdtempSync('docs');
   var main = gitBranch();
-  jsdocInit();
+  initJsdoc();
   cpExec(`npx typedoc "${src}" --out "${dir}"`);
   cpExec(`git checkout gh-pages`);
   cpExec(`mv "${dir}"/* ./`);
   gitCommit('');
   cpExec(`git checkout ${main}`);
 }
-module.exports = jsdoc;
+module.exports = updateJsdoc;

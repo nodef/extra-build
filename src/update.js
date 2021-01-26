@@ -5,7 +5,7 @@ const cpExec = require('./cpExec');
 const dirJsdocs = require('./dirJsdocs');
 const jsonRead = require('./jsonRead');
 const exportsJsdocs = require('./exportsJsdocs');
-const updateExports = require('./updateExports');
+const updateExport = require('./updateExport');
 const updateWiki = require('./updateWiki');
 const updateReadme = require('./updateReadme');
 const updateExample = require('./updateExample');
@@ -41,7 +41,7 @@ function update(o) {
     ]);
     console.log();
   }
-  if(o.code || o.exports) updateExports(o.exports_path, o);
+  if(o.code || o.exports) updateExport(o.exports_path, o);
   if(o.code || o.main) updateMain(o.main_path, o);
   if(o.docs || o.json) updateJson(o.json_path, o);
   if(o.docs || o.readme) updateReadme(o.readme_path, jsdocs, o);

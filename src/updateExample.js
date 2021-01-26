@@ -1,15 +1,21 @@
 const mdExample = require('./mdExample');
-const kleur = require('kleur');
 const fs = require('fs');
 
+const OPTIONS = {
+  out: 'example.js'
+};
 
-function updateExample(pth, o) {
-  var pth = pth||'example.js', o = o||{};
-  var readme = o.readme_path||'README.md';
-  var d = fs.readFileSync(readme, 'utf8');
-  var ex = mdExample(d, o.example_lang);
-  if(!ex) return;
-  console.log(kleur.bold().cyan('updateExample:'), pth);
-  fs.writeFileSync(pth, ex);
+
+/**
+ * Update example.js from README.
+ * @param {string} pth path of README file
+ * @param {object} opt options {out, language}
+ */
+function updateExample(pth, opt={}) {
+  var o = Object.assign({}, OPTIONS, opt);
+  var md = pth||'README.md';
+  var d = fs.readFileSync(md, 'utf8');
+  var ex = mdExample(d, o.language);
+  if (ex) fs.writeFileSync(o.out, ex);
 }
 module.exports = updateExample;

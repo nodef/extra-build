@@ -1,10 +1,15 @@
 const mdCodeBlocks = require('./mdCodeBlocks');
-const jsClean = require('./jsClean');
+const jsUncomment = require('./jsUncomment');
 
 
-function mdExample(md, re) {
+/**
+ * Get example from markdown.
+ * @param {string} md markdown data
+ * @param {RegExp} re language (javascript)
+ */
+function mdExample(md, re=null) {
   var bs = mdCodeBlocks(md, re);
-  var md = bs.length>1? bs[1] : (bs[0]||'');
-  return jsClean(md);
+  var b = bs[1] || bs[0] || '';
+  return jsUncomment(b);
 }
 module.exports = mdExample;

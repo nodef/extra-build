@@ -1,19 +1,22 @@
 const dirFiles = require('./dirFiles');
 const fileName = require('./fileName');
 const fileSymbol = require('./fileSymbol');
-const jsExportsDefine = require('./jsExportsDefine');
 const {EOL} = require('os');
 
 
-// Gets exports for a directory.
-function dirExports(dir, fmt='es', exc=new Set()) {
+/**
+ * Get exports for a directory.
+ * @param {string} dir directory path
+ * @param {Set} exc exception list
+ */
+function dirExport(dir, exc=new Set()) {
   var a = '';
   for(var f of dirFiles(dir)) {
     var fil = fileName(f);
     var sym = fileSymbol(f);
     if(exc.has(sym)) continue;
-    a += jsExportsDefine(sym, fil, fmt)+EOL;
+    a += `export {default as ${sym}} from './${fil}';`+EOL;
   }
   return a;
 }
-module.exports = dirExports;
+module.exports = dirExport;
