@@ -3,7 +3,7 @@ const fileKeyword = require('./fileKeyword');
 
 
 /**
- * Get keywords from files in directory.
+ * Get keywords for files in directory.
  * @param {string} dir path of directory
  */
 function dirKeywords(dir) {

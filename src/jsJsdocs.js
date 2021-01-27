@@ -1,15 +1,19 @@
 const jsdocParse = require('./jsdocParse');
 
 
-// Reads JSDocs in js file.
-function jsJsdocs(js) {
+/**
+ * Read JSDocs in js file.
+ * @param {string} js javascript data
+ * @param {string} loc location information (?)
+ */
+function jsJsdocs(js, loc='?') {
   var a = new Map(), cls = '', m = null;
   var re = /(\/\*\*.*?\*\/).*?((?:(function\*?|class|const|var|let)\s+)?([\w$]+)([^\{;]*))/gs;
-  while((m=re.exec(js))!=null) {
+  while ((m=re.exec(js)) != null) {
     var [, com, def, typ, nam, arg] = m;
-    if(typ==='class') { cls = nam; continue; }
-    if(nam==='constructor') nam = cls;
-    a.set(nam, jsdocParse(com, def||''));
+    if (typ==='class') { cls = nam; continue; }
+    if (nam==='constructor') nam = cls;
+    a.set(nam, jsdocParse(com, def||'', loc));
   }
   return a;
 }

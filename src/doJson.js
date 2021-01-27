@@ -1,6 +1,6 @@
 const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');
-const jsonKeywords = require('./jsonKeywords');
+const jsonKeywords = require('./metaKeywords');
 const mdRead = require('./mdRead');
 const mdHeading = require('./mdHeading');
 const dirKeywords = require('./dirKeywords');
@@ -11,7 +11,7 @@ const dirKeywords = require('./dirKeywords');
  * @param {string} pth path of package.json
  * @param {object} opt options {readmePath, keywordsDir, srcDir}
  */
-function updateJson(pth, opt) {
+function doJson(pth, opt) {
   var o = opt||{};
   var pth = pth||'package.json';
   var x = jsonRead(pth);
@@ -22,4 +22,4 @@ function updateJson(pth, opt) {
   x.keywords = ks0.concat(ks1);
   jsonWrite(pth, x);
 }
-module.exports = updateJson;
+module.exports = doJson;

@@ -1,33 +1,39 @@
 const PACKAGE = require('./PACKAGE');
 const cpExec = require('./cpExec');
 const kebabCase = require('./kebabCase');
+const optionStringify = require('./optionStringify');
 const fs = require('fs');
 const {EOL} = require('os');
 
+// TODO: use .package? exclude if org package
 const OPTIONS = {
-  outFile: 'index.d.ts',
+  out: 'index.d.ts',
   noBanner: true,
   module: PACKAGE
 };
+const EXCLUDE = new Set([
+  'module',
+  'out'
+]);
 
 
+/**
+ * Execute dts-bundle-generator for file.
+ * @param {string} pth path of export file
+ * @param {options} o {out, module}
+ */
 function execDts(pth, o) {
   var pth = pth||'src/index.ts';
   var o = Object.assign({}, OPTIONS, o);
-  var cmd = '.dts-bundle-generator', dts = o.outFile;
-  for(var k in o) {
-    if(k==='module') continue;
-    if(o[k]==null) continue;
-    var f = kebabCase(k);
-    if(typeof o[k]==='boolean') cmd += ` --${f}`;
-    else cmd += ` --${f} "${o[k]}"`;
-  }
-  cmd += ` "${pth}"`;
-  cpExec(cmd);
-  if(!o.module) return;
-  var d = fs.readFileSync(dts, 'utf8');
+  o.outFile = o.out;
+  console.log(`Executing dts-bundle-generator for ${pth} ...`);
+  console.log(`Output file is at ${o.out}`);
+  var opts = optionStringify(o, kebabCase, EXCLUDE);
+  cpExec(`.dts-bundle-generator ${opts} "${pth}"`);
+  if (!o.module) return;
+  var d = fs.readFileSync(o.out, 'utf8');
   d = d.replace(/export declare/g, 'export');
   d = `declare module '${o.module}' {`+EOL+d+`}`+EOL;
-  fs.writeFileSync(dts, d);
+  fs.writeFileSync(o.out, d);
 }
 module.exports = execDts;

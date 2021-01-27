@@ -1,5 +1,8 @@
-const ORG = require('./ORG');
-const PACKAGE = require('./PACKAGE');
-
-const URLREPO = `https://github.com/${ORG}/${PACKAGE}`;
-module.exports = URLREPO;
+/**
+ * Get GitHub repo URL.
+ * @param {object} o options {org, package}
+ */
+function urlRepo(o) {
+  return `https://github.com/${o.org}/${o.packageRoot||o.package}`;
+}
+module.exports = urlRepo;

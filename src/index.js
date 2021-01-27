@@ -1,1 +1,1 @@
-exports.jsdoc = require('./jsdoc');
+exports.optionRead = require('./optionRead');

@@ -4,9 +4,16 @@ const cp = require('child_process');
 const stdio = [0, 1, 2];
 
 
+/**
+ * Execute command with output.
+ * @param {string} cmd command to execute
+ * @param {object} o options (see child_process)
+ */
 function cpExec(cmd, o) {
   var o = Object.assign({stdio}, o);
-  if (o.log) console.log('$ '+cmd);
-  return cp.execSync(cmd.replace(/^\./, DIRBIN), o);
+  console.info(`$ ${cmd}`);
+  var a = cp.execSync(cmd.replace(/^\./, DIRBIN), o);
+  console.info();
+  return a;
 }
 module.exports = cpExec;

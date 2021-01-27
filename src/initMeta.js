@@ -2,9 +2,14 @@ const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');
 
 
-function initJson(pth, o) {
+/**
+ * Initialize package metadata (package.json).
+ * @param {string} pth path of package.json
+ * @param {object} o options
+ */
+function initMeta(pth, o) {
   var pth = pth||'package.json', o = o||{};
-  console.log('initJson:', pth, o);
+  console.log(`Initializing metadata at ${pth} ...`);
   var x = jsonRead(pth);
   x.runkitExampleFilename = x.runkitExampleFilename||'example.js';
   var scripts = x.scripts||{};
@@ -16,4 +21,4 @@ function initJson(pth, o) {
   x.scripts = scripts;
   jsonWrite(pth, x);
 }
-module.exports = initJson;
+module.exports = initMeta;

@@ -22,8 +22,8 @@ const fs = require('fs');
 
 const OPTIONS = {
   org: ORG,
-  package_root: PACKAGE,
-  symbol_root: SYMBOL
+  packageRoot: PACKAGE,
+  symbolRoot: SYMBOL
 };
 
 
@@ -34,13 +34,13 @@ function scatterOne(pth, o) {
   var tmp = tempy.directory();
   var [dir, fil, ext] = pathSplit(pth);
   var sym = fileSymbol(fil);
-  var pkg = o.package_dir||packageRoot(pth);
-  var src = o.src_dir||pathReplace(pkg, dir, 'src');
-  var wiki = o.wiki_dir||pathReplace(pkg, dir, 'wiki');
-  var build = o.build_dir||pathReplace(pkg, dir, 'build');
-  var node_modules0 = path.join(pkg, 'node_modules');
-  var node_modules1 = path.join(tmp, 'node_modules');
-  cpExec(`cp -r "${node_modules0}" "${node_modules1}"`);
+  var pkg = o.packageDir||packageRoot(pth);
+  var src = o.srcDir||pathReplace(pkg, dir, 'src');
+  var wiki = o.wikiDir||pathReplace(pkg, dir, 'wiki');
+  var build = o.buildDir||pathReplace(pkg, dir, 'build');
+  var nodeModules0 = path.join(pkg, 'node_modules');
+  var nodeModules1 = path.join(tmp, 'node_modules');
+  cpExec(`cp -r "${nodeModules0}" "${nodeModules1}"`);
   var json0 = path.join(pkg, 'package.json');
   var json1 = path.join(tmp, 'package.json');
   fs.copyFileSync(json0, json1);
@@ -53,7 +53,7 @@ function scatterOne(pth, o) {
   if(hasMd) fs.copyFileSync(md0, md1);
   else console.log('scatterOne:', md0, 'not found');
   var ex1 = path.join(tmp, 'example.js');
-  if(hasMd) updateExample(ex1, {readme_path: md1});
+  if(hasMd) updateExample(ex1, {readmePath: md1});
   var readme = hasMd? fs.readFileSync(md1, 'utf8'):'';
   o.package = o.package||packageName(sym);
   o.symbol = o.symbol||fileSymbol(fil+ext);

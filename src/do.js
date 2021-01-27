@@ -17,8 +17,8 @@ const tempy = require('tempy');
 
 const OPTIONS = {
   org: ORG,
-  package_root: PACKAGE,
-  symbol_root: SYMBOL,
+  packageRoot: PACKAGE,
+  symbolRoot: SYMBOL,
   asciinema: true,
   code: true,
   docs: true
@@ -27,26 +27,26 @@ const OPTIONS = {
 
 function update(o) {
   var cwd = tempy.directory(), jsdocs = null;
-  var o = Object.assign({example_dir: cwd}, OPTIONS, o);
+  var o = Object.assign({exampleDir: cwd}, OPTIONS, o);
   console.log(kleur.bold().magenta('update:'), o);
   if(o.docs || o.readme || o.wiki) {
     var pkgs = Object.keys(jsonRead().devDependencies||{});
     pkgs = pkgs.filter(p => p!=='extra-build');
-    pkgs.push(o.package_root);
+    pkgs.push(o.packageRoot);
     cpExec('npm init -y', {cwd, stdio: null});
     cpExec('npm install '+pkgs.join(' '), {cwd});
     jsdocs = new Map([
-      ...exportsJsdocs(o.exports_path),
-      ...dirJsdocs(o.src_dir)
+      ...exportsJsdocs(o.exportsPath),
+      ...dirJsdocs(o.srcDir)
     ]);
     console.log();
   }
-  if(o.code || o.exports) updateExport(o.exports_path, o);
-  if(o.code || o.main) updateMain(o.main_path, o);
-  if(o.docs || o.json) updateJson(o.json_path, o);
-  if(o.docs || o.readme) updateReadme(o.readme_path, jsdocs, o);
-  if(o.docs || o.example) updateExample(o.example_path, o);
-  if(o.docs || o.wiki) updateWiki(o.wiki_dir, jsdocs, o);
+  if(o.code || o.exports) updateExport(o.exportsPath, o);
+  if(o.code || o.main) updateMain(o.mainPath, o);
+  if(o.docs || o.json) updateJson(o.jsonPath, o);
+  if(o.docs || o.readme) updateReadme(o.readmePath, jsdocs, o);
+  if(o.docs || o.example) updateExample(o.examplePath, o);
+  if(o.docs || o.wiki) updateWiki(o.wikiDir, jsdocs, o);
   if(o.docs || o.github) return updateGithub(o);
   return Promise.resolve();
 };

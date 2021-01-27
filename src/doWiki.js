@@ -18,8 +18,8 @@ function updateWiki(dir, jsdocs, o) {
     var md = fs.readFileSync(p, 'utf8');
     var jsdoc = jsdocs.get(symbol);
     if(!jsdoc) { console.log('updateWiki: no jsdoc for '+p); continue; }
-    var diff_code_blocks = gitDiffCodeBlocks(p).length>0;
-    var o1 = Object.assign({}, o, {symbol, package, diff_code_blocks});
+    var diffCodeBlocks = gitDiffCodeBlocks(p).length>0;
+    var o1 = Object.assign({}, o, {symbol, package, diffCodeBlocks});
     md = mdSetJsdoc(md, jsdoc, o1);
     md = mdLinkWikis(md, o1);
     md = mdLinkBasics(md, o1);

@@ -2,9 +2,13 @@ const asciinema = require('extra-asciinema');
 const tempy = require('tempy');
 
 
-// Records execution of a js file, and gives its asciinema URL.
+/**
+ * Record execution of javascript file, and get its asciinema URL.
+ * @param {string} pth path of javascript file
+ * @param {object} o options (see extra-asciinema options)
+ */
 function asciinemaUpload(pth, o) {
-  console.log('asciinemaUpload:', pth, o);
+  console.log(`Uploading asciinema for ${pth} ...`);
   var f = tempy.file({extension: 'cast'});
   asciinema.recSync(f, Object.assign({input: pth}, o));
   asciinema.retimeSync(f, o);

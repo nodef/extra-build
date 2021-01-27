@@ -6,11 +6,11 @@ const fs = require('fs');
 
 
 /**
- * Update JSDoc on gh-pages branch.
+ * Publish JSDoc on gh-pages branch.
  * @param {string} pth main typescript file path
- * @param {object} o options
+ * @param {object} opt options
  */
-function updateJsdoc(pth, o={}) {
+function doJsdoc(pth, opt={}) {
   var src = pth||'src/index.ts';
   var dir = fs.mkdtempSync('docs');
   var main = gitBranch();
@@ -21,4 +21,4 @@ function updateJsdoc(pth, o={}) {
   gitCommit('');
   cpExec(`git checkout ${main}`);
 }
-module.exports = updateJsdoc;
+module.exports = doJsdoc;

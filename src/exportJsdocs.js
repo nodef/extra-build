@@ -1,27 +1,29 @@
+const fileRead = require('./fileRead');
 const jsJsdocs = require('./jsJsdocs');
-const fs = require('fs');
 const path = require('path');
 
 
-function exportsJsdocs(pth) {
-  var ext = fs.existsSync('src/index.ts')? '.ts' : '.js';
-  var pth = pth||`src/index${ext}`;
+/**
+ * Read JSDocs for files imported by an export file.
+ * @param {string} pth path of export file
+ */
+function exportJsdocs(pth) {
+  var pth = pth||'src/index.ts';
   var dir = path.dirname(pth);
   var cwd = process.cwd();
+  console.log(`Reading JSDocs for files imported by ${pth} ...`);
   process.chdir(dir);
-  console.log('exportsJsdocs:', pth);
-  var d = fs.existsSync(pth)? fs.readFileSync(pth, 'utf8') : '';
+  var d = fileRead(pth);
   var rimport = /require\(\s*[\'\"](.*?)[\'\"]\s*\)|from\s+[\'\"](.*?)[\'\"]/g;
   require.extensions['.ts'] = require.extensions['.js'];
   var a = new Map(), m = null;
   while((m=rimport.exec(d))!=null) {
     var p = require.resolve(m[1] || m[2]);
-    var js = fs.existsSync(p)? fs.readFileSync(p, 'utf8') : '';
-    var b = jsJsdocs(js);
-    if(b.size===0) { console.log('exportsJsdocs: no jsdoc for '+p); }
+    var b = jsJsdocs(fileRead(p));
+    if(b.size===0) console.error(`Error: No jsdoc for ${p}`);
     for([k, v] of b) a.set(k, v);
   }
   process.chdir(cwd);
   return a;
 }
-module.exports = exportsJsdocs;
+module.exports = exportJsdocs;

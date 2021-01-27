@@ -5,10 +5,15 @@ const SECTIONS = new Map([
 ]);
 
 
+/**
+ * Initialize Git ignore file.
+ * @param {string} pth path of .gitignore
+ * @param {object} o options
+ */
 function initGitignore(pth, o) {
   var pth = pth||'.gitignore';
   var o = Object.assign({sections: SECTIONS}, o);
-  console.log('initGitignore:', pth, o);
+  console.log(`Initializing Gitignore at ${pth} ...`);
   ignoreAdd(pth, o.sections);
 }
 module.exports = initGitignore;

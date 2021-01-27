@@ -9,8 +9,8 @@ const packageName = require('./packageName');
 function scatterJson(pth, o) {
   var pth = pth||'package.json', o = o||{};
   console.log('scatterJson:', pth);
-  var pkg = o.package || o.package_root;
-  var sym = o.symbol  || o.symbol_root;
+  var pkg = o.package || o.packageRoot;
+  var sym = o.symbol  || o.symbolRoot;
   var x = jsonRead(pth);
   x.name = packageName(pkg, o);
   x.description = o.description;
@@ -22,15 +22,15 @@ function scatterJson(pth, o) {
   }, o.exports);
   // x.type = o.type||'module';
   x.scripts = {test: 'exit'};
-  x.keywords = jsonKeywords(x, dirKeywords(o.keywords_dir));
+  x.keywords = jsonKeywords(x, dirKeywords(o.keywordsDir));
   x.keywords.push(...pkg.split(/\W/), sym);
   x.keywords = Array.from(new Set(x.keywords));
   x.dependencies = Object.assign({},
     x.dependencies, x.devDependencies,
     o.dependencies, o.devDependencies
   );
-  var dep_pkgs = Object.keys(x.dependencies)||[];
-  for(var p of dep_pkgs)
+  var depPkgs = Object.keys(x.dependencies)||[];
+  for(var p of depPkgs)
     if(!o.requires.includes(p)) x.dependencies[p] = undefined;
   x.devDependencies = undefined;
   jsonWrite(pth, x);

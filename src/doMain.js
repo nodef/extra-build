@@ -1,11 +1,9 @@
 const execTsc = require('./execTsc');
 const execRollup = require('./execRollup');
 const execDts = require('./execDts');
-const pathSplit = require('./pathSplit');
 const pathReplaceExt = require('./pathReplaceExt');
 const jsUncomment = require('./jsUncomment');
 const jsLinkWiki = require('./jsLinkWiki');
-const path = require('path');
 const fs = require('fs');
 
 var OPTIONS = {
@@ -19,7 +17,7 @@ var OPTIONS = {
  * @param {string} ts path of main typescript file
  * @param {object} opt options
  */
-function updateMain(pth, opt) {
+function doMain(pth, opt) {
   var o = Object.assign({}, OPTIONS, opt);
   var ts = pth||'src/index.ts';
   var dts = pathReplaceExt(ts, '.d.ts');
@@ -39,4 +37,4 @@ function updateMain(pth, opt) {
   var d = fs.readFileSync(dts1, 'utf8');
   fs.writeFileSync(dts1, jsLinkWiki(d, o));
 }
-module.exports = updateMain;
+module.exports = doMain;

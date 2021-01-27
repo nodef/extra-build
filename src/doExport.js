@@ -8,16 +8,16 @@ const fs = require('fs');
 
 
 /**
- * Updates export file, with missing declarations.
- * @param {string} pth path of main typescipt file (src/index.ts)
+ * Generate export file with declarations.
+ * @param {string} pth path of export file (src/index.ts)
  */
-function updateExport(pth) {
+function doExport(pth) {
   var ts = pth||'src/index.ts';
   var dts = pathReplaceExt(ts, '.d.ts');
   var dir = path.dirname(ts);
   var d = exportCustom(fileRead(ts));
   var custom = exportSymbols(d);
-  fs.writeFileSync(ts, d + dirExport(dir, custom));
+  fs.writeFileSync(ts, d+dirExport(dir, custom));
   fs.writeFileSync(dts, dirExport(dir));
 }
-module.exports = updateExport;
+module.exports = doExport;

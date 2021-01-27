@@ -1,6 +1,11 @@
-const wikiLink = require('./wikiLink');
+const urlWiki = require('./urlWiki');
 
-// Add more link to jsdoc.
+
+/**
+ * Add Wiki Link to JSDocs.
+ * @param {string} js js data
+ * @param {object} o options
+ */
 function jsLinkWiki(js, o) {
   var re = /(\/\*\*.*?\*\/).*?((export\s+)?(?:(function\*?|class|const|var|let)\s+)?([\w$]+)([^\{;]*))/gs;
   var rdesc = /(\s+\*\s+)(.*?)(\r?\n)/, cls = '';
@@ -8,7 +13,7 @@ function jsLinkWiki(js, o) {
     if(!exp) return m;
     if(typ==='class') cls = nam;
     if(nam==='constructor') nam = cls;
-    return m.replace(com, com.replace(rdesc, `$1$2$1[more](${wikiLink(nam, o)})$3`));
+    return m.replace(com, com.replace(rdesc, `$1$2$1[📘](${urlWiki(nam, o)})$3`));
   });
 }
 module.exports = jsLinkWiki;

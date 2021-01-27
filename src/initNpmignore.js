@@ -7,10 +7,15 @@ const SECTIONS = new Map([
 ]);
 
 
+/**
+ * Initialize NPM ignore file.
+ * @param {string} pth path of .npmignore
+ * @param {object} o options
+ */
 function initNpmignore(pth, o) {
   var pth = pth||'.npmignore';
   var o = Object.assign({sections: SECTIONS}, o);
-  console.log('initNpmignore:', pth, o);
+  console.log(`Initializing NPM ignore at ${pth}`);
   ignoreAdd(pth, o.sections);
 }
 module.exports = initNpmignore;

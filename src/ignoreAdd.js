@@ -1,18 +1,23 @@
+const fileRead = require('./fileRead');
 const fs = require('fs');
 const {EOL} = require('os');
 
 
-// Initializes gitignore file.
+/**
+ * Add sections to ignore file.
+ * @param {string} pth path of ignore file
+ * @param {Map<string, Array<string>>} sections named ignore sections
+ */
 function ignoreAdd(pth, sections) {
-  var e = fs.existsSync(pth), a = '';
-  var d = e? fs.readFileSync(pth, 'utf8') : '';
+  var d = fileRead(pth), n = 0, a = '';
   for(var [k, ls] of sections) {
     if(d.includes('# '+k)) continue;
     a += '# '+k+EOL;
     a += ls.join(EOL)+EOL+EOL;
+    n++;
   }
-  if(!a) return;
-  console.log('ignoreAdd:', pth, sections);
+  if(n === 0) return;
   fs.writeFileSync(pth, a+d);
+  console.log(`Added ${n} sections to ignore file ${pth}`);
 }
 module.exports = ignoreAdd;

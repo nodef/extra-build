@@ -11,7 +11,7 @@ function mdSetJsdoc(md, jsdoc, o) {
   var pars = [...params].map(([k, v]) => `// ${(k.replace(/.*?\./, '.')+':').padEnd(pre+2)}${v.description}`);
   var def =
     '```javascript'+EOL+
-    `${o.symbol_root}.${o.symbol}` + (isFn? `(`+args.join(', ')+`)`:'') + ';'+EOL+
+    `${o.symbolRoot}.${o.symbol}` + (isFn? `(`+args.join(', ')+`)`:'') + ';'+EOL+
     (isFn? pars.join(EOL)+EOL : '')+
     (returns? `// --> `+returns.description+EOL:'')+
     '```'+EOL;

@@ -1,19 +1,20 @@
 const mdLinks = require('./mdLinks');
 const mdSetHref = require('./mdSetHref');
 const mdFilterHrefs = require('./mdFilterHrefs');
-const wikiLink = require('./wikiLink');
+const urlWiki = require('./urlWiki');
 
 const RWIKI = /github\.com.*?\/wiki\//;
 
-function mdLinkWikis(x, o) {
-  var ls = mdLinks(x), ws = new Set();
-  x = mdFilterHrefs(x, (v, k) => {
+
+function mdLinkWikis(md, o) {
+  var ls = mdLinks(md), ws = new Set();
+  md = mdFilterHrefs(md, (v, k) => {
     if(!ls.has(k)) return false;
     if(RWIKI.test(v)) ws.add(k);
     return true;
   });
   for(var k of ws)
-    x = mdSetHref(x, k, wikiLink(k, o));
-  return x;
+    md = mdSetHref(md, k, urlWiki(k, o));
+  return md;
 }
 module.exports = mdLinkWikis;

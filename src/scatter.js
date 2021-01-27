@@ -15,9 +15,9 @@ const path = require('path');
 
 const OPTIONS = {
   org: ORG,
-  package_root: PACKAGE,
-  symbol_root: SYMBOL,
-  standalone_root: STANDALONE
+  packageRoot: PACKAGE,
+  symbolRoot: SYMBOL,
+  standaloneRoot: STANDALONE
 };
 
 
@@ -41,8 +41,8 @@ function scatter(dir, o) {
     console.log();
   }
   try {
-  standalone = o.standalone_root;
-  cpExec('npm pack '+o.package_root);
+  standalone = o.standaloneRoot;
+  cpExec('npm pack '+o.packageRoot);
   var tgz = cpExecStr('ls *.tgz');
   cpExec(`tar -xvf ${tgz} package/ --strip-components=1`);
   cpExec('rm -rf '+tgz)

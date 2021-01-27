@@ -6,11 +6,16 @@ const octokit = require('./octokit');
 const fs = require('fs');
 
 
-async function githubUpdateDetails(opt={}) {
-  var o = opt||{};
+// TODO: use package.json description
+/**
+ * Update GitHub description, homepage from README.
+ * @param {object} o options
+ */
+async function githubUpdateDetails(o={}) {
+  var o = o||{};
   var owner = o.org||ORG;
-  var repo = o.package_root||PACKAGE;
-  var readme = o.readme_path||'README.md';
+  var repo = o.packageRoot||PACKAGE;
+  var readme = o.readmeRath||'README.md';
   var md = fs.readFileSync(readme, 'utf8');
   var description = o.description||mdHeading(md);
   var homepage = o.homepage||URLNPM;

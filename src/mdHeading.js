@@ -1,12 +1,12 @@
 /**
  * Get heading from markdown text.
- * @param {string} d markdown data
+ * @param {string} md markdown data
  */
-function mdHeading(d) {
-  d = d.replace(/\r?\n[\s\S]*/, '');
-  d = d.replace(/[\_\[\]]/g, '');
-  d = d.replace(/\*(.*?)\*/g, '$1');
-  d = d.replace(/\:.*?\:/g, '');
-  return d.trim();
+function mdHeading(md) {
+  md = md.replace(/\r?\n[\s\S]*/, '');
+  md = md.replace(/[\_\[\]]/g, '');
+  md = md.replace(/\*(.*?)\*/g, '$1');
+  md = md.replace(/\:.*?\:/g, '');
+  return md.trim();
 }
 module.exports = mdHeading;

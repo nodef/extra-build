@@ -4,14 +4,18 @@ const jsonRead = require('./jsonRead');
 const octokit = require('./octokit');
 
 
+/**
+ * Update GitHub topics from package.json.
+ * @param {object} o options
+ */
 async function githubUpdateTopics(o) {
   var o = o||{};
   var owner = o.org||ORG;
-  var repo = o.package_root||PACKAGE;
+  var repo = o.packageRoot||PACKAGE;
   var {names} = (await octokit.repos.getAllTopics({owner, repo})).data;
-  var keywords_min = o.keywords_min||10;
+  var keywordsMin = o.keywordsMin||10;
   var names = o.keywords||jsonRead().keywords;
-  names.length = Math.min(names.length, keywords_min);
+  names.length = Math.min(names.length, keywordsMin);
   names = names.map(n => n.toLowerCase().replace(/_/g, '-').replace(/[^\w-]/g, ''));
   var c = {owner, repo, names};
   await octokit.repos.replaceAllTopics(c);
