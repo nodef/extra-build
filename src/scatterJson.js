@@ -1,6 +1,6 @@
 const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');
-const jsonKeywords = require('./jsonKeywords');
+const metaKeywords = require('./metaKeywords');
 const dirKeywords = require('./dirKeywords');
 const packageName = require('./packageName');
 
@@ -22,7 +22,7 @@ function scatterJson(pth, o) {
   }, o.exports);
   // x.type = o.type||'module';
   x.scripts = {test: 'exit'};
-  x.keywords = jsonKeywords(x, dirKeywords(o.keywordsDir));
+  x.keywords = metaKeywords(x, dirKeywords(o.keywordsDir));
   x.keywords.push(...pkg.split(/\W/), sym);
   x.keywords = Array.from(new Set(x.keywords));
   x.dependencies = Object.assign({},

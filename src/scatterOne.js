@@ -13,7 +13,7 @@ const scatterMd = require('./scatterMd');
 const scatterTs = require('./scatterTs');
 const scatterJs = require('./scatterJs');
 const scatterJson = require('./scatterJson');
-const updateExample = require('./updateExample');
+const doExample = require('./doExample');
 const jsLinkWiki = require('./jsLinkWiki');
 const kleur = require('kleur');
 const tempy = require('tempy');
@@ -53,7 +53,7 @@ function scatterOne(pth, o) {
   if(hasMd) fs.copyFileSync(md0, md1);
   else console.log('scatterOne:', md0, 'not found');
   var ex1 = path.join(tmp, 'example.js');
-  if(hasMd) updateExample(ex1, {readmePath: md1});
+  if(hasMd) doExample(ex1, {readmePath: md1});
   var readme = hasMd? fs.readFileSync(md1, 'utf8'):'';
   o.package = o.package||packageName(sym);
   o.symbol = o.symbol||fileSymbol(fil+ext);

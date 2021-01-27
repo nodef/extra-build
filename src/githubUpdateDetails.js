@@ -1,6 +1,6 @@
 const ORG = require('./ORG');
 const PACKAGE = require('./PACKAGE');
-const URLNPM = require('./URLNPM');
+const urlPackage = require('./urlPackage');
 const mdHeading = require('./mdHeading');
 const octokit = require('./octokit');
 const fs = require('fs');
@@ -18,7 +18,7 @@ async function githubUpdateDetails(o={}) {
   var readme = o.readmeRath||'README.md';
   var md = fs.readFileSync(readme, 'utf8');
   var description = o.description||mdHeading(md);
-  var homepage = o.homepage||URLNPM;
+  var homepage = o.homepage||urlPackage(o);
   var c = {owner, repo, description, homepage};
   await octokit.repos.update(c);
   return c;

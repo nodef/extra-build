@@ -4,14 +4,14 @@ const SYMBOL = require('./SYMBOL');
 const cpExec = require('./cpExec');
 const dirJsdocs = require('./dirJsdocs');
 const jsonRead = require('./jsonRead');
-const exportsJsdocs = require('./exportsJsdocs');
-const updateExport = require('./updateExport');
-const updateWiki = require('./updateWiki');
-const updateReadme = require('./updateReadme');
-const updateExample = require('./updateExample');
-const updateJson = require('./updateJson');
-const updateGithub = require('./updateGithub');
-const updateMain = require('./updateMain');
+const exportJsdocs = require('./exportJsdocs');
+const doExport = require('./doExport');
+const doWiki = require('./doWiki');
+const doReadme = require('./doReadme');
+const doExample = require('./doExample');
+const doJson = require('./doJson');
+const doGithub = require('./doGithub');
+const doMain = require('./doMain');
 const kleur = require('kleur');
 const tempy = require('tempy');
 
@@ -36,18 +36,18 @@ function update(o) {
     cpExec('npm init -y', {cwd, stdio: null});
     cpExec('npm install '+pkgs.join(' '), {cwd});
     jsdocs = new Map([
-      ...exportsJsdocs(o.exportsPath),
+      ...exportJsdocs(o.exportsPath),
       ...dirJsdocs(o.srcDir)
     ]);
     console.log();
   }
-  if(o.code || o.exports) updateExport(o.exportsPath, o);
-  if(o.code || o.main) updateMain(o.mainPath, o);
-  if(o.docs || o.json) updateJson(o.jsonPath, o);
-  if(o.docs || o.readme) updateReadme(o.readmePath, jsdocs, o);
-  if(o.docs || o.example) updateExample(o.examplePath, o);
-  if(o.docs || o.wiki) updateWiki(o.wikiDir, jsdocs, o);
-  if(o.docs || o.github) return updateGithub(o);
+  if(o.code || o.exports) doExport(o.exportsPath, o);
+  if(o.code || o.main) doMain(o.mainPath, o);
+  if(o.docs || o.json) doJson(o.jsonPath, o);
+  if(o.docs || o.readme) doReadme(o.readmePath, jsdocs, o);
+  if(o.docs || o.example) doExample(o.examplePath, o);
+  if(o.docs || o.wiki) doWiki(o.wikiDir, jsdocs, o);
+  if(o.docs || o.github) return doGithub(o);
   return Promise.resolve();
 };
 module.exports = update;
