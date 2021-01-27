@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const {optionRead} = require('./src');
+const {optionRead, doJsdoc} = require('./src');
 const kleur = require('kleur');
 const cp = require('child_process');
 
@@ -16,11 +16,8 @@ function main(a) {
     i = optionRead(o, a[i], a, i);
   if (o.help) return cp.execSync('less README.md', {cwd: process.cwd(), stdio});
   console.log(o);
-  return;
   switch (o.command) {
-    case 'init': return build.init(o);
-    case 'update': return build.update(o);
-    case 'scatter': return build.scatter(o.dir, o);
+    case 'jsdoc': return doJsdoc(null, o);
     default: return;
   }
 }
