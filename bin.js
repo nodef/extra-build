@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const {optionRead, doJsdoc} = require('./src');
+const {optionRead, doJsdoc, doGithub} = require('./src');
 const kleur = require('kleur');
 const cp = require('child_process');
 
@@ -18,6 +18,7 @@ function main(a) {
   console.log(o);
   switch (o.command) {
     case 'jsdoc': return doJsdoc(null, o);
+    case 'github': return doGithub(o);
     default: return;
   }
 }

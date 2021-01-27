@@ -20,7 +20,8 @@ async function githubUpdateDetails(o={}) {
   var description = o.description||mdHeading(md);
   var homepage = o.homepage||urlPackage(o);
   var c = {owner, repo, description, homepage};
+  console.log(`Description: ${description}`);
+  console.log(`Website: ${homepage}`);
   await octokit.repos.update(c);
-  return c;
 }
 module.exports = githubUpdateDetails;

@@ -18,7 +18,7 @@ async function githubUpdateTopics(o) {
   names.length = Math.min(names.length, keywordsMin);
   names = names.map(n => n.toLowerCase().replace(/_/g, '-').replace(/[^\w-]/g, ''));
   var c = {owner, repo, names};
+  console.log(`Topics: ${names.join(', ')}`);
   await octokit.repos.replaceAllTopics(c);
-  return c;
 }
 module.exports = githubUpdateTopics;
