@@ -1,10 +1,13 @@
 const kebabCase = require('./kebabCase');
 
 
-function packageName(x, o) {
-  var x = kebabCase(x.replace(/\$/g, 'Update')), o = o||{};
-  if(!o.name) return x;
-  if(!o.name.startsWith('@')) return `@${o.name}/${x}`;
-  return `${o.name}.${x}`;
+/**
+ * Get full package name.
+ * @param {string} x base name
+ * @param {string} r root name
+ */
+function packageName(x, r=null) {
+  var x = kebabCase(x.replace(/\$/g, 'Update'));
+  return !r? x : (!r.startsWith('@')? `@${r}/${x}` : `${r}.${x}`);
 }
 module.exports = packageName;

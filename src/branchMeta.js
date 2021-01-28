@@ -12,7 +12,7 @@ function branchMeta(pth, o) {
   var nam = o.name||o.nameRoot;
   var sym = o.symbol||o.symbolRoot;
   var x = jsonRead(pth);
-  x.name = packageName(nam, o);
+  x.name = nam;
   x.description = o.description;
   x.main = o.main||'index.js';
   x.module = o.module||'index.mjs';
