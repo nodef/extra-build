@@ -3,7 +3,7 @@ const mdSetHref = require('./mdSetHref');
 const mdFilterHref = require('./mdFilterHref');
 const urlWiki = require('./urlWiki');
 
-const RWIKI = /github\.com.*?\/wiki\//;
+const RWIKI = /github\.com.*?\/wiki\/.+/;
 
 
 function mdLinkWikis(md, o) {
