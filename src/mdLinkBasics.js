@@ -66,7 +66,6 @@ function linkHeavy(md, ls, ns, hs) {
   var lnks = ls.map(l => `${l} [${ns.get(l)}](${hs.get(l)})`).join(',\n');
   for (var l of ls)
     md = mdSetHref(md, l, null);
-  console.log(lnks);
   md = md.replace(/^([^:]+\.)[\s\S]*?\n\n|^([^:]+\.)\n\n/, '$1$2<br>'+'\n'+lnks+'.\n\n');
   return md;
 }

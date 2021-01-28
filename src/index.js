@@ -2,6 +2,8 @@ const cpExec = require('./cpExec');
 const fileRead = require('./fileRead');
 const jsonRead = require('./jsonRead');
 const dirJsdocs = require('./dirJsdocs');
+const pathReplaceExt = require('./pathReplaceExt');
+const gitRemoteUrl = require('./gitRemoteUrl');
 const exportJsdocs = require('./exportJsdocs');
 const mdHeading = require('./mdHeading');
 const doExport = require('./doExport');
@@ -18,7 +20,6 @@ const standaloneName = require('./standaloneName');
 const urlPackage = require('./urlPackage');
 const fs = require('fs');
 const path = require('path');
-const pathReplaceExt = require('./pathReplaceExt');
 
 const CODE = ['exports', 'main'];
 const DOCS = ['metadata', 'readme', 'example', 'jsdoc', 'wiki', 'github'];
@@ -112,6 +113,8 @@ function initProps(o) {
   o.asciinema = o.asciinema??true;
   o.headerHeavy = o.headerHeavy??true;
   o.subpublish = o.subpublish??true;
+  o.repoUrl = o.repoUrl||gitRemoteUrl();
+  o.wikiUrl = o.wikiUrl||`${o.repoUrl}.wiki`;
   // o.keywords = o.keywords||m.keywords;
 }
 module.exports = build;

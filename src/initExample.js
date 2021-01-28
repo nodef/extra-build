@@ -1,3 +1,7 @@
+const jsonRead = require('./jsonRead');
+const cpExec = require('./cpExec');
+
+
 function initExample(o) {
   var cwd = o.exampleDir;
   var m = jsonRead(o.metadata);

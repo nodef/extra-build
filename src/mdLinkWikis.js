@@ -9,7 +9,6 @@ const RWIKI = /github\.com.*?\/wiki\/.+/;
 function mdLinkWikis(md, o) {
   var ls = mdLinks(md), ws = new Set();
   md = mdFilterHref(md, (v, k) => {
-    console.log({k, v});
     if(!ls.delete(k)) return false;
     if(RWIKI.test(v)) ws.add(k);
     return true;

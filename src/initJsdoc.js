@@ -8,12 +8,15 @@ const gitCommit = require('./gitCommit');
  */
 function initJsdoc(o) {
   if (gitBranchExists('gh-pages')) return;
-  var {jsdocDir: cwd} = o;
-  cpExec(`rm -rf "${cwd}"`);
+  var {jsdocDir: dir} = o;
+  cpExec(`rm -rf "${dir}"`);
   var url = gitRemoteUrl();
-  cpExec(`git clone ${url} "${cwd}"`);
-  cpExec(`git checkout --orphan gh-pages`, {cwd});
-  cpExec(`rm -rf *`, {cwd});
-  gitCommit('initial commit', {cwd, push: ' --set-upstream origin gh-pages'})
+  cpExec(`git clone ${url} "${dir}"`);
+  var cwd = process.cwd();
+  process.chdir(dir);
+  cpExec(`git checkout --orphan gh-pages`);
+  cpExec(`rm -rf *`);
+  gitCommit('initial commit', {push: ' --set-upstream origin gh-pages'})
+  process.chdir(cwd);
 }
 module.exports = initJsdoc;

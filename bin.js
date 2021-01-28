@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const build = require('./');
 const optionRead = require('./src/optionRead');
-const kleur = require('kleur');
 const cp = require('child_process');
 
 const E = process.env;
@@ -16,7 +15,6 @@ function main(a) {
   for (var i=2, I=a.length; i<I;)
     i = optionRead(o, a[i], a, i);
   if (o.help) return cp.execSync('less README.md', {cwd: process.cwd(), stdio});
-  console.log(o);
   var cmds = o.command.split(/\W/);
   build(cmds, o);
 }

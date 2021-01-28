@@ -5,6 +5,7 @@ const mdLinkWikis = require('./mdLinkWikis');
 const mdLinkBasics = require('./mdLinkBasics');
 const packageName = require('./packageName');
 const gitDiffCodeBlocks = require('./gitDiffCodeBlocks')
+const initWiki = require('./initWiki');
 const fs = require('fs');
 const path = require('path');
 
@@ -12,6 +13,7 @@ const path = require('path');
 function updateWiki(dir, jsdocs, o) {
   var dir = dir||'wiki', o = o||{};
   var headerHeavy = false;
+  initWiki(o.sourceDir, o);
   for(var f of dirFiles(dir)) {
     var subsymbol = fileSymbol(f);
     var subname = packageName(subsymbol, o);
