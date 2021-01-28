@@ -16,9 +16,9 @@ function branch(dir, o) {
     var p = scatterOne(pth, o);
     var cwd = path.dirname(p.metadata);
     cpExec('npm publish', {cwd});
-    minify(tmp, p);
+    minify(cwd, p);
     cpExec('npm publish', {cwd});
-    cpExec(`rm -rf "${tmp}"`);
+    cpExec(`rm -rf "${cwd}"`);
     }
     catch(e) { console.error(e); }
     console.log();
