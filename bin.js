@@ -1,7 +1,10 @@
 #!/usr/bin/env node
-const {optionRead, doJsdoc, doGithub} = require('./src');
+const {optionRead, doJsdoc, doGithub, doExample, doReadme} = require('./src');
 const kleur = require('kleur');
 const cp = require('child_process');
+const doExport = require('./src/doExport');
+const doJson = require('./src/doJson');
+const doMain = require('./src/doMain');
 
 const E = process.env;
 const OPTIONS = {
@@ -19,6 +22,11 @@ function main(a) {
   switch (o.command) {
     case 'jsdoc': return doJsdoc(null, o);
     case 'github': return doGithub(o);
+    case 'example': return doExample(null, o);
+    case 'export': return doExport(null);
+    case 'json': return doJson(null, o);
+    case 'main': return doMain(null, o);
+    case 'readme': return doReadme(null,)
     default: return;
   }
 }

@@ -28,7 +28,7 @@ function execDts(pth, o) {
   o.outFile = o.out;
   console.log(`Executing dts-bundle-generator for ${pth} ...`);
   console.log(`Output file is at ${o.out}`);
-  var opts = optionStringify(o, kebabCase, EXCLUDE);
+  var opts = optionStringify(o, k => EXCLUDE.has(k)? null : kebabCase(k));
   cpExec(`.dts-bundle-generator ${opts} "${pth}"`);
   if (!o.module) return;
   var d = fs.readFileSync(o.out, 'utf8');

@@ -12,7 +12,7 @@ const stdio = [0, 1, 2];
 function cpExec(cmd, o) {
   var o = Object.assign({stdio}, o);
   console.info(`$ ${cmd}`);
-  var a = cp.execSync(cmd.replace(/^\./, DIRBIN), o);
+  var a = cp.execSync(cmd.replace(/^\./, ''), o);
   console.info();
   return a;
 }
