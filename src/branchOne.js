@@ -3,6 +3,7 @@ const pathSplit = require('./pathSplit');
 const fileSymbol = require('./fileSymbol');
 const packageRequires = require('./packageRequires');
 const packageName = require('./packageName');
+const symbolName = require('./symbolName');
 const mdHeading = require('./mdHeading');
 const branchMd = require('./branchMd');
 const branchTs = require('./branchTs');
