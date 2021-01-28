@@ -31,6 +31,6 @@ function doJsdoc(pth, o) {
   cpExec(`git clone ${url} "${out}"`);
   cpExec(`git checkout gh-pages`, {cwd: out});
   cpExec(`npx typedoc "${pth}" ${opts}`);
-  gitCommit('');
+  gitCommit('', {cwd: out});
 }
 module.exports = doJsdoc;
