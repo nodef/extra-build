@@ -11,8 +11,8 @@ function gitCommit(m='', o={}) {
   if (m) o.commit += ` -m "${m}"`;
   else o.commit += ` --amend --no-edit`;
   if (!m) o.push += ` -f`;
-  cpExec(`git add .`);
-  cpExec(`git commit${o.commit}`)
-  cpExec(`git push${o.push}`);
+  cpExec(`git add .`, o);
+  cpExec(`git commit${o.commit}`, o);
+  cpExec(`git push${o.push}`, o);
 }
 module.exports = gitCommit;

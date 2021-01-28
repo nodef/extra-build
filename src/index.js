@@ -6,6 +6,7 @@ const exportJsdocs = require('./exportJsdocs');
 const mdHeading = require('./mdHeading');
 const doExport = require('./doExport');
 const doWiki = require('./doWiki');
+const doJsdoc = require('./doJsdoc');
 const doReadme = require('./doReadme');
 const doExample = require('./doExample');
 const doMeta = require('./doMeta');
@@ -20,7 +21,7 @@ const path = require('path');
 const pathReplaceExt = require('./pathReplaceExt');
 
 const CODE = ['exports', 'main'];
-const DOCS = ['metadata', 'readme', 'example', 'wiki', 'github'];
+const DOCS = ['metadata', 'readme', 'example', 'jsdoc', 'wiki', 'github'];
 const ALL = [...CODE, ...DOCS, 'publish'];
 
 
@@ -43,6 +44,7 @@ async function build(cmds, o) {
       ...dirJsdocs(o.sourceDir)
     ]);
   }
+  if (c.jsdoc) doJsdoc(o.source, o);
   if (c.exports) doExport(o.source, o);
   if (c.main) doMain(o.source, o);
   if (c.metadata) doMeta(o.metadata, o);

@@ -1,9 +1,8 @@
 const cpExec = require('./cpExec');
 const gitCommit = require('./gitCommit');
-const gitBranch = require('./gitBranch');
+const gitRemoteUrl = require('./gitRemoteUrl');
 const initJsdoc = require('./initJsdoc');
 const optionStringify = require('./optionStringify');
-const fs = require('fs');
 
 const TYPEDOC = new Set([
   'categorizeByGroup', 'categoryOrder', 'defaultCategory', 'disableOutputCheck',
@@ -22,17 +21,16 @@ const TYPEDOC = new Set([
  * @param {object} o options
  */
 function doJsdoc(pth, o) {
-  var o = Object.assign({}, o, {out: dir});
-  var pth = pth||o.sourcePath||'src/index.ts';
+  var {jsdocDir: out} = o;
+  var o = Object.assign({}, o, {out});
+  var pth = pth||'src/index.ts';
   var opts = optionStringify(o, k => TYPEDOC.has(k)? k : null);
-  var dir = fs.mkdtempSync('docs');
-  var main = gitBranch();
-  initJsdoc();
+  initJsdoc(o);
+  cpExec(`rm -rf "${out}"`);
+  var url = gitRemoteUrl();
+  cpExec(`git clone ${url} "${out}"`);
+  cpExec(`git checkout gh-pages`, {cwd: out});
   cpExec(`npx typedoc "${pth}" ${opts}`);
-  cpExec(`git checkout gh-pages`);
-  cpExec(`cp -rf "${dir}"/* ./`);
-  cpExec(`rm -rf ${dir}`);
   gitCommit('');
-  cpExec(`git checkout ${main}`);
 }
 module.exports = doJsdoc;
