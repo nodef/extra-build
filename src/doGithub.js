@@ -1,5 +1,3 @@
-const ORG = require('./ORG');
-const PACKAGE = require('./PACKAGE');
 const githubUpdateDetails = require('./githubUpdateDetails');
 const githubUpdateTopics = require('./githubUpdateTopics');
 

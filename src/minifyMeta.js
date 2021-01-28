@@ -3,9 +3,9 @@ const jsonWrite = require('./jsonWrite');
 
 
 // Adds minified message to package.json in place.
-function minifyJson(pth, o) {
+function minifyMeta(pth, o) {
   var pth = pth||'package.json', o = o||{};
-  console.log('minifyJson:', pth);
+  console.log(`Minifying metadata at ${pth} ...`);
   var m = jsonRead(pth);
   m.name += '.min';
   m.description = m.description.replace('.$', ' (browserified, minifined).');
@@ -15,4 +15,4 @@ function minifyJson(pth, o) {
   m.dependencies = undefined;
   jsonWrite(pth, m);
 }
-module.exports = minifyJson;
+module.exports = minifyMeta;

@@ -1,4 +1,3 @@
-const PACKAGE = require('./PACKAGE');
 const cpExec = require('./cpExec');
 const kebabCase = require('./kebabCase');
 const optionStringify = require('./optionStringify');
@@ -9,7 +8,6 @@ const {EOL} = require('os');
 const OPTIONS = {
   out: 'index.d.ts',
   noBanner: true,
-  module: PACKAGE
 };
 const EXCLUDE = new Set([
   'module',
@@ -30,10 +28,10 @@ function execDts(pth, o) {
   console.log(`Output file is at ${o.out}`);
   var opts = optionStringify(o, k => EXCLUDE.has(k)? null : kebabCase(k));
   cpExec(`.dts-bundle-generator ${opts} "${pth}"`);
-  if (!o.module) return;
+  if (!o.moduleName) return;
   var d = fs.readFileSync(o.out, 'utf8');
   d = d.replace(/export declare/g, 'export');
-  d = `declare module '${o.module}' {`+EOL+d+`}`+EOL;
+  d = `declare module '${o.moduleName}' {`+EOL+d+`}`+EOL;
   fs.writeFileSync(o.out, d);
 }
 module.exports = execDts;

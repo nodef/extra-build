@@ -20,6 +20,7 @@ function doMeta(pth, o) {
   var ks1 = dirKeywords(o.keywordsDir);
   var ks0 = jsonKeywords(m, ks1);
   m.keywords = o.keywords||ks0.concat(ks1);
+  o.keywords = m.keywords;
   jsonWrite(pth, m);
 }
 module.exports = doMeta;

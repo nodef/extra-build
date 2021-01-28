@@ -37,7 +37,7 @@ async function build(cmds, o) {
   initPaths(o);
   initProps(o);
   if (c.readme || c.wiki) {
-    if (false) initExample(o);
+    initExample(o);
     jsdocs = new Map([
       ...exportJsdocs(o.source),
       ...dirJsdocs(o.sourceDir)
@@ -75,6 +75,7 @@ function initPaths(o) {
   var m = jsonRead(o.metadata);
   var tsc = jsonRead(o.tsconfig);
   o.sourceDir = o.sourceDir||path.dirname(o.source);
+  o.wikiDir = o.wikiDir||'wiki';
   o.keywordsDir = o.keywordsDir||o.sourceDir;
   o.buildDir = o.buildDir||tsc.outDir||'.build';
   o.build = path.join(o.buildDir, pathReplaceExt(path.basename(o.source), '.js'));
@@ -98,14 +99,16 @@ function initProps(o) {
   o.name = o.name||m.name;
   o.symbol = o.symbol||symbolName(o.name);
   o.standalone = o.standalone||standaloneName(o.symbol);
-  o.subname = o.name;
-  o.subsymbol = o.symbol;
-  o.substandalone = o.standalone;
+  o.nameRoot = o.name;
+  o.symbolRoot = o.symbol;
+  o.standaloneRoot = o.standalone;
   o.moduleName = o.moduleName??o.name;
   o.description = o.description||mdHeading(r)||m.description;
   o.homepage = o.homepage||m.homepage||urlPackage(o);
   o.keywordsMin = o.keywordsMin??10;
   o.asciinema = o.asciinema??true;
+  o.headerHeavy = o.headerHeavy??true;
+  o.subpublish = o.subpublish??true;
   // o.keywords = o.keywords||m.keywords;
 }
 
@@ -115,7 +118,7 @@ function initExample(o) {
   var m = jsonRead(o.metadata);
   var pkgs = Object.keys(m.devDependencies||{});
   pkgs = pkgs.filter(p => p !== 'extra-build');
-  pkgs.push(o.packageRoot);
+  pkgs.push(o.nameRoot);
   cpExec('npm init -y', {cwd, stdio: null});
   cpExec('npm install '+pkgs.join(' '), {cwd});
 }

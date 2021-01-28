@@ -7,7 +7,7 @@ const UGLIFYLIMIT = 4*1024*1024;
 // Minifies JS file in place.
 function minifyJs(pth, o) {
   var pth = pth||'index.js', o = o||{};
-  console.log('minifyJs:', pth);
+  console.log(`Minifying JS at ${pth} ...`);
   var s = fs.statSync(pth);
   // cpExec(`.rollup --format=cjs --file=${pth}.1 -- ${pth}`);
   cpExec(`.browserify ${pth} -s ${o.standalone} -o ${pth}.1`);

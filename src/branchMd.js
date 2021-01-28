@@ -3,15 +3,15 @@ const {EOL} = require('os');
 
 
 // Update README.md based on scatter options.
-function scatterMd(pth, o) {
+function branchMd(pth, o) {
   var pth = pth||'README.md', o = o||{};
-  console.log('scatterMd:', pth);
+  console.log(`Branching MD ${pth} ...`);
   var d = fs.readFileSync(pth, 'utf8');
   d = d.replace(o.noteTop||/\s+```/, '<br>'+EOL+
-    `> This is part of package [${o.packageRoot}].`+EOL+EOL+
-    `[${o.packageRoot}]: https://www.npmjs.com/package/${o.packageRoot}`+EOL+EOL+
+    `> This is part of package [${o.nameRoot}].`+EOL+EOL+
+    `[${o.nameRoot}]: https://www.npmjs.com/package/${o.nameRoot}`+EOL+EOL+
     (o.noteTopValue||'```')
   );
   fs.writeFileSync(pth, d);
 }
-module.exports = scatterMd;
+module.exports = branchMd;

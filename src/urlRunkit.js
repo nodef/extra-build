@@ -1,8 +1,8 @@
 /**
  * Get RunKit URL.
- * @param {options} o options {package}
+ * @param {options} o options {name}
  */
 function urlRunkit(o) {
-  return `https://npm.runkit.com/${o.subname||o.name}`;
+  return `https://npm.runkit.com/${o.name||o.nameRoot}`;
 }
 module.exports = urlRunkit;

@@ -1,8 +1,8 @@
 /**
  * Get NPM package URL.
- * @param {options} o options {package}
+ * @param {options} o options {name}
  */
 function urlPackage(o) {
-  return `https://www.npmjs.com/package/${o.subname||o.name}`;
+  return `https://www.npmjs.com/package/${o.name||o.nameRoot}`;
 }
 module.exports = urlPackage;

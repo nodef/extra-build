@@ -6,13 +6,13 @@ const packageName = require('./packageName');
 
 
 // Update package.json based on scatter options.
-function scatterJson(pth, o) {
+function branchMeta(pth, o) {
   var pth = pth||'package.json', o = o||{};
-  console.log('scatterJson:', pth);
-  var pkg = o.package || o.packageRoot;
-  var sym = o.symbol  || o.symbolRoot;
+  console.log(`Branching metadata ${pth} ...`);
+  var nam = o.name||o.nameRoot;
+  var sym = o.symbol||o.symbolRoot;
   var x = jsonRead(pth);
-  x.name = packageName(pkg, o);
+  x.name = packageName(nam, o);
   x.description = o.description;
   x.main = o.main||'index.js';
   x.module = o.module||'index.mjs';
@@ -23,7 +23,7 @@ function scatterJson(pth, o) {
   // x.type = o.type||'module';
   x.scripts = {test: 'exit'};
   x.keywords = metaKeywords(x, dirKeywords(o.keywordsDir));
-  x.keywords.push(...pkg.split(/\W/), sym);
+  x.keywords.push(...nam.split(/\W/), sym);
   x.keywords = Array.from(new Set(x.keywords));
   x.dependencies = Object.assign({},
     x.dependencies, x.devDependencies,
@@ -35,4 +35,4 @@ function scatterJson(pth, o) {
   x.devDependencies = undefined;
   jsonWrite(pth, x);
 }
-module.exports = scatterJson;
+module.exports = branchMeta;
