@@ -8,11 +8,11 @@ const fs = require('fs');
 function branchTs(pth, o) {
   var pth = pth||'index.ts';
   var o = Object.assign({}, o);
-  console.log(`Branching TS ${pth} ...`);
+  console.log(`Branching TS for ${o.name} ...`);
   var dir = path.dirname(pth);
   var build = path.join(dir, 'tsconfig.json');
-  if(!fs.existsSync(build)) o.build = undefined;
-  if(o.build) {
+  if (!fs.existsSync(build)) o.build = undefined;
+  if (o.build) {
     var c = jsonRead(build);
     var co = c.compilerOptions||{};
     co.outFile = undefined;

@@ -15,7 +15,7 @@ function minify(pth, o) {
   o.name = o.name||jsonRead(meta).name;
   console.log(`Minifying package for ${o.name}.min ...`);
   minifyJson(meta, o);
-  if(hasMd) minifyMd(readme, o);
+  if (hasMd) minifyMd(readme, o);
   minifyJs(main, o);
 }
 module.exports = minify;

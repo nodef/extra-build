@@ -7,12 +7,10 @@ const packageName = require('./packageName');
 
 // Update package.json based on scatter options.
 function branchMeta(pth, o) {
-  var pth = pth||'package.json', o = o||{};
-  console.log(`Branching metadata ${pth} ...`);
-  var nam = o.name||o.nameRoot;
-  var sym = o.symbol||o.symbolRoot;
+  var pth = pth||'package.json';
+  console.log(`Branching metadata for ${o.name} ...`);
   var x = jsonRead(pth);
-  x.name = nam;
+  x.name = o.name;
   x.description = o.description;
   x.main = o.main||'index.js';
   x.module = o.module||'index.mjs';
@@ -23,7 +21,7 @@ function branchMeta(pth, o) {
   // x.type = o.type||'module';
   x.scripts = {test: 'exit'};
   x.keywords = metaKeywords(x, dirKeywords(o.keywordsDir));
-  x.keywords.push(...nam.split(/\W/), sym);
+  x.keywords.push(...o.name.split(/\W/), o.symbol);
   x.keywords = Array.from(new Set(x.keywords));
   x.dependencies = Object.assign({},
     x.dependencies, x.devDependencies,
