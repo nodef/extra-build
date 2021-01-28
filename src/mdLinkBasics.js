@@ -35,7 +35,7 @@ function mdLinkBasics(md, o) {
   md = mdSetHref(md, MIN, urlPackageMin(o));
   md = mdSetHref(md, LST, urlUnpkg(o));
   md = mdSetHref(md, DOC, urlJsdoc(o));
-  md = mdSetHref(md, WIK, urlWiki('?', o));
+  md = mdSetHref(md, WIK, urlWiki('', o));
   return md;
 }
 module.exports = mdLinkBasics;

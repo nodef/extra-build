@@ -8,11 +8,11 @@ function mdSetHref(x, k, v) {
   x = x.replace(RHREF, (m, p1, p2) => {
     if(p1!==k) return m;
     if(!has && p2===v) { has = true; return m; }
-    console.log('mdSetHref: remove', p1, p2); return '';
+    console.log(`Removed href [${p1}](${p2})`); return '';
   });
   if(has || v==null) return x;
-  console.log('mdSetHref: add', k, v);
-  if(!RLAST.test(x)) x += EOL;
+  console.log(`Added href [${k}](${v})`);
+  // if(!RLAST.test(x)) x += EOL;
   x += `[${k}]: ${v}`+EOL;
   return x;
 }

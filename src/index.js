@@ -36,21 +36,21 @@ async function build(cmds, o) {
   var c = initCmds(cmds);
   initPaths(o);
   initProps(o);
-  if(c.readme || c.wiki) {
-    initExample(o);
+  if (c.readme || c.wiki) {
+    if (false) initExample(o);
     jsdocs = new Map([
       ...exportJsdocs(o.source),
       ...dirJsdocs(o.sourceDir)
     ]);
   }
-  if(c.exports) doExport(o.source, o);
-  if(c.main) doMain(o.source, o);
-  if(c.metadata) doMeta(o.metadata, o);
-  if(c.readme) doReadme(o.readme, jsdocs, o);
-  if(c.example) doExample(o.readme, o);
-  if(c.wiki) doWiki(o.wikiDir, jsdocs, o);
-  if(c.github) await doGithub(o);
-  if(c.publish) doPublish(o);
+  if (c.exports) doExport(o.source, o);
+  if (c.main) doMain(o.source, o);
+  if (c.metadata) doMeta(o.metadata, o);
+  if (c.readme) doReadme(o.readme, jsdocs, o);
+  if (c.example) doExample(o.readme, o);
+  if (c.wiki) doWiki(o.wikiDir, jsdocs, o);
+  if (c.github) await doGithub(o);
+  if (c.publish) doPublish(o);
   if (o.cleanup) cpExec(`rm -rf "${o.buildDir}"`);
 }
 
@@ -78,8 +78,8 @@ function initPaths(o) {
   o.keywordsDir = o.keywordsDir||o.sourceDir;
   o.buildDir = o.buildDir||tsc.outDir||'.build';
   o.build = path.join(o.buildDir, pathReplaceExt(path.basename(o.source), '.js'));
-  o.jsdocDir = o.jsdocDir||path.join(o.buildDir, '.jsdoc');
-  o.exampleDir = o.exampleDir||path.join(o.buildDir, '.example');
+  o.jsdocDir = o.jsdocDir||path.join(o.buildDir, 'jsdoc');
+  o.exampleDir = o.exampleDir||path.join(o.buildDir, 'example');
   o.out = o.out||m.main||'index.js';
   o.outDir = path.dirname(o.out);
   o.exampleOut = o.exampleOut||'example.js';

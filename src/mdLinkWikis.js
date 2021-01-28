@@ -9,11 +9,14 @@ const RWIKI = /github\.com.*?\/wiki\//;
 function mdLinkWikis(md, o) {
   var ls = mdLinks(md), ws = new Set();
   md = mdFilterHref(md, (v, k) => {
-    if(!ls.has(k)) return false;
+    if(!ls.delete(k)) return false;
     if(RWIKI.test(v)) ws.add(k);
     return true;
   });
-  for(var k of ws)
+  // If link was not specified
+  for (var k of ls) ws.add(k);
+  // If link was wrong
+  for (var k of ws)
     md = mdSetHref(md, k, urlWiki(k, o));
   return md;
 }
