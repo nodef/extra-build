@@ -21,16 +21,17 @@ const TYPEDOC = new Set([
  * @param {object} o options
  */
 function doJsdoc(pth, o) {
-  var {jsdocDir: out} = o;
-  var o = Object.assign({}, o, {out});
+  var {jsdocDir: cwd} = o;
+  var o = Object.assign({}, o, {out: cwd});
   var pth = pth||'src/index.ts';
   var opts = optionStringify(o, k => TYPEDOC.has(k)? k : null);
   initJsdoc(o);
-  cpExec(`rm -rf "${out}"`);
+  cpExec(`rm -rf "${cwd}"`);
   var url = gitRemoteUrl();
-  cpExec(`git clone ${url} "${out}"`);
-  cpExec(`git checkout gh-pages`, {cwd: out});
+  cpExec(`git clone ${url} "${cwd}"`);
+  cpExec(`git checkout gh-pages`, {cwd});
+  cpExec(`rm -rf *`, {cwd});
   cpExec(`npx typedoc "${pth}" ${opts}`);
-  gitCommit('', {cwd: out});
+  gitCommit('', {cwd});
 }
 module.exports = doJsdoc;
