@@ -1,5 +1,6 @@
 const cpExec = require('./cpExec');
 const gitBranchExists = require('./gitBranchExists');
+const gitRemoteUrl = require('./gitRemoteUrl');
 const gitCommit = require('./gitCommit');
 
 
