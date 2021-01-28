@@ -9,13 +9,13 @@ const OPTIONS = {
 /**
  * Generate example.js from README.
  * @param {string} pth path of README file
- * @param {object} opt options {out, language}
+ * @param {object} o options {out, language}
  */
-function doExample(pth, opt={}) {
-  var o = Object.assign({}, OPTIONS, opt);
+function doExample(pth, o) {
+  var o = Object.assign({}, OPTIONS, o);
   var md = pth||'README.md';
   var d = fs.readFileSync(md, 'utf8');
-  var ex = mdExample(d, o.language);
-  if (ex) fs.writeFileSync(o.out, ex);
+  var ex = mdExample(d, o.exampleComments);
+  if (ex) fs.writeFileSync(o.exampleOut, ex);
 }
 module.exports = doExample;

@@ -1,96 +1,122 @@
-exports.asciinemaUpload = require('./asciinemaUpload');
-exports.cpExec = require('./cpExec');
-exports.cpExecStr = require('./cpExecStr');
-exports.DIRBIN = require('./DIRBIN');
-exports.DIRBUILD = require('./DIRBUILD');
-exports.dirExport = require('./dirExport');
-exports.dirFiles = require('./dirFiles');
-exports.dirJsdocs = require('./dirJsdocs');
-exports.dirKeywords = require('./dirKeywords');
-exports.dirRead = require('./dirRead');
-exports.do = require('./do');
-exports.doExample = require('./doExample');
-exports.doExport = require('./doExport');
-exports.doGithub = require('./doGithub');
-exports.doJsdoc = require('./doJsdoc');
-exports.doJson = require('./doJson');
-exports.doMain = require('./doMain');
-exports.doReadme = require('./doReadme');
-exports.doWiki = require('./doWiki');
-exports.execDts = require('./execDts');
-exports.execRollup = require('./execRollup');
-exports.execTsc = require('./execTsc');
-exports.exportCustom = require('./exportCustom');
-exports.exportJsdocs = require('./exportJsdocs');
-exports.exportSymbols = require('./exportSymbols');
-exports.fileIs = require('./fileIs');
-exports.fileKeyword = require('./fileKeyword');
-exports.fileName = require('./fileName');
-exports.fileRead = require('./fileRead');
-exports.fileSymbol = require('./fileSymbol');
-exports.gitBranch = require('./gitBranch');
-exports.gitBranchExists = require('./gitBranchExists');
-exports.gitCommit = require('./gitCommit');
-exports.gitDiff = require('./gitDiff');
-exports.gitDiffCodeBlocks = require('./gitDiffCodeBlocks');
-exports.githubUpdateDetails = require('./githubUpdateDetails');
-exports.githubUpdateTopics = require('./githubUpdateTopics');
-exports.index = require('./index');
-exports.jsdocParse = require('./jsdocParse');
-exports.jsJsdocs = require('./jsJsdocs');
-exports.jsLinkWiki = require('./jsLinkWiki');
-exports.jsonRead = require('./jsonRead');
-exports.jsonWrite = require('./jsonWrite');
-exports.jsUncomment = require('./jsUncomment');
-exports.kebabCase = require('./kebabCase');
-exports.mdAsciinema = require('./mdAsciinema');
-exports.mdCodeBlocks = require('./mdCodeBlocks');
-exports.mdExample = require('./mdExample');
-exports.mdFilterHref = require('./mdFilterHref');
-exports.mdHeading = require('./mdHeading');
-exports.mdHrefs = require('./mdHrefs');
-exports.mdLinkBasics = require('./mdLinkBasics');
-exports.mdLinks = require('./mdLinks');
-exports.mdLinkWikis = require('./mdLinkWikis');
-exports.mdRead = require('./mdRead');
-exports.mdReplace = require('./mdReplace');
-exports.mdSetHref = require('./mdSetHref');
-exports.mdSetJsdoc = require('./mdSetJsdoc');
-exports.mdSetTable = require('./mdSetTable');
-exports.mdWrite = require('./mdWrite');
-exports.metaKeywords = require('./metaKeywords');
-exports.minify = require('./minify');
-exports.minifyJs = require('./minifyJs');
-exports.minifyJson = require('./minifyJson');
-exports.minifyMd = require('./minifyMd');
-exports.octokit = require('./octokit');
-exports.optionRead = require('./optionRead');
-exports.optionSet = require('./optionSet');
-exports.optionStringify = require('./optionStringify');
-exports.optionValue = require('./optionValue');
-exports.ORG = require('./ORG');
-exports.PACKAGE = require('./PACKAGE');
-exports.packageName = require('./packageName');
-exports.packageRequires = require('./packageRequires');
-exports.packageRoot = require('./packageRoot');
-exports.pathReplace = require('./pathReplace');
-exports.pathReplaceExt = require('./pathReplaceExt');
-exports.pathSplit = require('./pathSplit');
-exports.requireResolve = require('./requireResolve');
-exports.scatter = require('./scatter');
-exports.scatterJs = require('./scatterJs');
-exports.scatterJson = require('./scatterJson');
-exports.scatterMd = require('./scatterMd');
-exports.scatterOne = require('./scatterOne');
-exports.scatterTs = require('./scatterTs');
-exports.STANDALONE = require('./STANDALONE');
-exports.standaloneName = require('./standaloneName');
-exports.SYMBOL = require('./SYMBOL');
-exports.symbolName = require('./symbolName');
-exports.urlJsdoc = require('./urlJsdoc');
-exports.urlPackage = require('./urlPackage');
-exports.urlPackageMin = require('./urlPackageMin');
-exports.urlRepo = require('./urlRepo');
-exports.urlRunkit = require('./urlRunkit');
-exports.urlUnpkg = require('./urlUnpkg');
-exports.urlWiki = require('./urlWiki');
+const cpExec = require('./cpExec');
+const fileRead = require('./fileRead');
+const jsonRead = require('./jsonRead');
+const dirJsdocs = require('./dirJsdocs');
+const exportJsdocs = require('./exportJsdocs');
+const mdHeading = require('./mdHeading');
+const doExport = require('./doExport');
+const doWiki = require('./doWiki');
+const doReadme = require('./doReadme');
+const doExample = require('./doExample');
+const doMeta = require('./doMeta');
+const doGithub = require('./doGithub');
+const doMain = require('./doMain');
+const doPublish = require('./doPublish');
+const symbolName = require('./symbolName');
+const standaloneName = require('./standaloneName');
+const urlPackage = require('./urlPackage');
+const fs = require('fs');
+const path = require('path');
+const pathReplaceExt = require('./pathReplaceExt');
+
+const CODE = ['exports', 'main'];
+const DOCS = ['metadata', 'readme', 'example', 'wiki', 'github'];
+const ALL = [...CODE, ...DOCS, 'publish'];
+
+
+/**
+ * Perform build operation(s).
+ * @param {Array<string>} cmds commands to perform\
+ * [exports, main, json, readme, example, wiki, github, publish]
+ * @param {object} o options\
+ * {readme, source, out}
+ */
+async function build(cmds, o) {
+  var jsdocs = null;
+  var c = initCmds(cmds);
+  initPaths(o);
+  initProps(o);
+  if(c.readme || c.wiki) {
+    initExample(o);
+    jsdocs = new Map([
+      ...exportJsdocs(o.source),
+      ...dirJsdocs(o.sourceDir)
+    ]);
+  }
+  if(c.exports) doExport(o.source, o);
+  if(c.main) doMain(o.source, o);
+  if(c.metadata) doMeta(o.metadata, o);
+  if(c.readme) doReadme(o.readme, jsdocs, o);
+  if(c.example) doExample(o.readme, o);
+  if(c.wiki) doWiki(o.wikiDir, jsdocs, o);
+  if(c.github) await doGithub(o);
+  if(c.publish) doPublish(o);
+  if (o.cleanup) cpExec(`rm -rf "${o.buildDir}"`);
+}
+
+
+function initCmds(cmds) {
+  var a = {};
+  if (cmds.includes('code')) cmds = [cmds, ...CODE];
+  if (cmds.includes('docs')) cmds = [cmds, ...DOCS];
+  if (cmds.includes('all')) cmds = ALL;
+  for (var c of ALL)
+    a[c] = cmds.includes(c);
+  return a;
+}
+
+
+function initPaths(o) {
+  o.readme = o.readme||'README.md';
+  o.metadata = o.metadata||'package.json';
+  o.tsconfig = o.tsconfig||'tsconfig.json';
+  o.rollupconfig = o.rollupconfig||'rollup.config.js';
+  o.source = o.source||'src/index.ts';
+  var m = jsonRead(o.metadata);
+  var tsc = jsonRead(o.tsconfig);
+  o.sourceDir = o.sourceDir||path.dirname(o.source);
+  o.keywordsDir = o.keywordsDir||o.sourceDir;
+  o.buildDir = o.buildDir||tsc.outDir||'.build';
+  o.build = path.join(o.buildDir, pathReplaceExt(path.basename(o.source), '.js'));
+  o.jsdocDir = o.jsdocDir||path.join(o.buildDir, '.jsdoc');
+  o.exampleDir = o.exampleDir||path.join(o.buildDir, '.example');
+  o.out = o.out||m.main||'index.js';
+  o.outDir = path.dirname(o.out);
+  o.exampleOut = o.exampleOut||'example.js';
+  o.cleanup = o.cleanup??true;
+  fs.mkdirSync(o.buildDir, {recursive: true});
+  fs.mkdirSync(o.jsdocDir, {recursive: true});
+  fs.mkdirSync(o.exampleDir, {recursive: true});
+  fs.mkdirSync(o.outDir, {recursive: true});
+}
+
+
+function initProps(o) {
+  var m = jsonRead(o.metadata);
+  var r = fileRead(o.readme);
+  o.org = o.org||'nodef';
+  o.name = o.name||m.name;
+  o.symbol = o.symbol||symbolName(o.name);
+  o.standalone = o.standalone||standaloneName(o.symbol);
+  o.subname = o.name;
+  o.subsymbol = o.symbol;
+  o.substandalone = o.standalone;
+  o.moduleName = o.moduleName??o.name;
+  o.description = o.description||mdHeading(r)||m.description;
+  o.homepage = o.homepage||m.homepage||urlPackage(o);
+  o.keywordsMin = o.keywordsMin??10;
+  o.asciinema = o.asciinema??true;
+  // o.keywords = o.keywords||m.keywords;
+}
+
+
+function initExample(o) {
+  var cwd = o.exampleDir;
+  var m = jsonRead(o.metadata);
+  var pkgs = Object.keys(m.devDependencies||{});
+  pkgs = pkgs.filter(p => p !== 'extra-build');
+  pkgs.push(o.packageRoot);
+  cpExec('npm init -y', {cwd, stdio: null});
+  cpExec('npm install '+pkgs.join(' '), {cwd});
+}
+module.exports = build;

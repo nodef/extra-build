@@ -3,6 +3,6 @@
  * @param {options} o options {package}
  */
 function urlPackageMin(o) {
-  return `https://www.npmjs.com/package/${o.package||o.packageRoot}.min`;
+  return `https://www.npmjs.com/package/${o.subname||o.name}.min`;
 }
 module.exports = urlPackageMin;

@@ -10,9 +10,7 @@ const githubUpdateTopics = require('./githubUpdateTopics');
  */
 function doGithub(o) {
   var o = o||{};
-  var owner = o.org||ORG;
-  var repo = o.packageRoot||PACKAGE;
-  console.log(`Updating GitHub details for ${owner}/${repo} ...`);
+  console.log(`Updating GitHub details for ${o.org}/${o.name} ...`);
   return Promise.all([
     githubUpdateDetails(o),
     githubUpdateTopics(o)

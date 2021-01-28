@@ -12,14 +12,14 @@ const path = require('path');
 function updateWiki(dir, jsdocs, o) {
   var dir = dir||'wiki', o = o||{};
   for(var f of dirFiles(dir)) {
-    var symbol = fileSymbol(f);
-    var package = packageName(symbol, o);
+    var subsymbol = fileSymbol(f);
+    var subname = packageName(subsymbol, o);
     var p = path.join(dir, f);
     var md = fs.readFileSync(p, 'utf8');
-    var jsdoc = jsdocs.get(symbol);
+    var jsdoc = jsdocs.get(subsymbol);
     if(!jsdoc) { console.log('updateWiki: no jsdoc for '+p); continue; }
     var diffCodeBlocks = gitDiffCodeBlocks(p).length>0;
-    var o1 = Object.assign({}, o, {symbol, package, diffCodeBlocks});
+    var o1 = Object.assign({}, o, {subname, subsymbol, diffCodeBlocks});
     md = mdSetJsdoc(md, jsdoc, o1);
     md = mdLinkWikis(md, o1);
     md = mdLinkBasics(md, o1);

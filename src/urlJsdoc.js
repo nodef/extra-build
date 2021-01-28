@@ -3,6 +3,6 @@
  * @param {options} o options {package}
  */
 function urlJsdoc(o) {
-  return `https://${o.org}.github.io/${o.packageRoot||o.package}`;
+  return `https://${o.org}.github.io/${o.name}`;
 }
 module.exports = urlJsdoc;

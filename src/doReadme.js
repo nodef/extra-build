@@ -5,7 +5,7 @@ const mdLinkBasics = require('./mdLinkBasics');
 const fs = require('fs');
 
 
-function updateReadme(pth, jsdocs, o) {
+function doReadme(pth, jsdocs, o) {
   var pth = pth||'README.md';
   var md = fs.readFileSync(pth, 'utf8');
   var diffCodeBlocks = gitDiffCodeBlocks(pth).length>0;
@@ -15,4 +15,4 @@ function updateReadme(pth, jsdocs, o) {
   md = mdLinkBasics(md, o);
   fs.writeFileSync(pth, md);
 }
-module.exports = updateReadme;
+module.exports = doReadme;

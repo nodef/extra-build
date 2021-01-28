@@ -15,10 +15,10 @@ var OPTIONS = {
 /**
  * Update main javascript file.
  * @param {string} ts path of main typescript file
- * @param {object} opt options
+ * @param {object} o options
  */
-function doMain(pth, opt) {
-  var o = Object.assign({}, OPTIONS, opt);
+function doMain(pth, o) {
+  var o = Object.assign({}, OPTIONS, o);
   var ts = pth||'src/index.ts';
   var dts = pathReplaceExt(ts, '.d.ts');
   // var mjs = pathReplaceExt(o.output, '.mjs');

@@ -14,6 +14,6 @@ function mdAsciinema(md, o) {
   var cwd = o.exampleDir;
   var f = path.join(cwd, 'example.js');
   fs.writeFileSync(f, ex);
-  return asciinemaUpload(f, {title: o.package||o.packageRoot});
+  return asciinemaUpload(f, {title: o.subname||o.name});
 }
 module.exports = mdAsciinema;

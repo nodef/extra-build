@@ -1,4 +1,3 @@
-const DIRBIN = require('./DIRBIN');
 const cp = require('child_process');
 
 const stdio = [0, 1, 2];

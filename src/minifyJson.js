@@ -6,13 +6,13 @@ const jsonWrite = require('./jsonWrite');
 function minifyJson(pth, o) {
   var pth = pth||'package.json', o = o||{};
   console.log('minifyJson:', pth);
-  var x = jsonRead(pth);
-  x.name += '.min';
-  x.description = x.description.replace('.$', ' (browserified, minifined).');
-  x.type = undefined;
-  x.scripts = {test: 'exit'};
-  x.devDependencies = x.dependencies;
-  x.dependencies = undefined;
-  jsonWrite(pth, x);
+  var m = jsonRead(pth);
+  m.name += '.min';
+  m.description = m.description.replace('.$', ' (browserified, minifined).');
+  m.type = undefined;
+  m.scripts = {test: 'exit'};
+  m.devDependencies = m.dependencies;
+  m.dependencies = undefined;
+  jsonWrite(pth, m);
 }
 module.exports = minifyJson;

@@ -13,17 +13,9 @@ const minify = require('./minify');
 const kleur = require('kleur');
 const path = require('path');
 
-const OPTIONS = {
-  org: ORG,
-  packageRoot: PACKAGE,
-  symbolRoot: SYMBOL,
-  standaloneRoot: STANDALONE
-};
-
 
 function scatter(dir, o) {
   var dir = dir||'src';
-  var o = Object.assign({}, OPTIONS, o);
   console.log(kleur.bold().magenta('scatter:'), dir, o);
   var pth = path.join(dir, 'index.ts');
   execTsc(pth, o.tsc);
@@ -32,8 +24,8 @@ function scatter(dir, o) {
     var pth = path.join(dir, f);
     var tmp = scatterOne(pth, o);
     cpExec('npm publish', {cwd: tmp});
-    var standalone = standaloneName(fileSymbol(f), o);
-    minify(tmp, Object.assign({standalone}, o));
+    var substandalone = standaloneName(fileSymbol(f), o);
+    minify(tmp, Object.assign({substandalone}, o));
     cpExec('npm publish', {cwd: tmp});
     cpExec(`rm -rf ${tmp}`);
     }
@@ -41,12 +33,12 @@ function scatter(dir, o) {
     console.log();
   }
   try {
-  standalone = o.standaloneRoot;
-  cpExec('npm pack '+o.packageRoot);
+  substandalone = o.standalone;
+  cpExec('npm pack '+o.name);
   var tgz = cpExecStr('ls *.tgz');
   cpExec(`tar -xvf ${tgz} package/ --strip-components=1`);
   cpExec('rm -rf '+tgz)
-  minify('.', Object.assign({standalone}, o));
+  minify('.', Object.assign({substandalone}, o));
   cpExec('npm publish');
   }
   catch(e) { console.error(e); }
