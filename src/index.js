@@ -103,6 +103,9 @@ function initProps(o) {
   o.name = o.name||m.name;
   o.symbol = o.symbol||symbolName(o.name);
   o.standalone = o.standalone||standaloneName(o.symbol);
+  o.nameRoot = o.name;
+  o.symbolRoot = o.symbol;
+  o.standaloneRoot = o.standalone;
   o.moduleName = o.moduleName??o.name;
   o.description = o.description||mdHeading(r)||m.description;
   o.homepage = o.homepage||m.homepage||urlPackage(o);
