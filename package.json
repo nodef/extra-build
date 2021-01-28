@@ -1,6 +1,6 @@
 {
   "name": "extra-build",
-  "version": "1.2.17",
+  "version": "1.2.18",
   "description": "Common build tools for extra-* packages.",
   "main": "index.js",
   "preferGlobal": true,
@@ -30,12 +30,8 @@
     "@rollup/plugin-node-resolve": "^9.0.0",
     "dot-prop": "^5.3.0",
     "extra-asciinema": "^1.0.26",
-    "find-npm-prefix": "^1.0.2",
-    "global-dirs": "^2.0.1",
     "kleur": "^4.1.1",
-    "recast": "^0.20.3",
     "strip-comments": "^2.0.1",
-    "tempy": "^0.7.0",
-    "typedoc": "^0.20.19"
+    "tempy": "^0.7.0"
   }
 }
