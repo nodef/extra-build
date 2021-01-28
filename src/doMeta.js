@@ -14,6 +14,7 @@ const dirKeywords = require('./dirKeywords');
 function doMeta(pth, o) {
   var o = o||{};
   var pth = pth||'package.json';
+  console.log(`Updating package.json ...`);
   var m = jsonRead(pth);
   var r = fileRead(o.readme);
   m.description = o.description||mdHeading(r);

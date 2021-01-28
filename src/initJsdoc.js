@@ -12,6 +12,7 @@ function initJsdoc(o) {
   var {jsdocDir: cwd} = o;
   cpExec(`rm -rf "${cwd}"`);
   var url = gitRemoteUrl();
+  console.log(`Creating gh-pages branch for ${url} ...`);
   cpExec(`git clone ${url} "${cwd}"`);
   cpExec(`git checkout --orphan gh-pages`, {cwd});
   cpExec(`rm -rf *`, {cwd});

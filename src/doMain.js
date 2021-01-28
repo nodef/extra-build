@@ -23,6 +23,7 @@ function doMain(pth, o) {
   var dts = pathReplaceExt(ts, '.d.ts');
   // var mjs = pathReplaceExt(o.output, '.mjs');
   // var dec = fs.existsSync(mjs)? mjs : dec;
+  console.log(`Generating main files ...`);
   execTsc(ts, o.tsc);
   execRollup(o.build, o.rollup);
   execDts(dts, o.dts);

@@ -27,6 +27,7 @@ function doJsdoc(pth, o) {
   var out = fs.mkdtempSync('.docs');
   var o = Object.assign({}, o, {out});
   var opts = optionStringify(o, k => TYPEDOC.has(k)? k : null);
+  console.log(`Publishing JSDoc ...`);
   cpExec(`npx typedoc "${pth}" ${opts}`);
   initJsdoc(o);
   cpExec(`rm -rf "${cwd}"`);

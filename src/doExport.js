@@ -13,6 +13,7 @@ const fs = require('fs');
  */
 function doExport(pth) {
   var ts = pth||'src/index.ts';
+  console.log(`Generating exports at ${ts} ...`);
   var dts = pathReplaceExt(ts, '.d.ts');
   var dir = path.dirname(ts);
   var d = exportCustom(fileRead(ts));

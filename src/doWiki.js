@@ -13,6 +13,7 @@ const path = require('path');
 function updateWiki(dir, jsdocs, o) {
   var dir = dir||'wiki', o = o||{};
   var headerHeavy = false;
+  console.log(`Updating Wiki ...`);
   initWiki(o.sourceDir, o);
   for(var f of dirFiles(dir)) {
     var subsymbol = fileSymbol(f);

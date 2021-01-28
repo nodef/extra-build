@@ -3,7 +3,9 @@ const scatter = require('./branch');
 
 
 function doPublish(o) {
-  cpExec(`npm publish`);
+  console.log(`Publishing package ...`);
+  try { cpExec(`npm publish`); }
+  catch (e) { console.error(e); }
   if (o.subpublish) scatter(o.sourceDir, o);
 }
 module.exports = doPublish;

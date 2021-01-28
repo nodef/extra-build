@@ -7,6 +7,7 @@ const fs = require('fs');
 
 function doReadme(pth, jsdocs, o) {
   var pth = pth||'README.md';
+  console.log(`Updating README ...`);
   var md = fs.readFileSync(pth, 'utf8');
   var diffCodeBlocks = gitDiffCodeBlocks(pth).length>0;
   var o = Object.assign({}, o, {diffCodeBlocks});
