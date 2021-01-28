@@ -60,8 +60,8 @@ function branchOne(pth, o) {
   if (hasMd) branchMd(md1, o);
   branchJs(mjs1, o);
   branchMeta(json1, o);
-  cpExec(`.rollup -c --format=cjs --file=${js1} -- ${rjs1}`);
   cpExec(`mv "${nodeModules1}" "${nodeModules0}"`);
+  cpExec(`.rollup -c --format=cjs --file=${js1} -- ${rjs1}`);
   return tmp;
 }
 module.exports = branchOne;
