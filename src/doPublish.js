@@ -1,5 +1,5 @@
 const cpExec = require('./cpExec');
-const scatter = require('./scatter');
+const scatter = require('./branch');
 
 
 function doPublish(o) {
