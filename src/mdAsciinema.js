@@ -17,6 +17,6 @@ function mdAsciinema(md, o) {
   if (!fs.existsSync(meta)) initExample(o);
   var f = path.join(cwd, 'example.js');
   fs.writeFileSync(f, ex);
-  return asciinemaUpload(f, {title: o.subname||o.name});
+  return asciinemaUpload(f, {title: o.name||o.nameRoot});
 }
 module.exports = mdAsciinema;
