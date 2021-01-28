@@ -3,6 +3,7 @@ const gitCommit = require('./gitCommit');
 const gitRemoteUrl = require('./gitRemoteUrl');
 const initJsdoc = require('./initJsdoc');
 const optionStringify = require('./optionStringify');
+const fs = require('fs');
 
 const TYPEDOC = new Set([
   'categorizeByGroup', 'categoryOrder', 'defaultCategory', 'disableOutputCheck',
@@ -22,16 +23,19 @@ const TYPEDOC = new Set([
  */
 function doJsdoc(pth, o) {
   var {jsdocDir: cwd} = o;
-  var o = Object.assign({}, o, {out: cwd});
   var pth = pth||'src/index.ts';
+  var out = fs.mkdtempSync('.docs');
+  var o = Object.assign({}, o, {out});
   var opts = optionStringify(o, k => TYPEDOC.has(k)? k : null);
+  cpExec(`npx typedoc "${pth}" ${opts}`);
   initJsdoc(o);
   cpExec(`rm -rf "${cwd}"`);
   var url = gitRemoteUrl();
   cpExec(`git clone ${url} "${cwd}"`);
   cpExec(`git checkout gh-pages`, {cwd});
   cpExec(`rm -rf *`, {cwd});
-  cpExec(`npx typedoc "${pth}" ${opts}`);
+  cpExec(`mv "${out}"/* "${cwd}"/`);
+  cpExec(`rm -rf "${out}"`);
   gitCommit('', {cwd});
 }
 module.exports = doJsdoc;
