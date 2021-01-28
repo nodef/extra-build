@@ -19,7 +19,7 @@ function branch(dir, o) {
     var pth = path.join(dir, f);
     var tmp = scatterOne(pth, o);
     cpExec('npm publish', {cwd: tmp});
-    var standalone = standaloneName(fileSymbol(f), o);
+    var standalone = standaloneName(fileSymbol(f), o.symbolRoot);
     minify(tmp, Object.assign({standalone}, o));
     cpExec('npm publish', {cwd: tmp});
     cpExec(`rm -rf ${tmp}`);

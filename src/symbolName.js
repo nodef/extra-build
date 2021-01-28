@@ -1,11 +1,10 @@
 /**
- *
- * @param {string} x
- * @param {*} o
+ * Get full symbol name.
+ * @param {string} x base name
+ * @param {string} r root name
  */
-function symbolName(x, o) {
-  var x = x.replace(/^extra-/, ''), o = o||{};
-  if(!o.symbolRoot) return x;
-  return `${o.symbolRoot}.${x}`;
+function symbolName(x, r=null) {
+  var x = x.replace(/^extra-/, '');
+  return !r? x : `${r}.${x}`;
 }
 module.exports = symbolName;

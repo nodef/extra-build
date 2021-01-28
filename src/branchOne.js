@@ -41,7 +41,7 @@ function branchOne(pth, o) {
   if (hasMd) doExample(md1, {example: ex1});
   var readme = hasMd? fs.readFileSync(md1, 'utf8'):'';
   o.name = packageName(sym, o.nameRoot);
-  o.symbol = symbolName(fileSymbol(fil+ext), o);
+  o.symbol = symbolName(fileSymbol(fil+ext), o.symbolRoot);
   o.description = o.description||mdHeading(readme);
   o.requires = [...packageRequires(pth)];
   console.log(`Branching package ${o.name} ...`);
