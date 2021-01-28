@@ -14,9 +14,9 @@ const OPTIONS = {
 function doExample(pth, o) {
   var o = Object.assign({}, OPTIONS, o);
   var md = pth||'README.md';
-  console.log(`Generating example ${o.exampleOut} ...`);
+  console.log(`Generating example ${o.example} ...`);
   var d = fs.readFileSync(md, 'utf8');
   var ex = mdExample(d, o.exampleComments);
-  if (ex) fs.writeFileSync(o.exampleOut, ex);
+  if (ex) fs.writeFileSync(o.example, ex);
 }
 module.exports = doExample;

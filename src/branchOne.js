@@ -38,7 +38,7 @@ function branchOne(pth, o) {
   var hasMd = fs.existsSync(md0);
   if (hasMd) fs.copyFileSync(md0, md1);
   var ex1 = path.join(tmp, 'example.js');
-  if (hasMd) doExample(md1, {exampleOut: ex1});
+  if (hasMd) doExample(md1, {example: ex1});
   var readme = hasMd? fs.readFileSync(md1, 'utf8'):'';
   o.name = packageName(sym, o.nameRoot);
   o.symbol = symbolName(fileSymbol(fil+ext), o);

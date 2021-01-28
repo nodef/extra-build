@@ -2,8 +2,8 @@ const jsonRead = require('./jsonRead');
 const cpExec = require('./cpExec');
 
 
-function initExample(o) {
-  var cwd = o.exampleDir;
+function initAsciinema(o) {
+  var cwd = o.asciinemaDir;
   var m = jsonRead(o.metadata);
   var pkgs = Object.keys(m.devDependencies||{});
   pkgs = pkgs.filter(p => p !== 'extra-build');
@@ -11,4 +11,4 @@ function initExample(o) {
   cpExec('npm init -y', {cwd, stdio: null});
   cpExec('npm install '+pkgs.join(' '), {cwd});
 }
-module.exports = initExample;
+module.exports = initAsciinema;

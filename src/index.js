@@ -39,7 +39,7 @@ async function build(cmds, o) {
   initPaths(o);
   initProps(o);
   if (c.readme || c.wiki) {
-    // initExample(o);
+    // initAsciinema(o);
     jsdocs = new Map([
       ...exportJsdocs(o.source),
       ...dirJsdocs(o.sourceDir)
@@ -84,14 +84,14 @@ function initPaths(o) {
   o.buildDir = o.buildDir||tsc.outDir||'.build';
   o.build = path.join(o.buildDir, pathReplaceExt(path.basename(o.source), '.js'));
   o.jsdocDir = o.jsdocDir||path.join(o.buildDir, 'jsdoc');
-  o.exampleDir = o.exampleDir||path.join(o.buildDir, 'example');
+  o.asciinemaDir = o.asciinemaDir||path.join(o.buildDir, 'example');
   o.out = o.out||m.main||'index.js';
   o.outDir = path.dirname(o.out);
-  o.exampleOut = o.exampleOut||'example.js';
+  o.example = o.example||'example.js';
   o.cleanup = o.cleanup??true;
   fs.mkdirSync(o.buildDir, {recursive: true});
   fs.mkdirSync(o.jsdocDir, {recursive: true});
-  fs.mkdirSync(o.exampleDir, {recursive: true});
+  fs.mkdirSync(o.asciinemaDir, {recursive: true});
   fs.mkdirSync(o.outDir, {recursive: true});
 }
 
