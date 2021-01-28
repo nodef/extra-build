@@ -13,7 +13,7 @@ var OPTIONS = {
 
 
 /**
- * Update main javascript file.
+ * Generate main javascript file.
  * @param {string} ts path of main typescript file
  * @param {object} o options
  */
