@@ -20,7 +20,7 @@ function doMeta(pth, o) {
   var m = jsonRead(pth);
   var r = fileRead(o.readme);
   m.description = o.description||mdHeading(r);
-  m.version = o.version||getVersion(m.version);
+  m.version = o.version||getVersion(m.version, o);
   var ks1 = dirKeywords(o.keywordsDir);
   var ks0 = jsonKeywords(m, ks1);
   m.keywords = o.keywords||ks0.concat(ks1);
@@ -29,7 +29,7 @@ function doMeta(pth, o) {
 }
 
 
-function getVersion(v) {
+function getVersion(v, o) {
   var u = cpExec(`npm view ${o.name} version`);
   if (semver.diff(u, v) !== 'patch') return v;
   else if (semver.lt(u, v)) return v;
