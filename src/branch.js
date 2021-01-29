@@ -1,4 +1,5 @@
 const cpExec = require('./cpExec');
+const fileRead = require('./fileRead');
 const execTsc = require('./execTsc');
 const dirFiles = require('./dirFiles');
 const scatterOne = require('./branchOne');
@@ -13,6 +14,8 @@ function branch(dir, o) {
   for (var f of dirFiles(dir)) {
     try {
     var pth = path.join(dir, f);
+    var meta = fileRead(o.metadata);
+    var readme = fileRead(o.readme);
     var p = scatterOne(pth, o);
     var cwd = path.dirname(p.metadata);
     cpExec('npm publish', {cwd});

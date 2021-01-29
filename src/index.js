@@ -85,8 +85,10 @@ function initPaths(o) {
   o.build = path.join(o.buildDir, pathReplaceExt(path.basename(o.source), '.js'));
   o.jsdocDir = o.jsdocDir||path.join(o.buildDir, 'jsdoc');
   o.asciinemaDir = o.asciinemaDir||path.join(o.buildDir, 'example');
-  o.out = o.out||m.main||'index.js';
   o.outDir = path.dirname(o.out);
+  o.outEs = o.outEs||m.module||'index.mjs';
+  o.outJs = o.outJs||m.main||'index.js';
+  o.out = o.out||o.outJs;
   o.example = o.example||'example.js';
   o.cleanup = o.cleanup??true;
   fs.mkdirSync(o.buildDir, {recursive: true});
