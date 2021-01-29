@@ -2,7 +2,6 @@ const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');
 const metaKeywords = require('./metaKeywords');
 const dirKeywords = require('./dirKeywords');
-const packageName = require('./packageName');
 
 
 // Update package.json based on scatter options.

@@ -7,7 +7,7 @@ const jsLinkWiki = require('./jsLinkWiki');
 const fs = require('fs');
 
 var OPTIONS = {
-  build: 'build/index.js',
+  build: '.build/index.js',
   out: 'index.js'
 };
 

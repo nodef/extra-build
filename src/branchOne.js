@@ -30,6 +30,9 @@ function branchOne(pth, o) {
   p.symbol = symbolName(sym, o.symbol);
   p.standalone = standaloneName(sym, o.symbol);
   p.description = mdHeading(md)||o.description;
+  p.requires = [...packageRequires(pth)];
+  console.log(`Branching for ${p.name} ...`);
+  console.log(`Source file is at ${pth}`);
   // Branch components
   doMain(pth, p);
   doExample(p.readme, p);
