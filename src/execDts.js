@@ -6,7 +6,7 @@ const {EOL} = require('os');
 
 // TODO: use .package? exclude if org package
 const OPTIONS = {
-  dts_outDts: 'index.d.ts',
+  outDts: 'index.d.ts',
   dts_noBanner: true
 };
 
