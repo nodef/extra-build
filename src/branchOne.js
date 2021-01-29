@@ -1,20 +1,16 @@
-const cpExec = require('./cpExec');
 const fileRead = require('./fileRead');
 const fileSymbol = require('./fileSymbol');
 const packageName = require('./packageName');
 const symbolName = require('./symbolName');
+const standaloneName = require('./standaloneName');
 const mdHeading = require('./mdHeading');
 const branchMd = require('./branchMd');
-const branchTs = require('./branchTs');
 const branchJs = require('./branchJs');
 const branchMeta = require('./branchMeta');
 const doMain = require('./doMain');
 const doExample = require('./doExample');
-const jsLinkWiki = require('./jsLinkWiki');
-const tempy = require('tempy');
 const path = require('path');
 const fs = require('fs');
-const standaloneName = require('./standaloneName');
 
 
 // Scatter a file as a package.
@@ -36,6 +32,7 @@ function branchOne(pth, o) {
   p.description = mdHeading(md)||o.description;
   // Branch components
   doMain(pth, p);
+  doExample(p.readme, p);
   branchJs(p.outEs, p);
   branchJs(p.outJs, p);
   // if (fil.endsWith('.ts')) branchTs(pth, o.tsc);
