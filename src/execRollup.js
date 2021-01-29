@@ -4,7 +4,8 @@ const optionStringify = require('./optionStringify');
 const fs = require('fs');
 
 const OPTIONS = {
-  format: 'cjs'
+  format: 'cjs',
+  exports: 'auto'
 };
 
 
