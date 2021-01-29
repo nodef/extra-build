@@ -1,9 +1,11 @@
+const cpExec = require('./cpExec');
 const fileRead = require('./fileRead');
 const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');
 const jsonKeywords = require('./metaKeywords');
 const mdHeading = require('./mdHeading');
 const dirKeywords = require('./dirKeywords');
+const semver = require('semver');
 
 
 /**
@@ -18,10 +20,19 @@ function doMeta(pth, o) {
   var m = jsonRead(pth);
   var r = fileRead(o.readme);
   m.description = o.description||mdHeading(r);
+  m.version = o.version||getVersion(m.version);
   var ks1 = dirKeywords(o.keywordsDir);
   var ks0 = jsonKeywords(m, ks1);
   m.keywords = o.keywords||ks0.concat(ks1);
   o.keywords = m.keywords;
   jsonWrite(pth, m);
+}
+
+
+function getVersion(v) {
+  var u = cpExec(`npm view ${o.name} version`);
+  if (semver.diff(u, v) !== 'patch') return v;
+  else if (semver.lt(u, v)) return v;
+  return semver.inc(v, 'patch');
 }
 module.exports = doMeta;
