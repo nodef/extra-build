@@ -4,6 +4,8 @@ const packageName = require('./packageName');
 const symbolName = require('./symbolName');
 const standaloneName = require('./standaloneName');
 const packageRequires = require('./packageRequires');
+const pathReplace = require('./pathReplace');
+const pathReplaceExt = require('./pathReplaceExt');
 const mdHeading = require('./mdHeading');
 const branchMd = require('./branchMd');
 const branchJs = require('./branchJs');
@@ -32,6 +34,7 @@ function branchOne(pth, o) {
   p.standalone = standaloneName(sym, o.symbol);
   p.description = mdHeading(md)||o.description;
   p.requires = [...packageRequires(pth)];
+  p.build = pathReplaceExt(pathReplace('.', pth, o.buildDir), '.js');
   console.log(`Branching for ${p.name} ...`);
   console.log(`Source file is at ${pth}`);
   // Branch components

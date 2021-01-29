@@ -6,11 +6,6 @@ const jsUncomment = require('./jsUncomment');
 const jsLinkWiki = require('./jsLinkWiki');
 const fs = require('fs');
 
-var OPTIONS = {
-  build: '.build/index.js',
-  out: 'index.js'
-};
-
 
 /**
  * Generate main javascript file.
@@ -18,13 +13,13 @@ var OPTIONS = {
  * @param {object} o options
  */
 function doMain(pth, o) {
-  var o = Object.assign({}, OPTIONS, o);
+  var isSub = o.name !== o.nameRoot;
   var ts = pth||'src/index.ts';
   var dts = pathReplaceExt(ts, '.d.ts');
   // var mjs = pathReplaceExt(o.output, '.mjs');
   // var dec = fs.existsSync(mjs)? mjs : dec;
   console.log(`Generating main files ...`);
-  execTsc(ts, o.tsc);
+  if (!isSub) execTsc(ts, o.tsc);
   execRollup(o.build, o.rollup);
   execDts(dts, o.dts);
   var js1 = o.out;
