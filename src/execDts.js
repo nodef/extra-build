@@ -6,12 +6,9 @@ const {EOL} = require('os');
 
 // TODO: use .package? exclude if org package
 const OPTIONS = {
-  outDts: 'index.d.ts',
-  noBanner: true
+  dts_outDts: 'index.d.ts',
+  dts_noBanner: true
 };
-const INCLUDE = new Set([
-  'noBanner'
-]);
 
 
 /**
@@ -35,8 +32,7 @@ function execDts(pth, o) {
 
 
 function getOption(k) {
-  if (k.startsWith('dts-')) return kebabCase(k.substring(4));
-  if (INCLUDE.has(k)) return kebabCase(k);
+  if (k.startsWith('dts_')) return kebabCase(k.substring(4));
   if (k === 'outDts') return kebabCase('outFile');
   return null;
 }

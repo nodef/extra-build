@@ -4,13 +4,9 @@ const optionStringify = require('./optionStringify');
 const fs = require('fs');
 
 const OPTIONS = {
-  format: 'cjs',
-  exports: 'auto'
+  rollup_format: 'cjs',
+  rollup_exports: 'auto'
 };
-const INCLUDE = new Set([
-  'format',
-  'exports'
-]);
 
 
 /**
@@ -20,9 +16,9 @@ const INCLUDE = new Set([
  */
 function execRollup(pth, o) {
   var pth = pth||'.build/index.js';
-  var config = o.rollupconfig||o['rollup-config']||'rollup.config.js';
+  var config = o.rollup_config||'rollup.config.js';
   var hasConfig = config? fs.existsSync(config) : false;
-  var o = Object.assign({}, hasConfig? {rollupconfig: config} : OPTIONS, o);
+  var o = Object.assign({}, hasConfig? {rollup_config: config} : OPTIONS, o);
   console.log(`Executing rollup as per ${config} ...`);
   console.log(`Output file is at ${pth}`);
   var opts = optionStringify(o, getOption);
@@ -32,9 +28,7 @@ function execRollup(pth, o) {
 
 
 function getOption(k) {
-  if (k.startsWith('rollup-')) return k.substring(7);
-  if (INCLUDE.has(k)) return k;
-  if (k === 'rollupconfig') return 'config';
+  if (k.startsWith('rollup_')) return k.substring(7);
   return null;
 }
 module.exports = execRollup;

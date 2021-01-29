@@ -4,17 +4,13 @@ const optionStringify = require('./optionStringify');
 const fs = require('fs');
 
 const OPTIONS = {
-  target: 'es2020',
-  module: 'es2015',
-  declaration: true,
-  declarationMap: true,
-  sourceMap: true,
-  moduleResolution: 'node'
+  tsc_target: 'es2020',
+  tsc_module: 'es2015',
+  tsc_declaration: true,
+  tsc_declarationMap: true,
+  tsc_sourceMap: true,
+  tsc_moduleResolution: 'node'
 };
-const INCLUDE = new Set([
-  'target', 'module', 'declaration', 'declarationMap',
-  'sourceMap', 'moduleResolution'
-]);
 
 
 /**
@@ -24,9 +20,9 @@ const INCLUDE = new Set([
  */
 function execTsc(pth, o) {
   var pth = pth||'index.ts';
-  var config = o.tsconfig||o['tsc-build']||'tsconfig.json';
+  var config = o.tsc_build||o.tsconfig||'tsconfig.json';
   var hasConfig = config? fs.existsSync(config) : false;
-  var o = Object.assign({}, hasConfig? {tsconfig: config} : OPTIONS, o);
+  var o = Object.assign({}, hasConfig? {tsc_build: config} : OPTIONS, o);
   console.log(`Executing tsc as per ${config} ...`);
   console.log(`Output file is at ${pth}`);
   var opts = optionStringify(o, getOption);
@@ -37,9 +33,7 @@ function execTsc(pth, o) {
 
 
 function getOption(k) {
-  if (k.startsWith('tsc-')) return k.substring(7);
-  if (k === 'tsconfig') return 'build';
-  if (INCLUDE.has(k)) return k;
+  if (k.startsWith('tsc_')) return k.substring(4);
   return null;
 }
 module.exports = execTsc;
