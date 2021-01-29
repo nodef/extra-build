@@ -31,6 +31,7 @@ function doMain(pth, o) {
   var d = fs.readFileSync(js1, 'utf8');
   fs.writeFileSync(js1, jsUncomment(d, true));
   var d = fs.readFileSync(dts1, 'utf8');
+  console.log(d);
   fs.writeFileSync(dts1, jsLinkWiki(d, o));
 }
 module.exports = doMain;
