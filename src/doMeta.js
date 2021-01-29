@@ -1,4 +1,4 @@
-const cpExec = require('./cpExec');
+const cpExecStr = require('./cpExecStr');
 const fileRead = require('./fileRead');
 const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');
@@ -30,7 +30,7 @@ function doMeta(pth, o) {
 
 
 function getVersion(v, o) {
-  var u = cpExec(`npm view ${o.name} version`);
+  var u = cpExecStr(`npm view ${o.name} version`);
   if (semver.diff(u, v) !== 'patch') return v;
   else if (semver.lt(u, v)) return v;
   return semver.inc(v, 'patch');
