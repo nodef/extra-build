@@ -24,6 +24,7 @@ function execDts(pth, o) {
   var pth = pth||'src/index.ts';
   pth = fs.existsSync(pth)? pth : pth.replace(/\.d\.ts$/, '.ts');
   var o = Object.assign({}, OPTIONS, o,);
+  o.outFile = o.outDts;
   console.log(`Executing dts-bundle-generator for ${pth} ...`);
   var opts = optionStringify(o, k => EXCLUDE.has(k)? null : kebabCase(k));
   cpExec(`.dts-bundle-generator ${opts} "${pth}"`);
