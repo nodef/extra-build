@@ -4,6 +4,7 @@ const dirFiles = require('./dirFiles');
 const branchOne = require('./branchOne');
 const minify = require('./minify');
 const path = require('path');
+const fs = require('fs');
 
 
 function branch(dir, o) {
