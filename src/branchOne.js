@@ -27,6 +27,7 @@ function branchOne(pth, o) {
   // Properties
   var p = Object.assign({}, o);
   var md = fileRead(p.readme);
+  p.moduleName = null;
   p.nameRoot = o.name;
   p.symbolRoot = o.symbol;
   p.name = packageName(sym, o.name);
