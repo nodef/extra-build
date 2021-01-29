@@ -30,7 +30,7 @@ function doMeta(pth, o) {
 
 
 function getVersion(v, o) {
-  var u = cpExecStr(`npm view ${o.name} version`);
+  var u = cpExecStr(`npm view ${o.name} version`)||v;
   if (semver.diff(u, v) !== 'patch') return v;
   else if (semver.lt(u, v)) return v;
   return semver.inc(v, 'patch');
