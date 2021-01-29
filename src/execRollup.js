@@ -7,6 +7,11 @@ const OPTIONS = {
   format: 'cjs',
   exports: 'auto'
 };
+const INCLUDE = new Set([
+  'config',
+  'format',
+  'exports'
+]);
 
 
 /**
@@ -21,8 +26,15 @@ function execRollup(pth, o) {
   var o = Object.assign({}, hasConfig? {config} : OPTIONS, o);
   console.log(`Executing rollup as per ${config} ...`);
   console.log(`Output file is at ${pth}`);
-  var opts = optionStringify(o);
+  var opts = optionStringify(o, getOption);
   var cwd = packageRoot(pth);
   cpExec(`.rollup ${opts} -- "${pth}"`, {cwd});
+}
+
+
+function getOption(k) {
+  if (k.startsWith('rollup-')) return k.substring(7);
+  if (INCLUDE.has(k)) return k;
+  return null;
 }
 module.exports = execRollup;

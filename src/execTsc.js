@@ -11,6 +11,10 @@ const OPTIONS = {
   sourceMap: true,
   moduleResolution: 'node'
 };
+const INCLUDE = new Set([
+  'target', 'module', 'declaration', 'declarationMap',
+  'sourceMap', 'moduleResolution'
+]);
 
 
 /**
@@ -20,14 +24,22 @@ const OPTIONS = {
  */
 function execTsc(pth, o) {
   var pth = pth||'index.ts';
-  var {build} = Object.assign({build: 'tsconfig.json'}, o);
-  var hasBuild = build? fs.existsSync(build) : false;
-  var o = Object.assign({}, hasBuild? {build} : OPTIONS, o);
-  console.log(`Executing tsc as per ${build} ...`);
+  var tsconfig = o.tsconfig||o['tsc-build']||'tsconfig.json';
+  var hasTsconfig = tsconfig? fs.existsSync(tsconfig) : false;
+  var o = Object.assign({}, hasTsconfig? {build: tsconfig} : OPTIONS, o);
+  console.log(`Executing tsc as per ${tsconfig} ...`);
   console.log(`Output file is at ${pth}`);
-  var opts = optionStringify(o);
+  var opts = optionStringify(o, getOption);
   var cwd = packageRoot(pth);
-  var out = hasBuild? '' : ` "${pth}"`;
+  var out = hasTsconfig? '' : ` "${pth}"`;
   cpExec(`.tsc ${opts} ${out}`, {cwd});
+}
+
+
+function getOption(k) {
+  if (k.startsWith('tsc-')) return k.substring(7);
+  if (k === 'tsconfig') return 'build';
+  if (INCLUDE.has(k)) return k;
+  return null;
 }
 module.exports = execTsc;

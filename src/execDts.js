@@ -9,9 +9,10 @@ const OPTIONS = {
   outDts: 'index.d.ts',
   noBanner: true
 };
-const EXCLUDE = new Set([
+const INCLUDE = new Set([
+  'outFile',
+  'noBanner',
   'moduleName',
-  'outDts'
 ]);
 
 
@@ -26,12 +27,19 @@ function execDts(pth, o) {
   var o = Object.assign({}, OPTIONS, o,);
   o.outFile = o.outDts;
   console.log(`Executing dts-bundle-generator for ${pth} ...`);
-  var opts = optionStringify(o, k => EXCLUDE.has(k)? null : kebabCase(k));
+  var opts = optionStringify(o, getOption);
   cpExec(`.dts-bundle-generator ${opts} "${pth}"`);
   if (!o.moduleName) { console.error(`DtsError: Module name not defined!`); return; }
   var d = fs.readFileSync(o.outDts, 'utf8');
   d = d.replace(/export declare/g, 'export');
   d = `declare module '${o.moduleName}' {`+EOL+d+`}`+EOL;
   fs.writeFileSync(o.outDts, d);
+}
+
+
+function getOption(k) {
+  if (k.startsWith('dts-')) return kebabCase(k.substring(4));
+  if (INCLUDE.has(k)) return kebabCase(k);
+  return null;
 }
 module.exports = execDts;

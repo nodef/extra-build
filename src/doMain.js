@@ -19,9 +19,9 @@ function doMain(pth, o) {
   // var mjs = pathReplaceExt(o.output, '.mjs');
   // var dec = fs.existsSync(mjs)? mjs : dec;
   console.log(`Generating main files ...`);
-  if (!isSub) execTsc(ts, o.tsc);
-  execRollup(o.build, o.rollup);
-  execDts(dts, o.dts);
+  if (!isSub) execTsc(ts, o);
+  execRollup(o.build, o);
+  execDts(dts, o);
   var js1 = o.out;
   var mjs1 = pathReplaceExt(js1, '.mjs');
   var dts1 = pathReplaceExt(js1, '.d.ts');
