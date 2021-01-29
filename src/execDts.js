@@ -23,13 +23,11 @@ const EXCLUDE = new Set([
 function execDts(pth, o) {
   var pth = pth||'src/index.ts';
   pth = fs.existsSync(pth)? pth : pth.replace(/\.d\.ts$/, '.ts');
-  var o = Object.assign({}, OPTIONS, o);
-  o.outFile = o.out;
+  var o = Object.assign({outFile: o.outDts}, o);
   console.log(`Executing dts-bundle-generator for ${pth} ...`);
-  console.log(`Output file is at ${o.out}`);
   var opts = optionStringify(o, k => EXCLUDE.has(k)? null : kebabCase(k));
   cpExec(`.dts-bundle-generator ${opts} "${pth}"`);
-  if (!o.moduleName) return;
+  if (!o.moduleName) { console.error(`DtsError: Module name not defined!`); return; }
   var d = fs.readFileSync(o.out, 'utf8');
   d = d.replace(/export declare/g, 'export');
   d = `declare module '${o.moduleName}' {`+EOL+d+`}`+EOL;
