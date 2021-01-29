@@ -7,8 +7,9 @@ const fs = require('fs');
 
 function doPublish(o) {
   console.log(`Publishing package ...`);
+  try { cpExec(`npm publish`); }
+  catch (e) { console.error(e); }
   try {
-    cpExec(`npm publish`);
     var meta = fileRead(o.metadata);
     var readme = fileRead(o.readme);
     minify('.', o);
