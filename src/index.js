@@ -87,7 +87,7 @@ function initPaths(o) {
   o.asciinemaDir = o.asciinemaDir||path.join(o.buildDir, 'example');
   o.outEs = o.outEs||m.module||'index.mjs';
   o.outJs = o.outJs||m.main||'index.js';
-  o.outJs = o.outDts||pathReplaceExt(o.outJs, '.d.ts');
+  o.outDts = o.outDts||pathReplaceExt(o.outJs, '.d.ts');
   o.out = o.out||o.outJs;
   o.outDir = path.dirname(o.out);
   o.example = o.example||'example.js';
