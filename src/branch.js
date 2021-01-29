@@ -23,14 +23,5 @@ function branch(dir, o) {
     catch(e) { console.error(e); }
     console.log();
   }
-  try {
-  // cpExec('npm pack '+o.name);
-  // var tgz = cpExecStr('ls *.tgz');
-  // cpExec(`tar -xvf ${tgz} package/ --strip-components=1`);
-  // cpExec('rm -rf '+tgz)
-  minify('.', o);
-  cpExec('npm publish');
-  }
-  catch(e) { console.error(e); }
 }
 module.exports = branch;
