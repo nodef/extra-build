@@ -17,11 +17,11 @@ function branch(dir, o) {
     var meta = fileRead(o.metadata);
     var readme = fileRead(o.readme);
     var p = scatterOne(pth, o);
-    var cwd = path.dirname(p.metadata);
-    cpExec('npm publish', {cwd});
-    minify(cwd, p);
-    cpExec('npm publish', {cwd});
-    cpExec(`rm -rf "${cwd}"`);
+    cpExec('npm publish');
+    minify('.', p);
+    cpExec('npm publish');
+    fs.writeFileSync(o.metadata, meta);
+    fs.writeFileSync(o.readme, readme);
     }
     catch(e) { console.error(e); }
     console.log();

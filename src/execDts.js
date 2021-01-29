@@ -22,6 +22,7 @@ const EXCLUDE = new Set([
  */
 function execDts(pth, o) {
   var pth = pth||'src/index.ts';
+  pth = fs.existsSync(pth)? pth : pth.replace(/\.d\.ts$/, '.ts');
   var o = Object.assign({}, OPTIONS, o);
   o.outFile = o.out;
   console.log(`Executing dts-bundle-generator for ${pth} ...`);
