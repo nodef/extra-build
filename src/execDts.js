@@ -10,9 +10,7 @@ const OPTIONS = {
   noBanner: true
 };
 const INCLUDE = new Set([
-  'outFile',
-  'noBanner',
-  'moduleName',
+  'noBanner'
 ]);
 
 
@@ -25,7 +23,6 @@ function execDts(pth, o) {
   var pth = pth||'src/index.ts';
   pth = fs.existsSync(pth)? pth : pth.replace(/\.d\.ts$/, '.ts');
   var o = Object.assign({}, OPTIONS, o,);
-  o.outFile = o.outDts;
   console.log(`Executing dts-bundle-generator for ${pth} ...`);
   var opts = optionStringify(o, getOption);
   cpExec(`.dts-bundle-generator ${opts} "${pth}"`);
@@ -40,6 +37,7 @@ function execDts(pth, o) {
 function getOption(k) {
   if (k.startsWith('dts-')) return kebabCase(k.substring(4));
   if (INCLUDE.has(k)) return kebabCase(k);
+  if (k === 'outDts') return kebabCase('outFile');
   return null;
 }
 module.exports = execDts;

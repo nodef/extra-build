@@ -24,14 +24,14 @@ const INCLUDE = new Set([
  */
 function execTsc(pth, o) {
   var pth = pth||'index.ts';
-  var tsconfig = o.tsconfig||o['tsc-build']||'tsconfig.json';
-  var hasTsconfig = tsconfig? fs.existsSync(tsconfig) : false;
-  var o = Object.assign({}, hasTsconfig? {build: tsconfig} : OPTIONS, o);
-  console.log(`Executing tsc as per ${tsconfig} ...`);
+  var config = o.tsconfig||o['tsc-build']||'tsconfig.json';
+  var hasConfig = config? fs.existsSync(config) : false;
+  var o = Object.assign({}, hasConfig? {tsconfig: config} : OPTIONS, o);
+  console.log(`Executing tsc as per ${config} ...`);
   console.log(`Output file is at ${pth}`);
   var opts = optionStringify(o, getOption);
   var cwd = packageRoot(pth);
-  var out = hasTsconfig? '' : ` "${pth}"`;
+  var out = hasConfig? '' : ` "${pth}"`;
   cpExec(`.tsc ${opts} ${out}`, {cwd});
 }
 

@@ -8,7 +8,6 @@ const OPTIONS = {
   exports: 'auto'
 };
 const INCLUDE = new Set([
-  'config',
   'format',
   'exports'
 ]);
@@ -21,9 +20,9 @@ const INCLUDE = new Set([
  */
 function execRollup(pth, o) {
   var pth = pth||'.build/index.js';
-  var {config} = Object.assign({config: 'rollup.config.js'}, o);
+  var config = o.rollupconfig||o['rollup-config']||'rollup.config.js';
   var hasConfig = config? fs.existsSync(config) : false;
-  var o = Object.assign({}, hasConfig? {config} : OPTIONS, o);
+  var o = Object.assign({}, hasConfig? {rollupconfig: config} : OPTIONS, o);
   console.log(`Executing rollup as per ${config} ...`);
   console.log(`Output file is at ${pth}`);
   var opts = optionStringify(o, getOption);
@@ -35,6 +34,7 @@ function execRollup(pth, o) {
 function getOption(k) {
   if (k.startsWith('rollup-')) return k.substring(7);
   if (INCLUDE.has(k)) return k;
+  if (k === 'rollupconfig') return 'config';
   return null;
 }
 module.exports = execRollup;
