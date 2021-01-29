@@ -13,6 +13,7 @@ function jsLinkWiki(js, o) {
     if(!exp) return m;
     if(typ==='class') cls = nam;
     if(nam==='constructor') nam = cls;
+    if (m.includes(urlWiki(nam, o))) return m;
     return m.replace(com, com.replace(rdesc, `$1$2$1[📘](${urlWiki(nam, o)})$3`));
   });
 }
