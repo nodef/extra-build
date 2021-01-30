@@ -1,3 +1,4 @@
+const console = require('./console');
 const octokit = require('./octokit');
 
 

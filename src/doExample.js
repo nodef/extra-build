@@ -1,3 +1,4 @@
+const console = require('./console');
 const mdExample = require('./mdExample');
 const fs = require('fs');
 

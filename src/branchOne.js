@@ -1,3 +1,4 @@
+const console = require('./console');
 const fileRead = require('./fileRead');
 const fileSymbol = require('./fileSymbol');
 const packageName = require('./packageName');
@@ -36,7 +37,7 @@ function branchOne(pth, o) {
   p.description = mdHeading(md)||o.description;
   p.requires = [...packageRequires(pth)];
   p.build = pathReplaceExt(pathReplace('.', pth, o.buildDir), '.js');
-  console.log(`Branching for ${p.name} ...`);
+  console.log(`BranchOne: Branching for ${p.name} ...`);
   console.log(`Source file is at ${pth}`);
   // Branch components
   doMain(pth, p);

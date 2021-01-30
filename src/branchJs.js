@@ -1,3 +1,4 @@
+const console = require('./console');
 const jsLinkWiki = require('./jsLinkWiki');
 const fs = require('fs');
 

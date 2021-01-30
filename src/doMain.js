@@ -1,3 +1,4 @@
+const console = require('./console');
 const cpExec = require('./cpExec');
 const fileName = require('./fileName');
 const pathReplaceExt = require('./pathReplaceExt');

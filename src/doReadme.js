@@ -1,3 +1,4 @@
+const console = require('./console');
 const gitDiffCodeBlocks = require('./gitDiffCodeBlocks');
 const mdSetTable = require('./mdSetTable');
 const mdLinkWikis = require('./mdLinkWikis');

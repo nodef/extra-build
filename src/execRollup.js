@@ -1,3 +1,4 @@
+const console = require('./console');
 const cpExec = require('./cpExec');
 const packageRoot = require('./packageRoot');
 const optionStringify = require('./optionStringify');

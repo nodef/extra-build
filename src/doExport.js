@@ -1,3 +1,4 @@
+const console = require('./console');
 const dirExport = require('./dirExport');
 const fileRead = require('./fileRead');
 const exportSymbols = require('./exportSymbols');

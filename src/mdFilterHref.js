@@ -1,3 +1,4 @@
+const console = require('./console');
 const RHREF = /\[(.*?)\]:\s+([^\r\n]+)\r?\n/g;
 
 

@@ -1,3 +1,4 @@
+const console = require('./console');
 const {EOL} = require('os');
 
 const RLAST = /(\r?\n)(\r?\n)+$|\[.*?\]:\s+.*?\n$/;

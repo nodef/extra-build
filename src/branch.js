@@ -1,3 +1,4 @@
+const console = require('./console');
 const cpExec = require('./cpExec');
 const fileRead = require('./fileRead');
 const dirFiles = require('./dirFiles');
@@ -9,7 +10,7 @@ const fs = require('fs');
 
 function branch(dir, o) {
   var dir = dir||'src';
-  console.log(`Starting branch publish for ${o.name} ...`);
+  console.log(`BranchPublish: Starting for ${o.name} ...`);
   // execTsc(o.source, o.tsc);
   for (var f of dirFiles(dir)) {
     try {

@@ -1,3 +1,4 @@
+const console = require('./console');
 const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');
 const metaKeywords = require('./metaKeywords');

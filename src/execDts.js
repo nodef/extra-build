@@ -1,3 +1,4 @@
+const console = require('./console');
 const cpExec = require('./cpExec');
 const kebabCase = require('./kebabCase');
 const optionStringify = require('./optionStringify');

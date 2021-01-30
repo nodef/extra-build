@@ -1,3 +1,4 @@
+const console = require('./console');
 const cpExec = require('./cpExec');
 const gitCommit = require('./gitCommit');
 const gitRemoteUrl = require('./gitRemoteUrl');

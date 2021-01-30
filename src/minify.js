@@ -1,4 +1,4 @@
-const fileRead = require('./fileRead');
+const console = require('./console');
 const jsonRead = require('./jsonRead');
 const minifyMeta = require('./minifyMeta');
 const minifyMd = require('./minifyMd');
@@ -14,7 +14,7 @@ function minify(pth, o) {
   var main = path.join(pth, 'index.js');
   var hasMd = fs.existsSync(readme);
   o.name = o.name||jsonRead(meta).name;
-  console.log(`Minifying package for ${o.name}.min ...`);
+  console.log(`Minify: Minifying package for ${o.name}.min ...`);
   minifyMeta(meta, o);
   if (hasMd) minifyMd(readme, o);
   minifyJs(main, o);

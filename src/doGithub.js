@@ -1,3 +1,4 @@
+const console = require('./console');
 const githubUpdateDetails = require('./githubUpdateDetails');
 const githubUpdateTopics = require('./githubUpdateTopics');
 

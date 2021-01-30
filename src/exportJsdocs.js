@@ -1,3 +1,4 @@
+const console = require('./console');
 const fileRead = require('./fileRead');
 const jsJsdocs = require('./jsJsdocs');
 const path = require('path');

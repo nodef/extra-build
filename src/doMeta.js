@@ -1,3 +1,4 @@
+const console = require('./console');
 const cpExecStr = require('./cpExecStr');
 const fileRead = require('./fileRead');
 const jsonRead = require('./jsonRead');

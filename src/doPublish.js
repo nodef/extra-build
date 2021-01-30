@@ -1,3 +1,4 @@
+const console = require('./console');
 const cpExec = require('./cpExec');
 const branch = require('./branch');
 const fileRead = require('./fileRead');
@@ -6,7 +7,7 @@ const fs = require('fs');
 
 
 function doPublish(o) {
-  console.log(`Publishing package ...`);
+  console.log(`Publish: Publishing package ...`);
   try { cpExec(`npm publish`); }
   catch (e) { console.error(e); }
   try {

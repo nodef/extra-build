@@ -1,3 +1,4 @@
+const console = require('./console');
 const fs = require('fs');
 const eolSet = require('./eolSet');
 

@@ -1,3 +1,4 @@
+const console = require('./console');
 const execTsc = require('./execTsc');
 const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');

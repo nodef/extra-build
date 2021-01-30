@@ -1,3 +1,4 @@
+const console = require('./console');
 const dirFiles = require('./dirFiles');
 const fileSymbol = require('./fileSymbol');
 const mdSetJsdoc = require('./mdSetJsdoc');
