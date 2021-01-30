@@ -23,7 +23,7 @@ function doWiki(dir, jsdocs, o) {
     var symbol = symbolName(base, o.symbolRoot);
     var pth = path.join(dir, f);
     var md = fs.readFileSync(pth, 'utf8');
-    var jsdoc = jsdocs.get(symbol);
+    var jsdoc = jsdocs.get(base);
     if(!jsdoc) { console.error(`WikiError: No JSDoc for ${pth}`); continue; }
     var diffCodeBlocks = gitDiffCodeBlocks(pth).length>0;
     var p = Object.assign({}, o, {name, symbol, diffCodeBlocks, headerHeavy});

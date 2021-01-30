@@ -39,7 +39,6 @@ async function build(cmds, o) {
   initPaths(o);
   initProps(o);
   if (c.readme || c.wiki) {
-    // initAsciinema(o);
     jsdocs = new Map([
       ...exportJsdocs(o.source),
       ...dirJsdocs(o.sourceDir)

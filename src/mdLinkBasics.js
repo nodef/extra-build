@@ -28,6 +28,7 @@ const NAMES = new Map([
   [DOC, 'JSDoc'],
   [WIK, 'Wiki']
 ]);
+const RHEADER = /^([^:(```)]+\.)[\s\S]*?\n\n|^([^:(```)]+\.)\n\n/;
 
 
 /**
@@ -56,7 +57,7 @@ function mdLinkBasics(md, o) {
 
 function linkLight(md, ls, hs) {
   var lnks = ls.map(l => `[${l}]`).join(' ');
-  md = md.replace(/^([^:]+\.)[\s\S]*?\n\n/, '$1 '+lnks+'\n\n');
+  md = md.replace(RHEADER, '$1$2 '+lnks+'\n\n');
   for (var l of ls)
     md = mdSetHref(md, l, hs.get(l));
   return md;
@@ -66,7 +67,7 @@ function linkHeavy(md, ls, ns, hs) {
   var lnks = ls.map(l => `${l} [${ns.get(l)}](${hs.get(l)})`).join(',\n');
   for (var l of ls)
     md = mdSetHref(md, l, null);
-  md = md.replace(/^([^:]+\.)[\s\S]*?\n\n|^([^:]+\.)\n\n/, '$1$2<br>'+'\n'+lnks+'.\n\n');
+  md = md.replace(RHEADER, '$1$2<br>'+'\n'+lnks+'.\n\n');
   return md;
 }
 module.exports = mdLinkBasics;

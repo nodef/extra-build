@@ -3,7 +3,7 @@ const util = require('util');
 
 
 function error(m) {
-  console.error(kleur.magenta(fixup(m)));
+  console.error(kleur.red(fixup(m)));
 }
 
 function warn(m) {
