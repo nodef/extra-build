@@ -8,8 +8,18 @@ const fs = require('fs');
 
 function doPublish(o) {
   console.log(`Publish: Publishing package ...`);
+  pubDefault();
+  if (o.publishMin) pubMin();
+  if (o.publishBranch) branch(o.sourceDir, o);
+}
+
+
+function pubDefault() {
   try { cpExec(`npm publish`); }
   catch (e) { console.error(e); }
+}
+
+function pubMin() {
   try {
     var meta = fileRead(o.meta);
     var readme = fileRead(o.readme);
@@ -19,6 +29,5 @@ function doPublish(o) {
     fs.writeFileSync(o.readme, readme);
   }
   catch (e) { console.error(e); }
-  if (o.subpublish) branch(o.sourceDir, o);
 }
 module.exports = doPublish;

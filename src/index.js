@@ -125,7 +125,8 @@ function initProps(o) {
   o.wikiDefinition = o.wikiDefinition??true;
   o.wikiLinks = o.wikiLinks??true;
   o.wikiHeader = o.wikiHeader||'light';
-  o.subpublish = o.subpublish??true;
+  o.publishMin = o.publishMin??true;
+  o.publishBranch = o.publishBranch??true;
   o.repoUrl = o.repoUrl||gitRemoteUrl();
   o.wikiUrl = o.wikiUrl||`${o.repoUrl}.wiki`;
   // o.keywords = o.keywords||m.keywords;

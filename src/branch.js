@@ -19,8 +19,8 @@ function branch(dir, o) {
     var readme = fileRead(o.readme);
     var p = branchOne(pth, o);
     cpExec('npm publish');
-    minify('.', p);
-    cpExec('npm publish');
+    if (o.publishMin) minify('.', p);
+    if (o.publishMin) cpExec('npm publish');
     fs.writeFileSync(o.meta, meta);
     fs.writeFileSync(o.readme, readme);
     }
