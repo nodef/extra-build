@@ -1,5 +1,5 @@
 const fs = require('fs');
-const {EOL} = require('os');
+const eolSet = require('./eolSet')
 
 
 /**
@@ -9,7 +9,7 @@ const {EOL} = require('os');
  */
 function jsonWrite(pth, v) {
   var pth = pth||'package.json';
-  var d = JSON.stringify(v, null, 2)+EOL;
-  fs.writeFileSync(pth, d);
+  var d = JSON.stringify(v, null, 2)+'\n';
+  fs.writeFileSync(pth, eolSet(d));
 }
 module.exports = jsonWrite;
