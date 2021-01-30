@@ -3,6 +3,7 @@ const optionValue = require('./optionValue');
 
 
 function optionSet(o, k, a, i) {
+  k = k.replace(/\.-/, '_');
   var s = k.indexOf('=');
   if (s >= 0) dotProp.set(o, k.substring(0, s), optionValue(k.substring(s+1))); // --k=v
   else if (i+1 === a.length || a[i+1].startsWith('-')) dotProp.set(o, k, true); // --k
