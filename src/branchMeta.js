@@ -8,6 +8,8 @@ const dirKeywords = require('./dirKeywords');
 // Update package.json based on scatter options.
 function branchMeta(pth, o) {
   var pth = pth||'package.json';
+  var name = o.name.replace(/^.*?\//, '');
+  var symbol = o.symbol.replace(/^.*?\./, '');
   console.log(`Branching metadata for ${o.name} ...`);
   var x = jsonRead(pth);
   x.name = o.name;
@@ -21,7 +23,7 @@ function branchMeta(pth, o) {
   // x.type = o.type||'module';
   x.scripts = {test: 'exit'};
   x.keywords = metaKeywords(x, dirKeywords(o.keywordsDir));
-  x.keywords.push(...o.name.split(/\W/), o.symbol);
+  x.keywords.push(...name.split(/\W/), symbol);
   x.keywords = Array.from(new Set(x.keywords));
   x.dependencies = Object.assign({},
     x.dependencies, x.devDependencies,

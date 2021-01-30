@@ -3,7 +3,7 @@
  * @param {object} x JSON object
  * @param {Array<string>} ks non-base keywords
  */
-function jsonKeywords(x, ks) {
+function metaKeywords(x, ks) {
   var ks0 = x.keywords.slice();
   var ks1 = ks||[];
   for(var k of ks1) {
@@ -12,4 +12,4 @@ function jsonKeywords(x, ks) {
   }
   return ks0;
 }
-module.exports = jsonKeywords;
+module.exports = metaKeywords;
