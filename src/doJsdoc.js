@@ -44,7 +44,7 @@ function doJsdoc(pth, o) {
 
 function getOption(k) {
   if (k.startsWith('typedoc_')) return k.substring(8);
-  if (k === 'jsdocDir') return 'out';
+  if (k === 'out') return 'out';
   return null;
 }
 module.exports = doJsdoc;
