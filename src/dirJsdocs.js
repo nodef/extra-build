@@ -15,7 +15,7 @@ function dirJsdocs(dir) {
     var p = path.join(dir, f);
     var js = fs.readFileSync(p, 'utf8');
     var b = jsJsdocs(js, p);
-    if(b.size===0) console.error(`Error: No JSDoc found for ${p}`);
+    if(b.size===0) console.error(`DirJSDocsError: No JSDoc found for ${p}`);
     for([k, v] of b) a.set(k, v);
   }
   return a;

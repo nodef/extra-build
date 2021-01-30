@@ -15,7 +15,7 @@ function jsdocParse(com, def, loc='?') {
     var k = m[2].replace(/\..*/, '');
     if (params.has(k)) params.get(k).type += '?';
     else {
-      console.error(`Error: JSDoc parse failed for ${loc}`);
+      console.error(`JSDocParseError: Parse failed for ${loc}`);
       console.error(`No such @param ${err=k}`);
     }
   }
@@ -36,7 +36,7 @@ function jsdocParse(com, def, loc='?') {
     var k = id.replace(/[^\w$]/g, '');
     var f = params.get(k);
     if (!f) {
-      console.error(`Error: JSDoc parse failed for ${loc}`);
+      console.error(`JSDocParseError: Parse failed for ${loc}`);
       console.error(`No such argument ${err=k}`);
       continue;
     }
