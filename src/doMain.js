@@ -24,7 +24,7 @@ function doMain(pth, o) {
   // var mjs = pathReplaceExt(o.output, '.mjs');
   // var dec = fs.existsSync(mjs)? mjs : dec;
   console.log(`Generating main files ...`);
-  cpExec(`cp "${o.buildDir}/${f}.d.ts" "${o.outDts}"`);
+  if (isSub) cpExec(`cp "${o.buildDir}/${f}.d.ts" "${o.outDts}"`);
   if (!isSub) execTsc(ts, o);
   execRollup(o.build, o);
   if (!isSub) execDts(dts, o);
