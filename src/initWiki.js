@@ -14,7 +14,6 @@ const path = require('path');
 function initWiki(dir, o) {
   var dir = dir||'src';
   var {wikiDir: wiki, wikiUrl: url} = o;
-  console.log(`Initializing wiki for directory ${dir} ...`);
   if (!fs.existsSync(wiki)) gitSubmodule(url, wiki);
   gitSubmodule();
   for(var f of dirFiles(dir)) {

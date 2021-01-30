@@ -29,7 +29,7 @@ const NAMES = new Map([
   [WIK, 'Wiki']
 ]);
 const HEADERS = ['light', 'heavy'];
-const RHEADER = /^([^:(```)]+\.)[\s\S]*?\n\n|^([^:(```)]+\.)\n\n/;
+const RHEADER = /^([^:`]+\.)[\s\S]*?\n\n/;
 
 
 /**
@@ -42,6 +42,7 @@ function mdLinkBasics(md, hdr, o) {
   if (!HEADERS.includes(hdr)) return md;
   md = eolSet(md, '\n');
   var hs = new Map([...mdLinks(md, true), ...mdHrefs(md)]);
+  if(o.diffCodeBlocks) hs.delete(CIN);
   hs.set(PKG, urlPackage(o));
   hs.set(GIT, urlPackage(o));
   hs.set(RUN, urlRunkit(o));
@@ -49,28 +50,26 @@ function mdLinkBasics(md, hdr, o) {
   hs.set(LST, urlUnpkg(o));
   hs.set(DOC, urlJsdoc(o));
   hs.set(WIK, urlWiki('', o));
-  if(o.diffCodeBlocks) hs.delete(CIN);
-  if(o.asciinema) hs.set(CIN, hs.get(CIN)||hs.get(NAMES.get(CIN))||mdAsciinema(md, o));
+  hs.set(CIN, hs.get(CIN)||hs.get(NAMES.get(CIN)));
+  if(o.asciinema) hs.set(CIN, hs.get(CIN)||mdAsciinema(md, o));
   var ls = new Set([...NAMES.keys()]);
-  if (!o.asciinema) ls.delete(CIN);
+  if (!hs.has(CIN)) ls.delete(CIN);
   var fn = hdr === 'heavy'? headerHeavy : headerLight;
   return eolSet(fn(md, [...ls], hs))
 }
 
 
 function headerLight(md, ls, hs) {
-  var lnks = ls.map(l => `[${l}]`).join(' ');
-  md = md.replace(RHEADER, '$1$2 '+lnks+'\n\n');
-  for (var l of ls)
-    md = mdSetHref(md, l, hs.get(l));
+  var lnks = ls.map(l => `[${l}](${hs.get(l)})`).join('\n');
+  for (var l of ls) md = mdSetHref(md, l, null);
+  md = md.replace(RHEADER, '$1\n'+lnks+'\n\n');
   return md;
 }
 
 function headerHeavy(md, ls, hs) {
   var lnks = ls.map(l => `${l} [${NAMES.get(l)}](${hs.get(l)})`).join(',\n');
-  for (var l of ls)
-    md = mdSetHref(md, l, null);
-  md = md.replace(RHEADER, '$1$2<br>'+'\n'+lnks+'.\n\n');
+  for (var l of ls) md = mdSetHref(md, l, null);
+  md = md.replace(RHEADER, '$1<br>\n'+lnks+'.\n\n');
   return md;
 }
 module.exports = mdLinkBasics;
