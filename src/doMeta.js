@@ -26,14 +26,19 @@ function doMeta(pth, o) {
   var ks0 = jsonKeywords(m, ks1);
   if (o.metaKeywords) m.keywords = o.keywords||ks0.concat(ks1);
   o.keywords = m.keywords;
+  console.info(`Name: ${m.name}`);
+  console.info(`Version: ${m.version}`);
+  console.info(`Description: ${m.description}`);
+  console.info(`Keywords: ${m.keywords}`);
   jsonWrite(pth, m);
 }
 
 
 function getVersion(v, o) {
   var u = cpExecStr(`npm view ${o.name} version`)||v;
-  if (semver.diff(u, v) !== 'patch') return v;
-  else if (semver.lt(u, v)) return v;
+  var d = semver.diff(u, v);
+  if (d === 'major' || d === 'minor') return v;
+  if (semver.lt(u, v)) return v;
   return semver.inc(v, 'patch');
 }
 module.exports = doMeta;

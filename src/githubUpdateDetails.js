@@ -8,8 +8,8 @@ const octokit = require('./octokit');
  */
 async function githubUpdateDetails(o) {
   var {org: owner, nameRoot: repo, description, homepage} = o;
-  console.log(`Description: ${description}`);
-  console.log(`Website: ${homepage}`);
+  console.info(`Description: ${description}`);
+  console.info(`Website: ${homepage}`);
   await octokit.repos.update({owner, repo, description, homepage});
 }
 module.exports = githubUpdateDetails;

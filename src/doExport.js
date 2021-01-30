@@ -19,7 +19,11 @@ function doExport(pth) {
   var dir = path.dirname(ts);
   var d = exportCustom(fileRead(ts));
   var custom = exportSymbols(d);
-  fs.writeFileSync(ts, d+dirExport(dir, custom));
+  var ets = d+dirExport(dir, custom);
+  var edts = dirExport(dir);
+  fs.writeFileSync(ts, ets);
   fs.writeFileSync(dts, dirExport(dir));
+  console.info(`TsExports: ${[...exportSymbols(ets)]}`);
+  console.info(`DtsExports: ${[...exportSymbols(edts)]}`);
 }
 module.exports = doExport;
