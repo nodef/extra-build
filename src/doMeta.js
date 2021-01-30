@@ -3,7 +3,7 @@ const cpExecStr = require('./cpExecStr');
 const fileRead = require('./fileRead');
 const jsonRead = require('./jsonRead');
 const jsonWrite = require('./jsonWrite');
-const jsonKeywords = require('./metaKeywords');
+const metaKeywords = require('./metaKeywords');
 const mdHeading = require('./mdHeading');
 const dirKeywords = require('./dirKeywords');
 const semver = require('semver');
@@ -23,7 +23,7 @@ function doMeta(pth, o) {
   if (o.metaDescription) m.description = o.description||mdHeading(r);
   if (o.metaVersion) m.version = o.version||getVersion(m.version, o);
   var ks1 = dirKeywords(o.keywordsDir);
-  var ks0 = jsonKeywords(m, ks1);
+  var ks0 = metaKeywords(m, ks1);
   if (o.metaKeywords) m.keywords = o.keywords||ks0.concat(ks1);
   o.keywords = m.keywords;
   console.info(`Name: ${m.name}`);
