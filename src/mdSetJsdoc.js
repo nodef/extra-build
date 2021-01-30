@@ -1,5 +1,4 @@
 const mdReplace = require('./mdReplace');
-const eolSet = require('./eolSet');
 
 
 // Sets wiki from JSDoc.
@@ -15,9 +14,9 @@ function mdSetJsdoc(md, jsdoc, o) {
     (isFn? pars.join('\n')+'\n' : '')+
     (returns? `// --> `+returns.description+'\n':'')+
     '```\n';
-  md = eolSet(md, '\n')||'Blank.\n\n```javascript\n```\n';
+  md = md||'Blank.\n\n```javascript\n```\n';
   if (o.wikiDescription) md = md.replace(/^.*?\n/, m => mdReplace(m, description)+'\n');
   if (o.wikiDefinition)  md = md.replace(/```javascript[\s\S]*?```\n/, def);
-  return eolSet(md);
+  return md;
 }
 module.exports = mdSetJsdoc;

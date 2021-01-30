@@ -8,6 +8,7 @@ const mdLinkWikis = require('./mdLinkWikis');
 const mdLinkBasics = require('./mdLinkBasics');
 const gitDiffCodeBlocks = require('./gitDiffCodeBlocks')
 const initWiki = require('./initWiki');
+const eolSet = require('./eolSet');
 const fs = require('fs');
 const path = require('path');
 
@@ -26,10 +27,11 @@ function doWiki(dir, jsdocs, o) {
     if(!jsdoc) { console.error(`WikiError: No JSDoc for ${pth}`); continue; }
     var diffCodeBlocks = gitDiffCodeBlocks(pth).length>0;
     var p = Object.assign({}, o, {name, symbol, diffCodeBlocks});
+    md = eolSet(md, '\n');
     md = mdSetJsdoc(md, jsdoc, p);
-    if (o.wikiLinks)  md = mdLinkWikis(md, p);
     if (o.wikiHeader) md = mdLinkBasics(md, o.wikiHeader, p);
-    fs.writeFileSync(pth, md);
+    if (o.wikiLinks)  md = mdLinkWikis(md, p);
+    fs.writeFileSync(pth, eolSet(md));
   }
 }
 module.exports = doWiki;

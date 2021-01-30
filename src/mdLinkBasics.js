@@ -8,7 +8,6 @@ const urlUnpkg = require('./urlUnpkg');
 const urlJsdoc = require('./urlJsdoc');
 const urlWiki = require('./urlWiki');
 const mdLinks = require('./mdLinks');
-const eolSet = require('./eolSet');
 
 const PKG = ':package:';
 const GIT = ':smiley_cat:';
@@ -40,7 +39,6 @@ const RHEADER = /^([^:`]+\.)[\s\S]*?\n\n/;
  */
 function mdLinkBasics(md, hdr, o) {
   if (!HEADERS.includes(hdr)) return md;
-  md = eolSet(md, '\n');
   var hs = new Map([...mdLinks(md, true), ...mdHrefs(md)]);
   if(o.diffCodeBlocks) hs.delete(CIN);
   hs.set(PKG, urlPackage(o));
@@ -55,7 +53,7 @@ function mdLinkBasics(md, hdr, o) {
   var ls = new Set([...NAMES.keys()]);
   if (!hs.has(CIN)) ls.delete(CIN);
   var fn = hdr === 'heavy'? headerHeavy : headerLight;
-  return eolSet(fn(md, [...ls], hs))
+  return fn(md, [...ls], hs).trim()+'\n';
 }
 
 

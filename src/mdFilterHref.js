@@ -10,7 +10,7 @@ const RHREF = /\[(.*?)\]:\s+([^\r\n]+)\r?\n/g;
 function mdFilterHref(md, fn) {
   return md.replace(RHREF, (m, p1, p2) => {
     var keep = fn(p2, p1);
-    if(!keep) console.log('mdFilterHrefs: remove', p1, p2);
+    if(!keep) console.log(`FilterHref: Removing [${p1}]: ${p2} ...`);
     return keep? m : '';
   });
 }

@@ -18,6 +18,6 @@ function mdLinkWikis(md, o) {
   // If link was wrong
   for (var k of ws)
     md = mdSetHref(md, k, urlWiki(k, o));
-  return md;
+  return md.trim()+'\n';
 }
 module.exports = mdLinkWikis;
