@@ -8,18 +8,18 @@ const fs = require('fs');
 
 function doPublish(o) {
   console.log(`Publish: Publishing package ...`);
-  pubDefault();
-  if (o.publishMin) pubMin();
+  pubDefault(o);
+  if (o.publishMin) pubMin(o);
   if (o.publishBranch) branch(o.sourceDir, o);
 }
 
 
-function pubDefault() {
+function pubDefault(o) {
   try { cpExec(`npm publish`); }
   catch (e) { console.error(e); }
 }
 
-function pubMin() {
+function pubMin(o) {
   try {
     var meta = fileRead(o.meta);
     var readme = fileRead(o.readme);
