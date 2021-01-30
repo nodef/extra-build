@@ -14,7 +14,6 @@ const path = require('path');
 
 function doWiki(dir, jsdocs, o) {
   var dir = dir||'wiki';
-  var headerHeavy = false;
   console.log(`Updating Wiki ...`);
   initWiki(o.sourceDir, o);
   for(var f of dirFiles(dir)) {
@@ -26,10 +25,10 @@ function doWiki(dir, jsdocs, o) {
     var jsdoc = jsdocs.get(base);
     if(!jsdoc) { console.error(`WikiError: No JSDoc for ${pth}`); continue; }
     var diffCodeBlocks = gitDiffCodeBlocks(pth).length>0;
-    var p = Object.assign({}, o, {name, symbol, diffCodeBlocks, headerHeavy});
+    var p = Object.assign({}, o, {name, symbol, diffCodeBlocks});
     md = mdSetJsdoc(md, jsdoc, p);
-    md = mdLinkWikis(md, p);
-    md = mdLinkBasics(md, p);
+    if (o.wikiLinks)  md = mdLinkWikis(md, p);
+    if (o.wikiHeader) md = mdLinkBasics(md, o.wikiHeader, p);
     fs.writeFileSync(pth, md);
   }
 }

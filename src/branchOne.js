@@ -49,7 +49,7 @@ function branchOne(pth, o) {
   // fs.writeFileSync(p.outJs, jsLinkWiki(d, p));
   // fs.renameSync(p.outJs, p.outEs);
   if (hasDoc) branchMd(p.readme, p);
-  branchMeta(p.metadata, p);
+  branchMeta(p.meta, p);
   // cpExec(`.rollup -c --format=cjs --export=auto --file=${p.outjs} -- ${build}`);
   return p;
 }

@@ -28,15 +28,18 @@ const NAMES = new Map([
   [DOC, 'JSDoc'],
   [WIK, 'Wiki']
 ]);
+const HEADERS = ['light', 'heavy'];
 const RHEADER = /^([^:(```)]+\.)[\s\S]*?\n\n|^([^:(```)]+\.)\n\n/;
 
 
 /**
  * Add basic links to markdown.
  * @param {string} md markdown data
+ * @param {string} hdr header type
  * @param {object} o options
  */
-function mdLinkBasics(md, o) {
+function mdLinkBasics(md, hdr, o) {
+  if (!HEADERS.includes(hdr)) return md;
   md = eolSet(md, '\n');
   var hs = new Map([...mdLinks(md, true), ...mdHrefs(md)]);
   hs.set(PKG, urlPackage(o));
@@ -50,12 +53,12 @@ function mdLinkBasics(md, o) {
   if(o.asciinema) hs.set(CIN, hs.get(CIN)||hs.get(NAMES.get(CIN))||mdAsciinema(md, o));
   var ls = new Set([...NAMES.keys()]);
   if (!o.asciinema) ls.delete(CIN);
-  if (!o.headerHeavy) return eolSet(linkLight(md, [...ls], hs));
-  return eolSet(linkHeavy(md, [...ls], NAMES, hs))
+  var fn = hdr === 'heavy'? headerHeavy : headerLight;
+  return eolSet(fn(md, [...ls], hs))
 }
 
 
-function linkLight(md, ls, hs) {
+function headerLight(md, ls, hs) {
   var lnks = ls.map(l => `[${l}]`).join(' ');
   md = md.replace(RHEADER, '$1$2 '+lnks+'\n\n');
   for (var l of ls)
@@ -63,8 +66,8 @@ function linkLight(md, ls, hs) {
   return md;
 }
 
-function linkHeavy(md, ls, ns, hs) {
-  var lnks = ls.map(l => `${l} [${ns.get(l)}](${hs.get(l)})`).join(',\n');
+function headerHeavy(md, ls, hs) {
+  var lnks = ls.map(l => `${l} [${NAMES.get(l)}](${hs.get(l)})`).join(',\n');
   for (var l of ls)
     md = mdSetHref(md, l, null);
   md = md.replace(RHEADER, '$1$2<br>'+'\n'+lnks+'.\n\n');

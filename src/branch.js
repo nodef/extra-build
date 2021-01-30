@@ -15,13 +15,13 @@ function branch(dir, o) {
   for (var f of dirFiles(dir)) {
     try {
     var pth = path.join(dir, f);
-    var meta = fileRead(o.metadata);
+    var meta = fileRead(o.meta);
     var readme = fileRead(o.readme);
     var p = branchOne(pth, o);
     cpExec('npm publish');
     minify('.', p);
     cpExec('npm publish');
-    fs.writeFileSync(o.metadata, meta);
+    fs.writeFileSync(o.meta, meta);
     fs.writeFileSync(o.readme, readme);
     }
     catch(e) { console.error(e); }

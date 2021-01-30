@@ -7,7 +7,7 @@ const jsonWrite = require('./jsonWrite');
 function minifyMeta(pth, o) {
   var m = jsonRead(pth);
   m.name += '.min';
-  console.log(`Minifying metadata for ${o.name}.min ...`);
+  console.log(`Minifying meta for ${o.name}.min ...`);
   m.description = m.description.replace('.$', ' (browserified, minified).');
   m.type = undefined;
   m.scripts = {test: 'exit'};

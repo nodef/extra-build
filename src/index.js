@@ -22,7 +22,7 @@ const fs = require('fs');
 const path = require('path');
 
 const CODE = ['exports', 'main'];
-const DOCS = ['metadata', 'readme', 'example', 'jsdoc', 'wiki', 'github'];
+const DOCS = ['meta', 'readme', 'example', 'jsdoc', 'wiki', 'github'];
 const ALL = [...CODE, ...DOCS, 'publish'];
 
 
@@ -47,7 +47,7 @@ async function build(cmds, o) {
   if (c.jsdoc) doJsdoc(o.source, o);
   if (c.exports) doExport(o.source, o);
   if (c.main) doMain(o.source, o);
-  if (c.metadata) doMeta(o.metadata, o);
+  if (c.meta) doMeta(o.meta, o);
   if (c.readme) doReadme(o.readme, jsdocs, o);
   if (c.example) doExample(o.readme, o);
   if (c.wiki) doWiki(o.wikiDir, jsdocs, o);
@@ -70,11 +70,11 @@ function initCmds(cmds) {
 
 function initPaths(o) {
   o.readme = o.readme||'README.md';
-  o.metadata = o.metadata||'package.json';
+  o.meta = o.meta||'package.json';
   o.tsconfig = o.tsconfig||'tsconfig.json';
   o.rollupconfig = o.rollupconfig||'rollup.config.js';
   o.source = o.source||'src/index.ts';
-  var m = jsonRead(o.metadata);
+  var m = jsonRead(o.meta);
   var tsc = jsonRead(o.tsconfig);
   o.sourceDir = o.sourceDir||path.dirname(o.source);
   o.modulesDir = o.modulesDir||'node_modules';
@@ -99,7 +99,7 @@ function initPaths(o) {
 
 
 function initProps(o) {
-  var m = jsonRead(o.metadata);
+  var m = jsonRead(o.meta);
   var r = fileRead(o.readme);
   o.org = o.org||'nodef';
   o.name = o.name||m.name;
@@ -113,7 +113,18 @@ function initProps(o) {
   o.homepage = o.homepage||m.homepage||urlPackage(o);
   o.keywordsMin = o.keywordsMin??10;
   o.asciinema = o.asciinema??true;
-  o.headerHeavy = o.headerHeavy??true;
+  o.metaDescription = o.metaDescription??true;
+  o.metaVersion = o.metaVersion??true;
+  o.metaKeywords = o.metaKeywords??true;
+  o.readmeTable = o.readmeTable??true;
+  o.readmeLinks = o.readmeLinks??true;
+  o.readmeHeader = o.readmeHeader||'heavy';
+  o.readmeAsciinema = o.readmeAsciinema??true;
+  o.exampleComments = o.exampleComments??false;
+  o.wikiDescription = o.wikiDescription??true;
+  o.wikiDefinition = o.wikiDefinition??true;
+  o.wikiLinks = o.wikiLinks??true;
+  o.wikiHeader = o.wikiHeader||'light';
   o.subpublish = o.subpublish??true;
   o.repoUrl = o.repoUrl||gitRemoteUrl();
   o.wikiUrl = o.wikiUrl||`${o.repoUrl}.wiki`;

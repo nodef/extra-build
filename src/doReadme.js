@@ -10,11 +10,11 @@ function doReadme(pth, jsdocs, o) {
   var pth = pth||'README.md';
   console.log(`Updating README ...`);
   var md = fs.readFileSync(pth, 'utf8');
-  var diffCodeBlocks = gitDiffCodeBlocks(pth).length>0;
+  var diffCodeBlocks = o.readmeAsciinema && gitDiffCodeBlocks(pth).length>0;
   var o = Object.assign({}, o, {diffCodeBlocks});
-  md = mdSetTable(md, jsdocs);
-  md = mdLinkWikis(md, o);
-  md = mdLinkBasics(md, o);
+  if (o.readmeTable)  md = mdSetTable(md, jsdocs);
+  if (o.readmeLinks)  md = mdLinkWikis(md, o);
+  if (o.readmeHeader) md = mdLinkBasics(md, o.readmeHeader, o);
   fs.writeFileSync(pth, md);
 }
 module.exports = doReadme;

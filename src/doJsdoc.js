@@ -27,7 +27,7 @@ function doJsdoc(pth, o) {
   var pth = pth||'src/index.ts';
   var out = fs.mkdtempSync('.docs');
   var o = Object.assign({}, o, {out});
-  var opts = optionStringify(o, k => TYPEDOC.has(k)? k : null);
+  var opts = optionStringify(o, getOption);
   console.log(`Publishing JSDoc ...`);
   cpExec(`npx typedoc "${pth}" ${opts}`);
   initJsdoc(o);
@@ -39,5 +39,11 @@ function doJsdoc(pth, o) {
   cpExec(`mv "${out}"/* "${cwd}"/`);
   cpExec(`rm -rf "${out}"`);
   gitCommit('', {cwd});
+}
+
+
+function getOption(k) {
+  if (k.startsWith('typedoc_')) return k.substring(8);
+  return null;
 }
 module.exports = doJsdoc;

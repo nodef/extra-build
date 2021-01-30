@@ -16,8 +16,8 @@ function mdSetJsdoc(md, jsdoc, o) {
     (returns? `// --> `+returns.description+'\n':'')+
     '```\n';
   md = eolSet(md, '\n')||'Blank.\n\n```javascript\n```\n';
-  md = md.replace(/^.*?\n/, m => mdReplace(m, description)+'\n');
-  md = md.replace(/```javascript[\s\S]*?```\n/, def);
+  if (o.wikiDescription) md = md.replace(/^.*?\n/, m => mdReplace(m, description)+'\n');
+  if (o.wikiDefinition)  md = md.replace(/```javascript[\s\S]*?```\n/, def);
   return eolSet(md);
 }
 module.exports = mdSetJsdoc;

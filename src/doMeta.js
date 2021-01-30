@@ -20,11 +20,11 @@ function doMeta(pth, o) {
   console.log(`Updating package.json ...`);
   var m = jsonRead(pth);
   var r = fileRead(o.readme);
-  m.description = o.description||mdHeading(r);
-  m.version = o.version||getVersion(m.version, o);
+  if (o.metaDescription) m.description = o.description||mdHeading(r);
+  if (o.metaVersion) m.version = o.version||getVersion(m.version, o);
   var ks1 = dirKeywords(o.keywordsDir);
   var ks0 = jsonKeywords(m, ks1);
-  m.keywords = o.keywords||ks0.concat(ks1);
+  if (o.metaKeywords) m.keywords = o.keywords||ks0.concat(ks1);
   o.keywords = m.keywords;
   jsonWrite(pth, m);
 }

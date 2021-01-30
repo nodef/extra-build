@@ -11,11 +11,11 @@ function doPublish(o) {
   try { cpExec(`npm publish`); }
   catch (e) { console.error(e); }
   try {
-    var meta = fileRead(o.metadata);
+    var meta = fileRead(o.meta);
     var readme = fileRead(o.readme);
     minify('.', o);
     cpExec(`npm publish`);
-    fs.writeFileSync(o.metadata, meta);
+    fs.writeFileSync(o.meta, meta);
     fs.writeFileSync(o.readme, readme);
   }
   catch (e) { console.error(e); }

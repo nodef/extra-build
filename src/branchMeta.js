@@ -10,7 +10,7 @@ function branchMeta(pth, o) {
   var pth = pth||'package.json';
   var name = o.name.replace(/^.*?\//, '');
   var symbol = o.symbol.replace(/^.*?\./, '');
-  console.log(`Branching metadata for ${o.name} ...`);
+  console.log(`Branching meta for ${o.name} ...`);
   var x = jsonRead(pth);
   x.name = o.name;
   x.description = o.description;

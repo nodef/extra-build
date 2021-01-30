@@ -32,13 +32,13 @@ function branchOne(pth, o) {
     source: path.join(tmp, 'index.ts'),
     readme: path.join(tmp, 'README.md'),
     example: path.join(tmp, 'example.js'),
-    metadata: path.join(tmp, 'package.json'),
+    meta: path.join(tmp, 'package.json'),
     modulesDir: path.join(tmp, 'node_modules'),
     outjs: path.join(tmp, 'index.js'),
     outmjs: path.join(tmp, 'index.mjs')
   });
   cpExec(`cp "${source}" "${p.source}"`);
-  cpExec(`cp "${o.metadata}" "${p.metadata}"`);
+  cpExec(`cp "${o.meta}" "${p.meta}"`);
   cpExec(`cp -r "${o.modulesDir}" "${p.modulesDir}"`);
   if (hasReadme) cpExec(`cp "${readme}" "${p.readme}"`);
   if (hasReadme) doExample(p.readme, {example: p.example});
@@ -65,7 +65,7 @@ function branchOne(pth, o) {
   fs.renameSync(p.outjs, p.outmjs);
   if (hasReadme) branchMd(p.readme, p);
   branchJs(p.outmjs, p);
-  branchMeta(p.metadata, p);
+  branchMeta(p.meta, p);
   cpExec(`.rollup -c --format=cjs --file=${p.outjs} -- ${build}`);
   return p;
 }
