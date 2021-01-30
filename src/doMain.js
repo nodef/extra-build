@@ -1,7 +1,9 @@
+const cpExec = require('./cpExec');
+const fileName = require('./fileName');
+const pathReplaceExt = require('./pathReplaceExt');
 const execTsc = require('./execTsc');
 const execRollup = require('./execRollup');
 const execDts = require('./execDts');
-const pathReplaceExt = require('./pathReplaceExt');
 const jsUncomment = require('./jsUncomment');
 const jsLinkWiki = require('./jsLinkWiki');
 const fs = require('fs');
@@ -16,22 +18,22 @@ function doMain(pth, o) {
   var isSub = o.name !== o.nameRoot;
   var ts = pth||'src/index.ts';
   var dts = pathReplaceExt(ts, '.d.ts');
+  dts = fs.existsSync(dts)? dts : ts;
+  var f = fileName(ts);
   // var mjs = pathReplaceExt(o.output, '.mjs');
   // var dec = fs.existsSync(mjs)? mjs : dec;
   console.log(`Generating main files ...`);
+  cpExec(`cp "${o.buildDir}/${f}.d.ts" "${o.outDts}"`);
   if (!isSub) execTsc(ts, o);
   execRollup(o.build, o);
-  execDts(dts, o);
-  var js1 = o.out;
-  var mjs1 = pathReplaceExt(js1, '.mjs');
-  var dts1 = pathReplaceExt(js1, '.d.ts');
-  if(!fs.existsSync(dts1)) return;
-  var d = fs.readFileSync(mjs1, 'utf8');
-  console.log(d);
-  fs.writeFileSync(mjs1, jsUncomment(d, true));
-  var d = fs.readFileSync(js1, 'utf8');
-  fs.writeFileSync(js1, jsUncomment(d, true));
-  var d = fs.readFileSync(dts1, 'utf8');
-  fs.writeFileSync(dts1, jsLinkWiki(d, o));
+  if (!isSub) execDts(dts, o);
+  // Update files
+  if(!fs.existsSync(o.outDts)) return;
+  var d = fs.readFileSync(o.outEs, 'utf8');
+  fs.writeFileSync(o.outEs, jsUncomment(d, true));
+  var d = fs.readFileSync(o.outJs, 'utf8');
+  fs.writeFileSync(o.outJs, jsUncomment(d, true));
+  var d = fs.readFileSync(o.outDts, 'utf8');
+  fs.writeFileSync(o.outDts, jsLinkWiki(d, o));
 }
 module.exports = doMain;

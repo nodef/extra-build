@@ -2,10 +2,10 @@ const fileName = require('./fileName');
 
 
 /**
- * Get identifier for file name.
- * @param {string} f file name
+ * Get identifier for file.
+ * @param {string} p file path
  */
-function fileSymbol(f) {
-  return fileName(f).replace(/[^\w$]/g, '');
+function fileSymbol(p) {
+  return fileName(p).replace(/[^\w$]/g, '');
 }
 module.exports = fileSymbol;

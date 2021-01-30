@@ -1,8 +1,12 @@
+const path = require('path');
+
+
 /**
  * Get file name without extension.
- * @param {string} f file name
+ * @param {string} p file path
  */
-function fileName(f) {
+function fileName(p) {
+  var f = path.basename(p);
   return f.replace(/\..*/, '');
 }
 module.exports = fileName;
