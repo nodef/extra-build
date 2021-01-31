@@ -40,7 +40,7 @@ $ ebuild exports+main+exports --cleanup=false
 <br>
 <br>
 
-[![](https://img.youtube.com/vi/BCxhQpS5fQ0/maxresdefault.jpg)](https://www.youtube.com/watch?v=6mMK6iSZsAs)
+[![](https://img.youtube.com/vi/BCxhQpS5fQ0/maxresdefault.jpg)](https://www.youtube.com/watch?v=BCxhQpS5fQ0)
 
 [jsdoc]: https://github.com/nodef/extra-build/wiki/jsdoc
 [export]: https://github.com/nodef/extra-build/wiki/export
