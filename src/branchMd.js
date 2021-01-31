@@ -8,7 +8,7 @@ function branchMd(pth, o) {
   var pth = pth||'README.md';
   console.log(`Branching README for ${o.name} ...`);
   var d = eolSet(fs.readFileSync(pth, 'utf8'), '\n');
-  d = d.replace(o.noteTop||/(\s+<br>)?\s+```/, '\n\n<br>\n\n'+
+  d = d.replace(o.noteTop||/(\s+<br>)?\s+```/, '\n\n'+
     `> This is part of package [${o.nameRoot}].\n\n`+
     `[${o.nameRoot}]: https://www.npmjs.com/package/${o.nameRoot}\n\n`+
     '<br>\n\n'+
