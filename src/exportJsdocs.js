@@ -20,7 +20,7 @@ function exportJsdocs(pth) {
   var a = new Map(), m = null;
   while((m=rimport.exec(d))!=null) {
     var p = require.resolve(m[1] || m[2]);
-    var b = jsJsdocs(fileRead(p));
+    var b = jsJsdocs(fileRead(p), p);
     if(b.size===0) console.error(`Error: No jsdoc for ${p}`);
     for([k, v] of b) a.set(k, v);
   }

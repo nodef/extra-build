@@ -1,12 +1,14 @@
+const eolSet = require('./eolSet');
 const fs = require('fs');
 
 
 /**
- * Reads file, or empty if not present.
+ * Read file with Unix EOL (empty if not present).
  * @param {string} pth file path
  */
 function fileRead(pth) {
   if(!fs.existsSync(pth)) return '';
-  return fs.readFileSync(pth, 'utf8');
+  var d = fs.readFileSync(pth, 'utf8');
+  return eolSet(d, '\n');
 }
 module.exports = fileRead;

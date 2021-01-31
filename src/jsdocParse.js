@@ -1,3 +1,6 @@
+const console = require('./console');
+
+
 /**
  * Parse JSDoc comment.
  * @param {string} com JSDoc comment
@@ -5,48 +8,81 @@
  * @param {string} loc location information (?)
  */
 function jsdocParse(com, def, loc='?') {
-  var description = com.match(/\s+\*\s+(.*?)\r?\n/)[1], err = null;
-  // params
-  var rparam = /\s+\*\s+@param\s+(?:\{(.*?)\}\s+)?(.*?)\s+(.*?)\r?\n/g;
-  var params = new Map(), m = null;
-  while ((m=rparam.exec(com)) != null) {
-    params.set(m[2], {type: m[1]||'*', description: m[3]});
-    if (!m[2].includes('.')) continue;
-    var k = m[2].replace(/\..*/, '');
-    if (params.has(k)) params.get(k).type += '?';
-    else {
-      console.error(`JSDocParseError: Parse failed for ${loc}`);
-      console.error(`No such @param ${err=k}`);
-    }
+  var errs = [];
+  com = com.replace(/\s*\/\*\s*|\n\s*\*\s*|\n\s*\*\//g, '');
+  var description = getDescription(com);
+  var params = getParams(com, errs);
+  var returns = getReturns(com);
+  var example = getExample(com);
+  var type = getType(def);
+  var args = getArgs(def);
+  updateParams(params, args, errs);
+  for (var e of errs) console.error(`JsdocParseError: ${e} (${loc})`);
+  if (errs.length>0)  console.error(`${com}\n${def}`);
+  return {type, description, params, returns, example};
+}
+
+
+function getDescription(com) {
+  var re = /(.*?)\n/;
+  var m = re.exec(com);
+  return m[1].trim();
+}
+
+function getParams(com, errs) {
+  var re = /\n@param\s+(?:\{(.*?)\}\s+)?(.*?)\s+(.*?)/g;
+  var a = new Map(), m = null;
+  while ((m=re.exec(com)) != null) {
+    var [, type, name, description] = m;
+    type = type||'*';
+    a.set(name, {type, description});
+    if (!name.includes('.')) continue;
+    var k = name.replace(/\..*/, '');
+    if (a.has(k)) a.get(k).type += '?';
+    else errs.push(`No such @param ${k}`);
   }
-  // returns
-  var rreturns = /\s+\*\s+@returns\s+(?:\{(.*?)\}\s+)?(.*?)\r?\n/;
-  var m = rreturns.exec(com);
-  var returns = m? {type: m[1], description: m[2]}:null;
-  // definition
-  var rarg = /\s*([\.\w$?]+)\s*(\:[^=]+)?=?(.*)/;
-  var args = def.replace(/[^(]*\(?/, '').replace(/\).*/, '');
-  args = args.replace(/<.*?>/g, '').replace(/\[.*?\]/g, '');
-  args = /^(const|var|let)\s/.test(def)? '' : args;
-  var type = args? 'function' : 'variable';
-  if (args) for(var a of args.split(/,\s*/g)) {
-    var m = rarg.exec(a);
-    if (m==null) continue;
-    var [, id,, val] = m;
-    var k = id.replace(/[^\w$]/g, '');
-    var f = params.get(k);
-    if (!f) {
-      console.error(`JSDocParseError: Parse failed for ${loc}`);
-      console.error(`No such argument ${err=k}`);
-      continue;
-    }
-    if (id.startsWith('...')) f.type = '...'+f.type;
-    if (id.endsWith('?') || val) f.type += '?';
+  return a;
+}
+
+function getReturns(com) {
+  var re = /\n@returns\s+(?:\{(.*?)\}\s+)?(.*?)/;
+  var m = re.exec(com);
+  return m? {type: m[1], description: m[2]} : null;
+}
+
+function getExample(com) {
+  var re = /\n@example\s+([\s\S]*?)(?:@|$)/;
+  var m = re.exec(com);
+  return m? m[1].trim() : '';
+}
+
+
+function getType(def) {
+  var re = /^(const|var|let)\s/;
+  return re.test(def)? 'variable' : 'function';
+}
+
+function getArgs(def) {
+  def = def.replace(/^[^(]*\(?|\).*$/g, '');
+  def = def.replace(/<.*?>|\[.*?\]/g, '');
+  var re = /\s*([\.\w$?]+)\s*(\:[^=]+)?=?(.*)/, a = [];
+  for(var d of def.split(/,\s*/g)) {
+    var m = re.exec(d);
+    if (m == null) continue;
+    var [, name,, value] = m;
+    a.push({name, value})
   }
-  if (err) {
-    console.error(com);
-    console.error(def);
+  return a;
+}
+
+function updateParams(params, args, errs) {
+  for (var {name, value} of args) {
+    var k = name.replace(/[^\w$]/g, '');
+    var p = params.get(k);
+    if (!p) { errs.push(`No such paramter ${k}`); continue; }
+    if (name.startsWith('...')) p.type = '...'+p.type;
+    if (name.endsWith('?') || value) p.type += '?';
   }
-  return {type, description, params, returns};
+  return params;
 }
 module.exports = jsdocParse;

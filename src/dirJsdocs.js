@@ -1,6 +1,6 @@
 const dirFiles = require('./dirFiles');
+const fileRead = require('./fileRead');
 const jsJsdocs = require('./jsJsdocs');
-const fs = require('fs');
 const path = require('path');
 
 
@@ -13,8 +13,7 @@ function dirJsdocs(dir) {
   var a = new Map();
   for(var f of dirFiles(dir)) {
     var p = path.join(dir, f);
-    var js = fs.readFileSync(p, 'utf8');
-    var b = jsJsdocs(js, p);
+    var b = jsJsdocs(fileRead(p), p);
     if(b.size===0) console.error(`DirJSDocsError: No JSDoc found for ${p}`);
     for([k, v] of b) a.set(k, v);
   }

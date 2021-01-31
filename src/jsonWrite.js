@@ -1,5 +1,5 @@
-const fs = require('fs');
 const eolSet = require('./eolSet')
+const fs = require('fs');
 
 
 /**
