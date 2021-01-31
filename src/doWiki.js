@@ -1,5 +1,7 @@
 const console = require('./console');
 const dirFiles = require('./dirFiles');
+const fileRead = require('./fileRead');
+const fileWrite = require('./fileWrite');
 const fileSymbol = require('./fileSymbol');
 const packageName = require('./packageName');
 const symbolName = require('./symbolName');
@@ -8,9 +10,16 @@ const mdLinkWikis = require('./mdLinkWikis');
 const mdLinkBasics = require('./mdLinkBasics');
 const gitDiffCodeBlocks = require('./gitDiffCodeBlocks')
 const initWiki = require('./initWiki');
-const eolSet = require('./eolSet');
-const fs = require('fs');
 const path = require('path');
+
+const DEFAULT =
+  'Description.\n\n'+
+  '> Alternatives: none.\n'+
+  '> Similar: none.\n\n<br>\n\n'+
+  '```javascript\n```\n\n'+
+  '```javascript\n```\n\n<br>\n<br>\n\n\n'+
+  '## References\n\n'+
+  '- none\n';
 
 
 function doWiki(dir, jsdocs, o) {
@@ -22,16 +31,15 @@ function doWiki(dir, jsdocs, o) {
     var name = packageName(base, o.nameRoot);
     var symbol = symbolName(base, o.symbolRoot);
     var pth = path.join(dir, f);
-    var md = fs.readFileSync(pth, 'utf8');
+    var md = fileRead(pth)||DEFAULT;
     var jsdoc = jsdocs.get(base);
     if(!jsdoc) { console.error(`WikiError: No JSDoc for ${pth}`); continue; }
     var diffCodeBlocks = gitDiffCodeBlocks(pth).length>0;
     var p = Object.assign({}, o, {name, symbol, diffCodeBlocks});
-    md = eolSet(md, '\n');
     md = mdSetJsdoc(md, jsdoc, p);
     if (o.wikiHeader) md = mdLinkBasics(md, o.wikiHeader, p);
     if (o.wikiLinks)  md = mdLinkWikis(md, p);
-    fs.writeFileSync(pth, eolSet(md));
+    fileWrite(pth, md);
   }
 }
 module.exports = doWiki;
