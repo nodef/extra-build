@@ -12,7 +12,7 @@ function doReadme(pth, jsdocs, o) {
   var md = fs.readFileSync(pth, 'utf8');
   var diffCodeBlocks = o.readmeAsciinema && gitDiffCodeBlocks(pth).length>0;
   var o = Object.assign({}, o, {diffCodeBlocks});
-  if (o.readmeTable)  md = mdSetTable(md, jsdocs);
+  if (o.readmeIndex)  md = mdSetTable(md, jsdocs);
   if (o.readmeLinks)  md = mdLinkWikis(md, o);
   if (o.readmeHeader) md = mdLinkBasics(md, o.readmeHeader, o);
   fs.writeFileSync(pth, md);

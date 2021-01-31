@@ -3,6 +3,6 @@
  * @param {options} o options {nameRoot}
  */
 function urlJsdoc(o) {
-  return `https://${o.org}.github.io/${o.nameRoot}/`;
+  return `https://${o.owner}.github.io/${o.repo}/`;
 }
 module.exports = urlJsdoc;

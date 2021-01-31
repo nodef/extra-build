@@ -1,6 +1,11 @@
 Common build tools for extra-* packages.
 
 ```bash
+$ ebuild [commands] [options]
+# Commands, Options in Index
+```
+
+```bash
 # Publish JSDoc on gh-pages branch.
 $ ebuild jsdoc
 
@@ -11,31 +16,28 @@ $ ebuild docs
 $ ebuild exports+main+exports --cleanup=false
 ```
 
-```bash
-$ ebash [command1+command2+...] [options]
-
-# jsdoc:    publish JSDoc (gh-pages)
-# exports:  generate exports file with declarations (src/index.ts)
-# main:     generate main files (index.mjs, index.js, index.d.ts)
-# meta:     update description, keywords (package.json)
-# readme:   update header, table, and links (README.md)
-# example:  generate example from README (example.js)
-# wiki:     update header, syntax, and links for pages (wiki/)
-# github:   update GitHub description, url, topics
-# publish:  publish package and subpackages (pkg, @pkg/fn...) (TODO: GitHub)
-# code:     same as exports+main
-# docs:     same as meta+readme+example+jsdoc+wiki+github
-# all:      all commands above
-
-# --cleanup: cleanup after build complete? (true)
-# --org:     organization name (nodef)
-```
+<br>
+<br>
 
 
-## References
+## Index
 
-- Typedoc
-- TypeScript
-- Rollup
-- DTS Bundle Generator
-- Asciinema
+| Name      | Action                                           |
+| --------- | ------------------------------------------------ |
+| [jsdoc]   | Publish JSDoc on gh-pages branch.                |
+| [export]  | Generate export file with declarations.          |
+| [main]    | Generate main javascript file.                   |
+| [meta]    | Update description, keywords in package.json.    |
+| [readme]  | Update header, index, and links in README.       |
+| [example] | Generate example.js from README.                 |
+| [wiki]    | Update Wiki from code.                           |
+| [github]  | Update GitHub repo description, url, topics.     |
+| [publish] | Publish package to NPM.                          |
+| **code**  | Same as 'export+main'.                           |
+| **docs**  | Same as 'meta+readme+example+jsdoc+wiki+github'. |
+| **all**   | All commands above.                              |
+
+<br>
+<br>
+
+[![](https://img.youtube.com/vi/BCxhQpS5fQ0/maxresdefault.jpg)](https://www.youtube.com/watch?v=6mMK6iSZsAs)

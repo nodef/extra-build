@@ -9,7 +9,7 @@ const githubUpdateTopics = require('./githubUpdateTopics');
  */
 function doGithub(o) {
   var o = o||{};
-  console.log(`Updating GitHub details for ${o.org}/${o.name} ...`);
+  console.log(`Updating GitHub details for ${o.owner}/${o.repo} ...`);
   return Promise.all([
     githubUpdateDetails(o),
     githubUpdateTopics(o)

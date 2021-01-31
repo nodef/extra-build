@@ -4,11 +4,11 @@
  * @param {RegExp} re language (javascript)
  */
 function mdCodeBlocks(md, re=null) {
-  var re = re||/javascript/, a = [];
-  var rex = /```(\w*)(.*?)```/gs, m = null;
-  while((m=rex.exec(md))!=null) {
-    var [, lang, code] = m;
-    if(re.test(lang)) a.push(code.trim());
+  var a = [], m = null;
+  var re = /```javascript\n([\s\S]*?)```\n/g;
+  while((m=re.exec(md))!=null) {
+    var [, code] = m;
+    a.push(code.trim());
   }
   return a;
 }

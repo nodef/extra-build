@@ -4,6 +4,7 @@ const jsonRead = require('./jsonRead');
 const dirJsdocs = require('./dirJsdocs');
 const pathReplaceExt = require('./pathReplaceExt');
 const gitRemoteUrl = require('./gitRemoteUrl');
+const gitDetails = require('./gitDetails');
 const exportJsdocs = require('./exportJsdocs');
 const mdHeading = require('./mdHeading');
 const doExport = require('./doExport');
@@ -21,7 +22,7 @@ const urlPackage = require('./urlPackage');
 const fs = require('fs');
 const path = require('path');
 
-const CODE = ['exports', 'main'];
+const CODE = ['export', 'main'];
 const DOCS = ['meta', 'readme', 'example', 'jsdoc', 'wiki', 'github'];
 const ALL = [...CODE, ...DOCS, 'publish'];
 
@@ -101,7 +102,10 @@ function initPaths(o) {
 function initProps(o) {
   var m = jsonRead(o.meta);
   var r = fileRead(o.readme);
-  o.org = o.org||'nodef';
+  o.repoUrl = o.repoUrl||gitRemoteUrl();
+  o.wikiUrl = o.wikiUrl||`${o.repoUrl}.wiki`;
+  o.owner = o.owner||gitDetails(o.repoUrl).owner;
+  o.repo = o.repo||gitDetails(o.repoUrl).repo;
   o.name = o.name||m.name;
   o.symbol = o.symbol||symbolName(o.name);
   o.standalone = o.standalone||standaloneName(o.symbol);
@@ -116,19 +120,19 @@ function initProps(o) {
   o.metaDescription = o.metaDescription??true;
   o.metaVersion = o.metaVersion??true;
   o.metaKeywords = o.metaKeywords??true;
-  o.readmeTable = o.readmeTable??true;
+  o.readmeIndex = o.readmeIndex??true;
   o.readmeLinks = o.readmeLinks??true;
   o.readmeHeader = o.readmeHeader||'heavy';
   o.readmeAsciinema = o.readmeAsciinema??true;
   o.exampleComments = o.exampleComments??false;
   o.wikiDescription = o.wikiDescription??true;
-  o.wikiDefinition = o.wikiDefinition??true;
-  o.wikiLinks = o.wikiLinks??true;
   o.wikiHeader = o.wikiHeader||'light';
+  o.wikiDefinition = o.wikiDefinition??true;
+  o.wikiExample = o.wikiExample??true;
+  o.wikiLinks = o.wikiLinks??true;
+  o.wikiAsciinema = o.wikiAsciinema??true;
   o.publishMin = o.publishMin??true;
   o.publishBranch = o.publishBranch??true;
-  o.repoUrl = o.repoUrl||gitRemoteUrl();
-  o.wikiUrl = o.wikiUrl||`${o.repoUrl}.wiki`;
   // o.keywords = o.keywords||m.keywords;
 }
 module.exports = build;

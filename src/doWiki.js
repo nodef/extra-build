@@ -34,9 +34,10 @@ function doWiki(dir, jsdocs, o) {
     var md = fileRead(pth)||DEFAULT;
     var jsdoc = jsdocs.get(base);
     if(!jsdoc) { console.error(`WikiError: No JSDoc for ${pth}`); continue; }
-    var diffCodeBlocks = gitDiffCodeBlocks(pth).length>0;
-    var p = Object.assign({}, o, {name, symbol, diffCodeBlocks});
+    var p = Object.assign({}, o, {name, symbol});
     md = mdSetJsdoc(md, jsdoc, p);
+    fileWrite(pth, md);
+    p.diffCodeBlocks = o.wikiAsciinema && gitDiffCodeBlocks(pth).length>0;
     if (o.wikiHeader) md = mdLinkBasics(md, o.wikiHeader, p);
     if (o.wikiLinks)  md = mdLinkWikis(md, p);
     fileWrite(pth, md);

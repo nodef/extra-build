@@ -4,6 +4,6 @@
  * @param {object} o options {org, nameRoot}
  */
 function urlWiki(sym, o) {
-  return `https://github.com/${o.org}/${o.nameRoot}/wiki/${sym}`;
+  return `https://github.com/${o.owner}/${o.repo}/wiki/${sym}`;
 }
 module.exports = urlWiki;

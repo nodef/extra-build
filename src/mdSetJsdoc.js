@@ -6,13 +6,13 @@ const mdReplace = require('./mdReplace');
 function mdSetJsdoc(md, jsdoc, o) {
   var {description} = jsdoc;
   if (o.wikiDescription) md = md.replace(/^.*?\n/, m => mdReplace(m, description)+'\n');
-  var re = /```javascript([\s\S]*?)```/g;
+  var re = /```javascript([\s\S]*?)```\n/g;
   md = stringReplaceNth(md, re, 0, (m, p1) => {
-    if (!o.wikiDefinition && p1.trim().length === 0) return m;
+    if (!o.wikiDefinition && p1.trim().length !== 0) return m;
     return getDefinition(o.symbol, jsdoc);
   });
   md = stringReplaceNth(md, re, 1, (m, p1) => {
-    if (!o.wikiExample && p1.trim().length === 0) return m;
+    if (!o.wikiExample && p1.trim().length !== 0) return m;
     return getExample(jsdoc);
   });
   return md;
