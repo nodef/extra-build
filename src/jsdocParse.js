@@ -17,8 +17,6 @@ function jsdocParse(com, def, loc='?') {
   var example = getExample(com);
   var type = getType(def);
   var args = getArgs(def);
-  console.log(com);
-  console.log(args);
   updateParams(params, args, errs);
   for (var e of errs) console.error(`JsdocParseError: ${e} (${loc})`);
   if (errs.length>0)  console.error(`${com}\n${def}`);
@@ -33,12 +31,12 @@ function getDescription(com) {
 }
 
 function getParams(com, errs) {
-  var re = /\n@param\s+(?:\{(.*?)\}\s+)?(.*?)\s+(.*)/gm;
+  var re = /\n@param\s+(?:\{(.*?)(?:[=|])\}\s+)?\[?(.*?)(=.*?)?\]?\s+(.*)/gm;
   var a = new Map(), m = null;
   while ((m=re.exec(com)) != null) {
-    var [, type, name, description] = m;
-    type = type||'*';
-    a.set(name, {type, description});
+    var [, type, name, value, description] = m;
+    type = type||'*'; value = value||null;
+    a.set(name, {type, value, description});
     if (!name.includes('.')) continue;
     var k = name.replace(/\..*/, '');
     if (a.has(k)) a.get(k).type += '?';
@@ -70,36 +68,25 @@ function getArgs(def) {
   def = def.replace(/^[^(]*\(?|\).*$/g, '');
   def = def.replace(/<.*?>|\[.*?\]/g, '');
   var re = /([\w$]+)\s*(?::\s*([^=]+))?\s*(?:=\s*(\S+))?/, a = [];
-  console.log(stringSplitOutside(def));
   for (var d of stringSplitOutside(def)) {
     var m = re.exec(d);
     if (m == null) continue;
     var [, name, type, value] = m;
+    type = type||null; value = value||null;
     a.push({name, type, value});
   }
   return a;
 }
 
-function getArgsOld(def) {
-  def = def.replace(/^[^(]*\(?|\).*$/g, '');
-  def = def.replace(/<.*?>|\[.*?\]/g, '');
-  var re = /\s*([\.\w$?]+)\s*(\:[^=]+)?=?(.*)/, a = [];
-  for(var d of def.split(/,\s*/g)) {
-    var m = re.exec(d);
-    if (m == null) continue;
-    var [, name,, value] = m;
-    a.push({name, value})
-  }
-  return a;
-}
-
 function updateParams(params, args, errs) {
-  for (var {name, value} of args) {
+  for (var {name, type, value} of args) {
     var k = name.replace(/[^\w$]/g, '');
     var p = params.get(k);
     if (!p) { errs.push(`No such paramter ${k}`); continue; }
+    if (p.type === '*') p.type = type;
     if (name.startsWith('...')) p.type = '...'+p.type;
     if (name.endsWith('?') || value) p.type += '?';
+    p.value = p.value || value;
   }
   return params;
 }
