@@ -52,7 +52,7 @@ function getExample(jsdoc) {
   var {example} = jsdoc;
   return ''+
     '```javascript\n'+
-    `${example}\n`
+    `${example||''}\n`+
     '```\n';
 }
 module.exports = mdSetJsdoc;

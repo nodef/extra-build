@@ -14,7 +14,6 @@ function jsJsdocs(js, loc='?') {
     if (typ==='class') { cls = nam; continue; }
     if (nam==='constructor') nam = cls;
     a.set(nam, jsdocParse(com, def||'', loc));
-    console.log(a.get(nam));
   }
   return a;
 }
