@@ -24,7 +24,7 @@ function getDefinition(symbol, jsdoc) {
   var {type, params, returns} = jsdoc;
   var pre = Math.max(...[...params.keys()].map(v => v.length));
   for (var [name, value] of params) {
-    pars.push(getParamDef(name. value, pre));
+    pars.push(getParamDef(name, value, pre));
     if (!name.includes('.')) args.push(getArgDef(name, value));
   }
   var isFn = type === 'function';
