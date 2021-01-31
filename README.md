@@ -41,3 +41,13 @@ $ ebuild exports+main+exports --cleanup=false
 <br>
 
 [![](https://img.youtube.com/vi/BCxhQpS5fQ0/maxresdefault.jpg)](https://www.youtube.com/watch?v=6mMK6iSZsAs)
+
+[jsdoc]: https://github.com/nodef/extra-build/wiki/jsdoc
+[export]: https://github.com/nodef/extra-build/wiki/export
+[main]: https://github.com/nodef/extra-build/wiki/main
+[meta]: https://github.com/nodef/extra-build/wiki/meta
+[readme]: https://github.com/nodef/extra-build/wiki/readme
+[example]: https://github.com/nodef/extra-build/wiki/example
+[wiki]: https://github.com/nodef/extra-build/wiki/wiki
+[github]: https://github.com/nodef/extra-build/wiki/github
+[publish]: https://github.com/nodef/extra-build/wiki/publish
