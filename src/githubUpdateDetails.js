@@ -7,7 +7,7 @@ const octokit = require('./octokit');
  * @param {object} o options
  */
 async function githubUpdateDetails(o) {
-  var {org: owner, nameRoot: repo, description, homepage} = o;
+  var {owner, repo, description, homepage} = o;
   console.info(`Description: ${description}`);
   console.info(`Website: ${homepage}`);
   await octokit.repos.update({owner, repo, description, homepage});
