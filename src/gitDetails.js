@@ -6,7 +6,9 @@ const url = require('url');
  * @param {string} u remote url
  */
 function gitDetails(u) {
-  var p = url.parse(u).pathname.substring(1);
+  var p = url.parse(u).pathname;
+  p = p.replace(/^\/|^.*?:/, '');
+  p = p.replace(/\.git$/, '');
   var [owner, repo] = p.split('/');
   return {owner, repo};
 }
