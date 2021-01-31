@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fileRead = require('./fileRead');
 
 
 /**
@@ -7,7 +7,7 @@ const fs = require('fs');
  */
 function jsonRead(pth) {
   var pth = pth||'package.json';
-  var d = fs.readFileSync(pth, 'utf8');
+  var d = fileRead(pth)||'{}';
   return JSON.parse(d);
 }
 module.exports = jsonRead;
