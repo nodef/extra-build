@@ -70,8 +70,9 @@ function initCmds(cmds) {
 
 
 function initPaths(o) {
-  o.readme = o.readme||'README.md';
   o.meta = o.meta||'package.json';
+  o.npmrc = o.npmrc||'.npmrc';
+  o.readme = o.readme||'README.md';
   o.tsconfig = o.tsconfig||'tsconfig.json';
   o.rollupconfig = o.rollupconfig||'rollup.config.js';
   o.source = o.source||'src/index.ts';
@@ -133,6 +134,7 @@ function initProps(o) {
   o.wikiAsciinema = o.wikiAsciinema??true;
   o.publishMin = o.publishMin??true;
   o.publishBranch = o.publishBranch??true;
+  o.publishGithub = o.publishGithub??true;
   // o.keywords = o.keywords||m.keywords;
 }
 module.exports = build;

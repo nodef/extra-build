@@ -1,11 +1,10 @@
 const console = require('./console');
-const cpExec = require('./cpExec');
-const fileRead = require('./fileRead');
 const dirFiles = require('./dirFiles');
 const branchOne = require('./branchOne');
-const minify = require('./minify');
 const path = require('path');
-const fs = require('fs');
+const publishDo = require('./publishDo');
+const publishDefault = require('./publishDefault');
+const publishMin = require('./publishMin');
 
 
 function branch(dir, o) {
@@ -13,18 +12,12 @@ function branch(dir, o) {
   console.log(`BranchPublish: Starting for ${o.name} ...`);
   // execTsc(o.source, o.tsc);
   for (var f of dirFiles(dir)) {
-    try {
     var pth = path.join(dir, f);
-    var meta = fileRead(o.meta);
-    var readme = fileRead(o.readme);
-    var p = branchOne(pth, o);
-    cpExec('npm publish');
-    if (o.publishMin) minify('.', p);
-    if (o.publishMin) cpExec('npm publish');
-    fs.writeFileSync(o.meta, meta);
-    fs.writeFileSync(o.readme, readme);
-    }
-    catch(e) { console.error(e); }
+    publishDo(o, () => {
+      var p = branchOne(pth, o);
+      publishDo(p, publishDefault);
+      if (p.publishMin) publishDo(p, publishMin);
+    });
     console.log();
   }
 }
