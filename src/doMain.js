@@ -9,6 +9,7 @@ const jsLinkWiki = require('./jsLinkWiki');
 const execTsc = require('./execTsc');
 const execRollup = require('./execRollup');
 const execDts = require('./execDts');
+const fs = require('fs');
 
 
 /**
