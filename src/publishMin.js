@@ -1,12 +1,9 @@
-const cpExec = require('./cpExec');
 const minify = require('./minify');
-const tryCatch = require('./tryCatch');
-const publishGithub = require('./publishGithub');
+const publishDefault = require('./publishDefault');
 
 
 function publishMin(o) {
   minify('.', o);
-  tryCatch(() => { cpExec(`npm publish`); });
-  tryCatch(() => { if (o.publishGithub) publishGithub(o); });
+  publishDefault(o);
 }
 module.exports = publishMin;
