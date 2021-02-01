@@ -1,5 +1,5 @@
 const console = require('./console');
-const RHREF = /\[(.*?)\]:\s+([^\r\n]+)\r?\n/g;
+const RHREF = /\[(.*?)\]:\s+([^\n]+)\n/g;
 
 
 /**

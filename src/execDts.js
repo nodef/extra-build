@@ -1,9 +1,9 @@
 const console = require('./console');
 const cpExec = require('./cpExec');
+const fileRead = require('./fileRead');
+const fileWrite = require('./fileWrite');
 const kebabCase = require('./kebabCase');
 const optionStringify = require('./optionStringify');
-const fs = require('fs');
-const {EOL} = require('os');
 
 // TODO: use .package? exclude if org package
 const OPTIONS = {
@@ -24,10 +24,10 @@ function execDts(pth, o) {
   var opts = optionStringify(o, getOption);
   cpExec(`.dts-bundle-generator ${opts} "${pth}"`);
   if (!o.moduleName) { console.error(`DtsError: Module name not defined!`); return; }
-  var d = fs.readFileSync(o.outDts, 'utf8');
+  var d = fileRead(o.outDts);
   d = d.replace(/export declare/g, 'export');
-  d = `declare module '${o.moduleName}' {`+EOL+d+`}`+EOL;
-  fs.writeFileSync(o.outDts, d);
+  d = `declare module '${o.moduleName}' {\n${d}}\n`;
+  fileWrite(o.outDts, d);
 }
 
 

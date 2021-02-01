@@ -1,6 +1,7 @@
 const console = require('./console');
 const dirExport = require('./dirExport');
 const fileRead = require('./fileRead');
+const fileWrite = require('./fileWrite');
 const exportSymbols = require('./exportSymbols');
 const exportCustom = require('./exportCustom');
 const pathReplaceExt = require('./pathReplaceExt');
@@ -21,8 +22,8 @@ function doExport(pth) {
   var custom = exportSymbols(d);
   var ets = d+dirExport(dir, custom);
   var edts = dirExport(dir);
-  fs.writeFileSync(ts, ets);
-  fs.writeFileSync(dts, dirExport(dir));
+  fileWrite(ts, ets);
+  fileWrite(dts, dirExport(dir));
   console.info(`TsExports: ${[...exportSymbols(ets)]}`);
   console.info(`DtsExports: ${[...exportSymbols(edts)]}`);
 }

@@ -1,12 +1,12 @@
 const console = require('./console');
-const fs = require('fs');
-const eolSet = require('./eolSet');
+const fileRead = require('./fileRead');
+const fileWrite = require('./fileWrite');
 
 
 // Adds minified message to README.md in place.
 function minifyMd(pth, o) {
   console.log(`Minifying README for ${o.name}.min ...`);
-  var d = eolSet(fs.readFileSync(pth, 'utf8'), '\n');
+  var d = fileRead(pth);
   d = d.replace(o.noteMinified||/^> .*?minified.*$/m, '');
   d = d.replace(o.noteTop||/(\s+<br>)?\s+```/, '\n\n'+
     `> This is browserified, minified version of [${o.name}].<br>\n`+
@@ -18,6 +18,6 @@ function minifyMd(pth, o) {
     '<br>\n\n'+
     (o.noteTopValue||'```')
   );
-  fs.writeFileSync(pth, eolSet(d));
+  fileWrite(pth, d);
 }
 module.exports = minifyMd;

@@ -6,16 +6,6 @@ const initJsdoc = require('./initJsdoc');
 const optionStringify = require('./optionStringify');
 const fs = require('fs');
 
-const TYPEDOC = new Set([
-  'categorizeByGroup', 'categoryOrder', 'defaultCategory', 'disableOutputCheck',
-  'disableSources', 'emit', 'entryPoints', 'excludeExternals', 'excludeInternal',
-  'excludeNotDocumented', 'excludePrivate', 'excludeProtected', 'excludeTags',
-  'externalPattern', 'gaID', 'gaSite', 'gitRemote', 'gitRevision', 'hideGenerator',
-  'includes', 'json', 'listInvalidSymbolLinks', 'logger', 'logLevel', 'markedOptions',
-  'media', 'name', 'options', 'out', 'plugin', 'preserveWatchOutput', 'readme',
-  'showConfig', 'theme', 'toc', 'tsconfig', 'watch'
-]);
-
 
 /**
  * Publish JSDoc on gh-pages branch.

@@ -1,13 +1,14 @@
 const console = require('./console');
 const cpExec = require('./cpExec');
+const fileRead = require('./fileRead');
+const fileWrite = require('./fileWrite');
 const fileName = require('./fileName');
 const pathReplaceExt = require('./pathReplaceExt');
+const jsUncomment = require('./jsUncomment');
+const jsLinkWiki = require('./jsLinkWiki');
 const execTsc = require('./execTsc');
 const execRollup = require('./execRollup');
 const execDts = require('./execDts');
-const jsUncomment = require('./jsUncomment');
-const jsLinkWiki = require('./jsLinkWiki');
-const fs = require('fs');
 
 
 /**
@@ -30,11 +31,11 @@ function doMain(pth, o) {
   if (!isSub) execDts(dts, o);
   // Update files
   if(!fs.existsSync(o.outDts)) return;
-  var d = fs.readFileSync(o.outEs, 'utf8');
-  fs.writeFileSync(o.outEs, jsUncomment(d, true));
-  var d = fs.readFileSync(o.outJs, 'utf8');
-  fs.writeFileSync(o.outJs, jsUncomment(d, true));
-  var d = fs.readFileSync(o.outDts, 'utf8');
-  fs.writeFileSync(o.outDts, jsLinkWiki(d, o));
+  var d = fileRead(o.outEs);
+  fileWrite(o.outEs, jsUncomment(d, true));
+  var d = fileRead(o.outJs);
+  fileWrite(o.outJs, jsUncomment(d, true));
+  var d = fileRead(o.outDts);
+  fileWrite(o.outDts, jsLinkWiki(d, o));
 }
 module.exports = doMain;

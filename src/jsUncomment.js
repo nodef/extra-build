@@ -1,5 +1,4 @@
 const stripComments = require('strip-comments');
-const {EOL} = require('os');
 
 
 /**
@@ -9,9 +8,9 @@ const {EOL} = require('os');
  */
 function jsUncomment(x, ln=false) {
   x = stripComments(x);
-  // x = x.replace(/\s+(\r?\n)/g, EOL);
+  // x = x.replace(/\s+(\n)/g, '\n');
   x = x.replace(/\/\*\*.*?\*\//gs, '');
-  x = x.replace(/(\r?\n)\s*(\r?\n)+/g, ln? EOL:EOL+EOL);
-  return x.trim()+EOL;
+  x = x.replace(/\n\s*\n+/g, ln? '\n' : '\n\n');
+  return x.trim()+'\n';
 }
 module.exports = jsUncomment;

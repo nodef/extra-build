@@ -1,7 +1,6 @@
 const dirFiles = require('./dirFiles');
 const fileName = require('./fileName');
 const fileSymbol = require('./fileSymbol');
-const {EOL} = require('os');
 
 
 /**
@@ -15,7 +14,7 @@ function dirExport(dir, exc=new Set()) {
     var fil = fileName(f);
     var sym = fileSymbol(f);
     if(exc.has(sym)) continue;
-    a += `export {default as ${sym}} from './${fil}';`+EOL;
+    a += `export {default as ${sym}} from './${fil}';\n`;
   }
   return a;
 }

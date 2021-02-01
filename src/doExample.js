@@ -1,10 +1,7 @@
 const console = require('./console');
+const fileRead = require('./fileRead');
+const fileWrite = require('./fileWrite');
 const mdExample = require('./mdExample');
-const fs = require('fs');
-
-const OPTIONS = {
-  out: 'example.js'
-};
 
 
 /**
@@ -13,11 +10,10 @@ const OPTIONS = {
  * @param {object} o options {out, language}
  */
 function doExample(pth, o) {
-  var o = Object.assign({}, OPTIONS, o);
-  var md = pth||'README.md';
+  var pth = pth||'README.md';
   console.log(`Generating example ${o.example} ...`);
-  var d = fs.readFileSync(md, 'utf8');
-  var ex = mdExample(d, o.exampleComments);
-  if (ex) fs.writeFileSync(o.example, ex);
+  var md = fileRead(pth);
+  var ex = mdExample(md, o.exampleComments);
+  if (ex) fileWrite(o.example, ex);
 }
 module.exports = doExample;

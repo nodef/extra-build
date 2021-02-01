@@ -1,5 +1,5 @@
 const requireResolve = require('./requireResolve');
-const fs = require('fs');
+const fileRead = require('./fileRead');
 const path = require('path');
 
 
@@ -8,7 +8,7 @@ function packageRequires(pth, a=new Set()) {
   var p = requireResolve(pth);
   if(a.has('./'+p)) return a;
   else a.add('./'+p);
-  var d = fs.readFileSync(p, 'utf8');
+  var d = fileRead(p);
   var re = /require\(\'(.*?)\'\)|^(?:import|export).*?from\s*\'(.*?)\';?$/gm, m = null;
   for(var reqs=[]; (m=re.exec(d))!=null;)
     reqs.push(m[1]||m[2]);

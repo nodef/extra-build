@@ -1,4 +1,4 @@
-const console = require('./console');
+const fileWrite = require('./fileWrite');
 const dirFiles = require('./dirFiles');
 const fileSymbol = require('./fileSymbol');
 const gitSubmodule = require('./gitSubmodule');
@@ -18,7 +18,7 @@ function initWiki(dir, o) {
   gitSubmodule();
   for(var f of dirFiles(dir)) {
     f = path.join(wiki, fileSymbol(f)+'.md');
-    if(!fs.existsSync(f)) fs.writeFileSync(f, '');
+    if(!fs.existsSync(f)) fileWrite(f, '');
   }
 }
 module.exports = initWiki;

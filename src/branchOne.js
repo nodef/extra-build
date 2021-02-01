@@ -45,8 +45,8 @@ function branchOne(pth, o) {
   branchJs(p.outEs, p);
   branchJs(p.outJs, p);
   // if (fil.endsWith('.ts')) branchTs(pth, o.tsc);
-  // var d = fs.readFileSync(p.outJs, 'utf8');
-  // fs.writeFileSync(p.outJs, jsLinkWiki(d, p));
+  // var d = fileRead(p.outJs);
+  // fileWrite(p.outJs, jsLinkWiki(d, p));
   // fs.renameSync(p.outJs, p.outEs);
   if (hasDoc) branchMd(p.readme, p);
   branchMeta(p.meta, p);

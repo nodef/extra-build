@@ -1,19 +1,19 @@
 const console = require('./console');
-const fs = require('fs');
-const eolSet = require('./eolSet');
+const fileRead = require('./fileRead');
+const fileWrite = require('./fileWrite');
 
 
 // Update README.md based on scatter options.
 function branchMd(pth, o) {
   var pth = pth||'README.md';
   console.log(`Branching README for ${o.name} ...`);
-  var d = eolSet(fs.readFileSync(pth, 'utf8'), '\n');
+  var d = fileRead(pth);
   d = d.replace(o.noteTop||/(\s+<br>)?\s+```/, '\n\n'+
     `> This is part of package [${o.nameRoot}].\n\n`+
     `[${o.nameRoot}]: https://www.npmjs.com/package/${o.nameRoot}\n\n`+
     '<br>\n\n'+
     (o.noteTopValue||'```')
   );
-  fs.writeFileSync(pth, eolSet(d));
+  fileWrite(pth, d);
 }
 module.exports = branchMd;
