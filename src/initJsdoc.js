@@ -9,7 +9,7 @@ const gitCommit = require('./gitCommit');
  */
 function initJsdoc(o) {
   var {jsdocDir: cwd} = o;
-  console.log(`Creating gh-pages branch for ${url} ...`);
+  console.log(`Creating gh-pages branch ...`);
   cpExec(`git checkout --orphan gh-pages`, {cwd});
   cpExec(`rm -rf *`, {cwd});
   cpExec(`touch index.html`, {cwd});
