@@ -1,4 +1,8 @@
-Common build tools for extra-* packages.
+Common build tools for extra-* packages.<br>
+:package: [NPM](https://www.npmjs.com/package/extra-build),
+:smiley_cat: [GitHub](https://github.com/orgs/nodef/packages?repo_name=extra-build),
+:scroll: [Files](https://unpkg.com/extra-build/),
+:blue_book: [Wiki](https://github.com/nodef/extra-build/wiki/).
 
 ```bash
 $ ebuild [commands] [options]
@@ -32,7 +36,7 @@ $ ebuild exports+main+exports --cleanup=false
 | [example] | Generate example.js from README.                 |
 | [wiki]    | Update Wiki from code.                           |
 | [github]  | Update GitHub repo description, url, topics.     |
-| [publish] | Publish package to NPM.                          |
+| [publish] | Publish package to NPM, GitHub.                          |
 | **code**  | Same as 'export+main'.                           |
 | **docs**  | Same as 'meta+readme+example+jsdoc+wiki+github'. |
 | **all**   | All commands above.                              |

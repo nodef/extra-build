@@ -3,6 +3,7 @@ const mdSetHref = require('./mdSetHref');
 const mdHrefs = require('./mdHrefs');
 const urlRunkit = require('./urlRunkit');
 const urlPackage = require('./urlPackage');
+const urlGithub = require('./urlGithub');
 const urlPackageMin = require('./urlPackageMin');
 const urlUnpkg = require('./urlUnpkg');
 const urlJsdoc = require('./urlJsdoc');
@@ -42,7 +43,7 @@ function mdLinkBasics(md, hdr, o) {
   var hs = new Map([...mdLinks(md, true), ...mdHrefs(md)]);
   if(o.diffCodeBlocks) hs.delete(CIN);
   hs.set(PKG, urlPackage(o));
-  hs.set(GIT, urlPackage(o));
+  hs.set(GIT, urlGithub(o));
   hs.set(RUN, urlRunkit(o));
   hs.set(MIN, urlPackageMin(o));
   hs.set(LST, urlUnpkg(o));
