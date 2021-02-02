@@ -9,10 +9,10 @@ function mdSetHref(md, k, v) {
   md = md.replace(RHREF, (m, p1, p2) => {
     if(p1!==k) return m;
     if(!has && p2===v) { has = true; return m; }
-    console.log(`Removed href [${p1}](${p2})`); return '';
+    console.log(`Rmved href [${p1}]: ${p2}`); return '';
   });
   if(has || v==null) return md;
-  console.log(`Added href [${k}](${v})`);
+  console.log(`Added href [${k}]: ${v}`);
   if(!RLAST.test(md)) md += '\n';
   md += `[${k}]: ${v}\n`;
   return md;

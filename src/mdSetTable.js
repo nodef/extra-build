@@ -1,13 +1,9 @@
-const eolSet = require('./eolSet');
-
-
 /**
  * Set README table from JSDoc details.
  * @param {string} md markdown data
  * @param {Set<object>} jsdocs jsdoc details
  */
 function mdSetTable(md, jsdocs) {
-  md = eolSet(md, '\n');
   var i = md.search(/\|\s+(Name|Method)\s+\|/);
   var top = md.substring(0, i);
   var tab = md.substring(i);
@@ -19,6 +15,6 @@ function mdSetTable(md, jsdocs) {
     var description = jsdocs.get(m[2])? jsdocs.get(m[2]).description : m[3];
     tabw = tabw.replace(m[0], m[1].trimRight()+' '+description);
   }
-  return eolSet(top+tabw+bot);
+  return top+tabw+bot;
 }
 module.exports = mdSetTable;

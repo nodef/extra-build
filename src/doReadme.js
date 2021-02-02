@@ -5,7 +5,6 @@ const gitDiffCodeBlocks = require('./gitDiffCodeBlocks');
 const mdSetTable = require('./mdSetTable');
 const mdLinkWikis = require('./mdLinkWikis');
 const mdLinkBasics = require('./mdLinkBasics');
-const fs = require('fs');
 
 
 function doReadme(pth, jsdocs, o) {
