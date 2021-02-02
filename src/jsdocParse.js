@@ -20,6 +20,7 @@ function jsdocParse(com, def, loc='?') {
   updateParams(params, args, errs);
   for (var e of errs) console.error(`JsdocParseError: ${e} (${loc})`);
   if (errs.length>0)  console.error(`${com}\n${def}`);
+  console.log(args);
   return {type, description, params, returns, example};
 }
 
@@ -67,12 +68,16 @@ function getType(def) {
 function getArgs(def) {
   def = def.replace(/^[^(]*\(?|\).*$/g, '');
   def = def.replace(/<.*?>|\[.*?\]/g, '');
-  var re = /([\w$]+)\s*(?::\s*([^=]+))?\s*(?:=\s*(\S+))?/, a = [];
+  var re = /(\.*[\w$]+\?*)\s*(?::\s*([^=]+))?\s*(?:=\s*(\S+))?/, a = [];
   for (var d of stringSplitOutside(def)) {
     var m = re.exec(d);
     if (m == null) continue;
     var [, name, type, value] = m;
-    type = type||null; value = value||null;
+    type = type||'*';
+    value = value||null;
+    if (name.endsWith('?')) type += '?';
+    if (name.startsWith('...')) type = '...'+type;
+    name = name.replace(/[^\w$]/g, '');
     a.push({name, type, value});
   }
   return a;
