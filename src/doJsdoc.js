@@ -24,7 +24,8 @@ function doJsdoc(pth, o) {
   cpExec(`rm -rf "${cwd}"`);
   var url = gitRemoteUrl();
   cpExec(`git clone ${url} "${cwd}"`);
-  cpExec(`git checkout gh-pages`, {cwd});
+  try { cpExec(`git checkout gh-pages`, {cwd}); }
+  catch (e) { initJsdoc(o); }
   cpExec(`rm -rf *`, {cwd});
   cpExec(`mv "${out}"/* "${cwd}"/`);
   cpExec(`rm -rf "${out}"`);
