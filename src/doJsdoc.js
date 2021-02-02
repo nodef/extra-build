@@ -20,7 +20,6 @@ function doJsdoc(pth, o) {
   var opts = optionStringify(o, getOption);
   console.log(`Publishing JSDoc ...`);
   cpExec(`npx typedoc "${pth}" ${opts}`);
-  initJsdoc(o);
   cpExec(`rm -rf "${cwd}"`);
   var url = gitRemoteUrl();
   cpExec(`git clone ${url} "${cwd}"`);
