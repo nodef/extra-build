@@ -4,6 +4,10 @@ Common build tools for extra-* packages.<br>
 :scroll: [Files](https://unpkg.com/extra-build/),
 :blue_book: [Wiki](https://github.com/nodef/extra-build/wiki/).
 
+> Stability: [Experimental](https://www.youtube.com/watch?v=L1j93RnIxEo).
+
+<br>
+
 ```bash
 $ ebuild [commands] [options]
 # Commands, Options in Index
