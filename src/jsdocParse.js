@@ -20,7 +20,6 @@ function jsdocParse(com, def, loc='?') {
   updateParams(params, args, errs);
   for (var e of errs) console.error(`JsdocParseError: ${e} (${loc})`);
   if (errs.length>0)  console.error(`${com}\n${def}`);
-  console.log(args);
   return {type, description, params, returns, example};
 }
 
