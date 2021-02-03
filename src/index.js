@@ -115,7 +115,7 @@ function initProps(o) {
   o.standaloneRoot = o.standalone;
   o.moduleName = o.moduleName??o.name;
   o.description = o.description||mdHeading(r)||m.description;
-  o.homepage = o.homepage||m.homepage||urlPackage(o);
+  o.homepage = o.homepage||(/github/.test(m.homepage)? urlPackage(o) : m.homepage);
   o.keywordsMin = o.keywordsMin??10;
   o.asciinema = o.asciinema??true;
   o.metaDescription = o.metaDescription??true;
