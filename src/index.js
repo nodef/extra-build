@@ -135,6 +135,10 @@ function initProps(o) {
   o.publishMin = o.publishMin??true;
   o.publishBranch = o.publishBranch??true;
   o.publishGithub = o.publishGithub??true;
+  o.jsdocWiki = o.jsdocWiki??true;
+  o.jsdocExample = o.jsdocExample??true;
+  o.jsdocExampleRequire = o.jsdocExampleRequire??false;
+  o.jsdocExampleSymbol = o.jsdocExampleSymbol??false;
   // o.keywords = o.keywords||m.keywords;
 }
 module.exports = build;

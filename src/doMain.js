@@ -5,7 +5,7 @@ const fileWrite = require('./fileWrite');
 const fileName = require('./fileName');
 const pathReplaceExt = require('./pathReplaceExt');
 const jsUncomment = require('./jsUncomment');
-const jsLinkWiki = require('./jsLinkWiki');
+const jsEditJsdocs = require('./jsEditJsdocs');
 const execTsc = require('./execTsc');
 const execRollup = require('./execRollup');
 const execDts = require('./execDts');
@@ -37,6 +37,6 @@ function doMain(pth, o) {
   var d = fileRead(o.outJs);
   fileWrite(o.outJs, jsUncomment(d, true));
   var d = fileRead(o.outDts);
-  fileWrite(o.outDts, jsLinkWiki(d, o));
+  fileWrite(o.outDts, jsEditJsdocs(d, o));
 }
 module.exports = doMain;
