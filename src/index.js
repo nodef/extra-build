@@ -30,7 +30,7 @@ const ALL = [...CODE, ...DOCS, 'publish'];
 /**
  * Perform build operation(s).
  * @param {Array<string>} cmds commands to perform\
- * [exports, main, json, readme, example, wiki, github, publish]
+ * [export, main, json, readme, example, wiki, github, publish]
  * @param {object} o options\
  * {readme, source, out}
  */
@@ -46,7 +46,7 @@ async function build(cmds, o) {
     ]);
   }
   if (c.jsdoc) doJsdoc(o.source, o);
-  if (c.exports) doExport(o.source, o);
+  if (c.export) doExport(o.source, o);
   if (c.main) doMain(o.source, o);
   if (c.meta) doMeta(o.meta, o);
   if (c.readme) doReadme(o.readme, jsdocs, o);

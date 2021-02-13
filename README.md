@@ -20,8 +20,8 @@ $ ebuild jsdoc
 # Update all documentation.
 $ ebuild docs
 
-# Update exports & generate main file, disable cleanup.
-$ ebuild exports+main+exports --cleanup=false
+# Update export & generate main file, disable cleanup.
+$ ebuild export+main --cleanup=false
 ```
 
 <br>
