@@ -4,12 +4,13 @@ const mdReplace = require('./mdReplace');
 
 // Sets wiki from JSDoc.
 function mdSetJsdoc(md, jsdoc, o) {
-  var {description} = jsdoc;
+  var {description} = jsdoc, {symbol} = o;
   if (o.wikiDescription) md = md.replace(/^.*?\n/, m => mdReplace(m, description)+'\n');
+  if (o.wikiDescriptionSymbol!=='full') symbol = symbol.replace(/^.*?\./, '');
   var re = /```javascript([\s\S]*?)```\n/g;
   md = stringReplaceNth(md, re, 0, (m, p1) => {
     if (!o.wikiDefinition && p1.trim().length !== 0) return m;
-    return getDefinition(o.symbol, jsdoc);
+    return getDefinition(symbol, jsdoc);
   });
   md = stringReplaceNth(md, re, 1, (m, p1) => {
     if (!o.wikiExample && p1.trim().length !== 0) return m;
@@ -30,7 +31,7 @@ function getDefinition(symbol, jsdoc) {
   var isFn = type === 'function';
   return ''+
     '```javascript\n'+
-    `${symbol}` + (isFn? `(`+args.join(', ')+`)`:'') + ';\n'+
+    `${symbol}` + (isFn? `(`+args.join(', ')+`)`:'') + '\n'+
     (isFn? pars.join('\n')+'\n' : '')+
     (returns? `// → `+returns.description+'\n':'')+
     '```\n';

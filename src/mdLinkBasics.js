@@ -10,14 +10,14 @@ const urlJsdoc = require('./urlJsdoc');
 const urlWiki = require('./urlWiki');
 const mdLinks = require('./mdLinks');
 
-const PKG = ':package:';
-const GIT = ':smiley_cat:';
-const RUN = ':running:';
-const CIN = ':vhs:';
-const MIN = ':moon:';
-const LST = ':scroll:';
-const DOC = ':newspaper:';
-const WIK = ':blue_book:';
+const PKG = '📦';
+const GIT = '😺';
+const RUN = '🏃';
+const CIN = '📼';
+const MIN = '🌔';
+const LST = '📜';
+const DOC = '📰';
+const WIK = '📘';
 const NAMES = new Map([
   [PKG, 'NPM'],
   [GIT, 'GitHub'],
@@ -50,7 +50,8 @@ function mdLinkBasics(md, hdr, o) {
   hs.set(DOC, urlJsdoc(o));
   hs.set(WIK, urlWiki('', o));
   hs.set(CIN, hs.get(CIN)||hs.get(NAMES.get(CIN)));
-  if(o.asciinema) hs.set(CIN, hs.get(CIN)||mdAsciinema(md, o));
+  if (o.asciinema) hs.set(CIN, hs.get(CIN)||mdAsciinema(md, o));
+  else hs.delete(CIN);
   var ls = new Set([...NAMES.keys()]);
   if (!hs.has(CIN)) ls.delete(CIN);
   var fn = hdr === 'heavy'? headerHeavy : headerLight;
