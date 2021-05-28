@@ -82,7 +82,7 @@ function initPaths(o) {
   o.modulesDir = o.modulesDir||'node_modules';
   o.wikiDir = o.wikiDir||'wiki';
   o.keywordsDir = o.keywordsDir||o.sourceDir;
-  o.buildDir = o.buildDir||tsc.outDir||'.build';
+  o.buildDir = o.buildDir||tsc.outDir||'build';
   o.build = path.join(o.buildDir, pathReplaceExt(path.basename(o.source), '.js'));
   o.jsdocDir = o.jsdocDir||path.join(o.buildDir, 'jsdoc');
   o.asciinemaDir = o.asciinemaDir||path.join(o.buildDir, 'example');

@@ -5,7 +5,7 @@ tests/
 .gitmodules
 
 # Build
-.build/
+build/
 .travis.yml
 tsconfig.json
 rollup.config.js
