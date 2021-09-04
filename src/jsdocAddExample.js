@@ -1,3 +1,4 @@
+const console = require('./console');
 const fileRead = require('./fileRead');
 const mdCodeBlocks = require('./mdCodeBlocks');
 const jsdocDecorate = require('./jsdocDecorate');
@@ -9,8 +10,9 @@ function jsdocAddExample(com, nam, o) {
   if (com.includes('@example')) return com;
   var pth = path.join(o.wikiDir, nam+'.md');
   var md = fileRead(pth);
-  var [, ex] = mdCodeBlocks(md)
-  ex = exampleSimplify(ex, o);
+  var [, ex] = mdCodeBlocks(md);
+  if (!ex) console.warn(`Could not find example for "${nam}"`);
+  ex = exampleSimplify(ex||'', o);
   com = jsdocUndecorate(com);
   com += '\n@example\n```javascript\n'+ex.trim()+'\n```\n';
   return jsdocDecorate(com);
