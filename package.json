@@ -1,6 +1,6 @@
 {
   "name": "extra-build",
-  "version": "1.4.3",
+  "version": "1.4.5",
   "description": "Common build tools for extra-* packages.",
   "main": "index.js",
   "preferGlobal": true,
@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com/nodef/extra-build#readme",
   "dependencies": {
-    "@octokit/rest": "^18.6.7",
-    "@rollup/plugin-commonjs": "^19.0.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@octokit/rest": "^18.12.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.1.3",
     "dot-prop": "^6.0.1",
     "extra-asciinema": "^1.0.35",
     "kleur": "^4.1.4",
