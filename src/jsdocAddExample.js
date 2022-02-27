@@ -11,7 +11,7 @@ function jsdocAddExample(com, nam, o) {
   var pth = path.join(o.wikiDir, nam+'.md');
   var md = fileRead(pth);
   var [, ex] = mdCodeBlocks(md);
-  if (!ex) console.warn(`Could not find example for "${nam}"`);
+  if (!ex) { console.warn(`Could not find example for "${nam}"`); return com; }
   ex = exampleSimplify(ex||'', o);
   com = jsdocUndecorate(com);
   com += '\n@example\n```javascript\n'+ex.trim()+'\n```\n';
