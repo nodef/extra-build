@@ -6,7 +6,6 @@ const exportSymbols = require('./exportSymbols');
 const exportCustom = require('./exportCustom');
 const pathReplaceExt = require('./pathReplaceExt');
 const path = require('path');
-const fs = require('fs');
 
 
 /**

@@ -8,7 +8,7 @@ const jsdocParse = require('./jsdocParse');
  */
 function jsJsdocs(js, loc='?') {
   var a = new Map(), cls = '', m = null;
-  var re = /(\/\*\*.*?\*\/).*?((?:(function\*?|class|const|var|let)\s+)?([\w$]+)([^\{;]*))/gs;
+  var re = /(\/\*\*.*?\*\/).*?((?:(type|enum|interface|const|var|let|function\*?|class)\s+)?([\w$]+)([^\{;]*))/gs;
   while ((m=re.exec(js)) != null) {
     var [, com, def, typ, nam, arg] = m;
     if (typ==='class') { cls = nam; continue; }

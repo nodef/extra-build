@@ -3,7 +3,7 @@
  * @param {string} d javascript data
  */
 function exportCustom(d) {
-  var rdef = /export \{default as \S+\} from \'\..*?\n/g;
+  var rdef = /^.*\/\/.*\bAUTO-EXPORT\b.*$/gm;
   return d.replace(rdef, '');
 }
 module.exports = exportCustom;

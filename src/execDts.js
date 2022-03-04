@@ -18,7 +18,7 @@ const OPTIONS = {
  */
 function execDts(pth, o) {
   var pth = pth||'src/index.ts';
-  var o = Object.assign({}, OPTIONS, o,);
+  var o = Object.assign({}, OPTIONS, o);
   console.log(`Executing dts-bundle-generator for ${pth} ...`);
   var opts = optionStringify(o, getOption);
   cpExec(`.dts-bundle-generator ${opts} "${pth}"`);

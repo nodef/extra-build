@@ -14,7 +14,7 @@ function dirExport(dir, exc=new Set()) {
     var fil = fileName(f);
     var sym = fileSymbol(f);
     if(exc.has(sym)) continue;
-    a += `export {default as ${sym}} from "./${fil}";\n`;
+    a += `export {default as ${sym}} from "./${fil}"; // AUTO-EXPORT\n`;
   }
   return a;
 }
