@@ -20,7 +20,7 @@ function read(pth) {
  * @param {string} pth file path
  * @param {string} txt file text
  */
- function write(pth, txt) {
+function write(pth, txt) {
   var txt = txt.replace(/\r?\n/g, os.EOL);
   fs.writeFileSync(pth, txt);
 }
@@ -34,4 +34,24 @@ function read(pth) {
 function readdir(dir) {
   return fs.readdirSync(dir);
 }
-module.exports = {read, write, readdir};
+
+
+/**
+ * Read JSON file as object.
+ * @param {string} pth path of JSON file
+ * @returns {object} object
+ */
+function readJson(pth) {
+  return JSON.parse(read(pth));
+}
+
+
+/**
+ * Write object to JSON file.
+ * @param {string} pth path of JSON file
+ * @param {object} val object
+ */
+function writeJson(pth, val) {
+  write(pth, JSON.stringify(val, null, 2) + '\n');
+}
+module.exports = {read, write, readdir, readJson, writeJson};

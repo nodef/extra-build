@@ -40,10 +40,10 @@ function generate(src='src/index.ts', doc='.docs', o=null) {
 function setupBranch(branch='gh-pages', out='.') {
   var cwd = out;
   console.log(`Creating ${branch} branch ...`);
-  cp.exec(`git checkout --orphan ${branch}`, {cwd});
-  cp.exec(`git rm -rf .`, {cwd});
-  cp.exec(`git clean -fxd`, {cwd});
-  cp.exec(`touch index.html`, {cwd});
+  cp.execLog(`git checkout --orphan ${branch}`, {cwd});
+  cp.execLog(`git rm -rf .`, {cwd});
+  cp.execLog(`git clean -fxd`, {cwd});
+  cp.execLog(`touch index.html`, {cwd});
   git.commitPush('initial commit', {push: ' --set-upstream origin gh-pages', cwd})
 }
 
@@ -59,12 +59,12 @@ function publish(doc='.docs', branch='gh-pages', pub='.') {
   var url = git.remoteUrl();
   var cwd = '.docs-publish';
   var out = path.join(cwd, pub);
-  cp.exec(`git clone ${url} "${cwd}"`);
-  try { cp.exec(`git checkout ${branch}`, {cwd}); }
+  cp.execLog(`git clone ${url} "${cwd}"`);
+  try { cp.execLog(`git checkout ${branch}`, {cwd}); }
   catch (e) { setupBranch(branch, out); }
-  cp.exec(`rm -rf *`, {cwd: out});
-  cp.exec(`cp "${doc}"/* "${out}"/`);
+  cp.execLog(`rm -rf *`, {cwd: out});
+  cp.execLog(`cp "${doc}"/* "${out}"/`);
   git.commitPush('', {cwd});
-  cp.exec(`rm -rf "${pub}"`, {cwd});
+  cp.execLog(`rm -rf "${pub}"`, {cwd});
 }
 module.exports = {generate, publish};

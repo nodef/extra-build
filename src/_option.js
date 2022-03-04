@@ -50,15 +50,15 @@ function parse(o, k, a, i) {
 
 
 /**
- * Key transform function.
- * @callback KeyTransformFunction
- * @param {string} key key name
- * @returns {string} new key name
+ * Option key transform function.
+ * @callback OptionKeyTransformFunction
+ * @param {string} key original key name
+ * @returns {string} updated key name
  */
 /**
  * Convert options object to string.
  * @param {object} o options object
- * @param {KeyTransformFunction} fn key transform
+ * @param {OptionKeyTransformFunction} fn key transform
  */
 function stringify(o, fn=null) {
   var a = '';
