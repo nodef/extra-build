@@ -39,7 +39,7 @@ function execStr(cmd, o) {
  * @param {cp.ExecSyncOptionsWithStringEncoding} o options (see child_process)
  * @returns {string} command output
  */
- function execStrSilent(cmd, o) {
+function execStrSilent(cmd, o) {
   var o = Object.assign({encoding: 'utf8'}, o);
   return cp.execSync(cmd, o).trim();
 }

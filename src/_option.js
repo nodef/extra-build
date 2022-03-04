@@ -60,7 +60,7 @@ function parse(o, k, a, i) {
  * @param {object} o options object
  * @param {KeyTransformFunction} fn key transform
  */
- function stringify(o, fn=null) {
+function stringify(o, fn=null) {
   var a = '';
   for (var k in o) {
     var f = fn? fn(k) : k;
