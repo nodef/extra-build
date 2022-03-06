@@ -8,7 +8,7 @@ const cp   = require('./_child_process');
  * Get remote URL.
  * @returns {string} remote URL
  */
- function remoteUrl() {
+function remoteUrl() {
   return cp.execStr(`git config --get remote.origin.url`);
 }
 

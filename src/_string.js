@@ -3,8 +3,6 @@ const RTRIM  = /^[^a-zA-Z0-9\.]+|[^a-zA-Z0-9\.]+$/g;
 const RSEP   = /[^a-zA-Z0-9\.]+/g;
 
 
-
-
 /**
  * Convert string to kebab-case.
  * @param {string} x string

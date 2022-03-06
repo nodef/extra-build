@@ -81,23 +81,23 @@ function replaceCodeBlocks(txt, fn) {
 function tagCodeBlocks(txt) {
   var tags = new Map(), i = -1;
   var txt  = replaceCodeBlocks(txt, full => {
-    var k  = `[//]: # (AUTO-CODE-BLOCK-${++i})`;
+    var k  = `AUTO_CODE_BLOCK_${++i}`;
     tags.set(k, full);
-    return k + '\n';
+    return '```\n' + `${k}\n` + '```\n';
   });
   return [txt, tags];
 }
 
 
 /**
- * Untag code blocks in markdown texts by adding them back.
+ * Untag code blocks in markdown text by adding them back.
  * @param {string} txt markdown text
  * @param {Map<string, string>} tags tags
  * @returns {string} updated markdown text
  */
 function untagCodeBlocks(txt, tags) {
   for (var [tag, full] of tags)
-    txt = txt.replace(tag + '\n', full);
+    txt = txt.replace('```\n' + `${tag}\n` + '```\n', full);
   return txt;
 }
 
@@ -319,7 +319,7 @@ function replaceTables(txt, fn) {
   return untagCodeBlocks(txt, tags);
 }
 module.exports = {
-  forEachCodeBlock, codeBlocks, replaceCodeBlocks,
+  forEachCodeBlock, codeBlocks, replaceCodeBlocks, tagCodeBlocks, untagCodeBlocks,
   forEachLink, links, replaceLinks,
   forEachLinkReference, linkReferences, replaceLinkReferences,
   forEachTable, tables, replaceTables,
