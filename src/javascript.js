@@ -216,7 +216,7 @@ function uncomment(txt, empty=false) {
 // ------------
 
 /** Regex for jsdoc and attached symbol: [jsdoc, export, default, kind, name]. */
-const RJSDOCSYMBOL = /(\/\*\*[\s\S]*?\*\/)\s+(?:(export)\s+(?:(default)\s+)?)?(type|enum|interface|const|var|let|function\*?|class)\s+([\w$]+)/g;
+const RJSDOCSYMBOL = /(\/\*\*[\s\S]*?\*\/)\s+(?:(export)\s+(?:(default)\s+)?)?(type|enum|interface|const|var|let|(?:async\s+)?function\*?|class)\s+([\w$]+)/g;
 
 
 /**
@@ -236,7 +236,7 @@ const RJSDOCSYMBOL = /(\/\*\*[\s\S]*?\*\/)\s+(?:(export)\s+(?:(default)\s+)?)?(t
 function forEachJsdocSymbol(txt, fn) {
   var txt = replaceStrings(txt, () => '"AUTO_STRING"'), m = null;
   while ((m = RJSDOCSYMBOL.exec(txt)) != null)
-    fn(m[0], m[5] || '', m[4] || '', m[2] === 'export', m[3] === 'default', m[1] || '');
+    fn(m[0], m[5] || '', (m[4] || '').replace(/\s+/g, ' '), m[2] === 'export', m[3] === 'default', m[1] || '');
 }
 
 
@@ -283,7 +283,7 @@ function jsdocSymbols(txt) {
 function replaceJsdocSymbols(txt, fn) {
   var [txt, tags] = tagStrings(txt);
   txt = txt.replace(RJSDOCSYMBOL, (m, p1, p2, p3, p4, p5) => {
-    return fn(m, p5 || '', p4 || '', p2 === 'export', p3 === 'default', p1 || '');
+    return fn(m, p5 || '', (p4 || '').replace(/\s+/g, ' '), p2 === 'export', p3 === 'default', p1 || '');
   });
   return untagStrings(txt, tags);
 }
@@ -295,7 +295,7 @@ function replaceJsdocSymbols(txt, fn) {
 // -------------
 
 /** Regex for export symbol: [symbol1, symbol2, default1, kind, symbol3, default2, symbol4; symbol5, symbol6, module1, symbols?, module2]. */
-const REXPORTSYMBOL = /export\s+\{\s*(?:(\S+)|(?:\S+\s+as\s+(\S+)))\s*\}|export\s+(?:(default)\s+)?(type|enum|interface|const|var|let|function\*?|class)\s+([\w$]+)|export\s+(default)\s+([\w$]+)|module\s*\.\s*([\w$]+)|module\s*\[\s*['"`](.*?)['"`]\s*\]|(module)\s*\.\s*exports\s*=\s*\{(.*?)\}|(module)\s*\.\s*exports\s*=/g;
+const REXPORTSYMBOL = /export\s+\{\s*(?:(\S+)|(?:\S+\s+as\s+(\S+)))\s*\}|export\s+(?:(default)\s+)?(type|enum|interface|const|var|let|(?:async\s+)?function\*?|class)\s+([\w$]+)|export\s+(default)\s+([\w$]+)|module\s*\.\s*([\w$]+)|module\s*\[\s*['"`](.*?)['"`]\s*\]|(module)\s*\.\s*exports\s*=\s*\{(.*?)\}|(module)\s*\.\s*exports\s*=/g;
 
 
 /**
@@ -314,7 +314,7 @@ function forEachExportSymbol(txt, fn) {
   var txt = replaceStrings(txt, () => '"AUTO_STRING"');
   var txt = replaceComments(txt, () => `/* AUTO_COMMENT */`), m = null;
   while ((m = REXPORTSYMBOL.exec(txt)) != null)
-    fn(m[0], m[11] || m[9] || m[8] || m[7] || m[5] || m[2] || m[1] || '', m[4] || '', (m[6] || m[3]) === 'default' || (m[12] || m[10]) === 'module');
+    fn(m[0], m[11] || m[9] || m[8] || m[7] || m[5] || m[2] || m[1] || '', (m[4] || '').replace(/\s+/g, ' '), (m[6] || m[3]) === 'default' || (m[12] || m[10]) === 'module');
 }
 
 
@@ -358,7 +358,7 @@ function replaceExportSymbols(txt, fn) {
   var [txt, stags] = tagStrings(txt);
   var [txt, ctags] = tagComments(txt);
   txt = txt.replace(REXPORTSYMBOL, (m, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12) => {
-    return fn(m, p11 || p9 || p8 || p7 || p5 || p2 || p1 || '', p4 || '', (p6 || p3) === 'default' || (p12 || p10) === 'module');
+    return fn(m, p11 || p9 || p8 || p7 || p5 || p2 || p1 || '', (p4 || '').replace(/\s+/g, ' '), (p6 || p3) === 'default' || (p12 || p10) === 'module');
   });
   txt = untagComments(txt, ctags);
   txt = untagStrings(txt,  stags);

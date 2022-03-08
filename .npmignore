@@ -1,6 +1,6 @@
 # Source only
 .gitmodules
-src/
+# src/
 data/
 wiki/
 tests/

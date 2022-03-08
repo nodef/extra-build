@@ -19,7 +19,7 @@ function filename(pth) {
  * @param {string} pth file path
  */
 function symbolname(pth) {
-  return filename(pth).replace(/[^\w$]/g, '');
+  return filename(pth).replace(/[^\w$]+/g, '_');
 }
 
 

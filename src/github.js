@@ -37,7 +37,7 @@ function urlDetails(url) {
  * @param {string} repo repository name
  * @param {RepositoryDetails} o repository details
  */
-function updateDetails(owner, repo, o=null) {
+async function updateDetails(owner, repo, o=null) {
   var E = process.env;
   var {description, homepage, topics} = Object.assign({}, o);
   var octokit = new Octokit({auth: o.auth || E.GITHUB_TOKEN});

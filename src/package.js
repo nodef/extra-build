@@ -34,7 +34,8 @@ function write(dir, val) {
  * @returns {string} current registry
  */
 function registry(dir='.') {
-  return cp.execStrSync(`npm config get registry`);
+  var cwd = dir;
+  return cp.execStrSync(`npm config get registry`, {cwd});
 }
 
 
@@ -45,11 +46,11 @@ function registry(dir='.') {
  */
 function setRegistry(dir, url) {
   var pth = path.join(dir, '.npmrc');
-  var txt = fs.readFileTextSync(pth);
+  var txt = fs.existsSync(pth)? fs.readFileTextSync(pth) : '';
   var has = /^registry\s*=/.test(txt);
   if (has) txt = txt.replace(/^registry\s*=.*$/gm, `registry=${url}`);
-  else     txt = txt.trimEnd() + `\nregistry=${url}\n`;
-  fs.writeFileTextSync(pth, txt);
+  else     txt = txt + `\nregistry=${url}`;
+  fs.writeFileTextSync(pth, txt.trim() + '\n');
 }
 
 
@@ -59,7 +60,7 @@ function setRegistry(dir, url) {
  * @returns {string} latest package version
  */
 function latestVersion(name) {
-  return cp.execStrSync(`npm view ${o.name} version`);
+  return cp.execStrSync(`npm view ${name} version`);
 }
 
 
@@ -74,7 +75,7 @@ function nextUnpublishedVersion(name, ver) {
   var d = semver.diff(u, ver);
   if (d === 'major' || d === 'minor') return ver;
   if (semver.lt(u, ver)) return ver;
-  return semver.inc(ver, 'patch');
+  return semver.inc(u, 'patch');
 }
 
 

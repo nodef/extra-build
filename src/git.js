@@ -87,7 +87,7 @@ function setupBranch(branch, o=null) {
   cp.execLogSync(`git clean -fxd`, o);
   cp.execLogSync(`touch ${o.file || 'index.html'}`, o);
   var co = Object.assign({push: ` --set-upstream origin ${branch}`}, o);
-  git.commitPush('initial commit', co);
+  commitPush('initial commit', co);
 }
 module.exports = {
   branch, remoteUrl, diff,
