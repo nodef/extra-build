@@ -50,4 +50,6 @@ function log(x) {
 function info(x) {
   console.log(kleur.grey(fixup(x)));
 }
-module.exports = {error, warn, log, info};
+module.exports = Object.assign({}, console, {
+  error, warn, log, info,
+});

@@ -15,4 +15,6 @@ function kebabCase(x, sep='-') {
   x = x.replace(RTRIM, '');
   return x.toLowerCase();
 }
-module.exports = {kebabCase};
+module.exports = {
+  kebabCase
+};

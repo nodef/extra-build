@@ -89,4 +89,7 @@ function stringify(x) {
     txt += `@example\n${e.trim()}\n`;
   return decorate(txt);
 }
-module.exports = {undecorate, decorate, parse, stringify};
+module.exports = {
+  undecorate, decorate,
+  parse, stringify,
+};

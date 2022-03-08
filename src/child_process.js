@@ -1,19 +1,7 @@
 const cp      = require('child_process');
-const console = require('./_console');
+const console = require('./console');
 
 
-
-
-/**
- * Execute command with output.
- * @param {string} cmd command to execute
- * @param {cp.ExecSyncOptionsWithStringEncoding} o options (see child_process)
- * @returns {string} command output
- */
-function exec(cmd, o) {
-  var o = Object.assign({stdio: [0, 1, 2]}, o);
-  return cp.execSync(cmd.replace(/^\./, ''), o);
-}
 
 
 /**
@@ -22,9 +10,10 @@ function exec(cmd, o) {
  * @param {cp.ExecSyncOptionsWithStringEncoding} o options (see child_process)
  * @returns {string} command output
  */
-function execLog(cmd, o) {
+function execLogSync(cmd, o) {
   console.info(`$ ${cmd}`);
-  var a = exec(cmd, o);
+  var o = Object.assign({stdio: [0, 1, 2]}, o);
+  var a = cp.execSync(cmd, o);
   console.info();
   return a;
 }
@@ -36,7 +25,7 @@ function execLog(cmd, o) {
  * @param {cp.ExecSyncOptionsWithStringEncoding} o options (see child_process)
  * @returns {string} command output
  */
-function execStr(cmd, o) {
+function execStrSync(cmd, o) {
   var o = Object.assign({encoding: 'utf8'}, o);
   return cp.execSync(cmd, o).trim();
 }
@@ -48,10 +37,12 @@ function execStr(cmd, o) {
  * @param {cp.ExecSyncOptionsWithStringEncoding} o options (see child_process)
  * @returns {string} command output
  */
-function execStrLog(cmd, o) {
+function execStrLogSync(cmd, o) {
   console.info(`$ ${cmd}`);
-  var a = execStr(cmd, o);
+  var a = execStrSync(cmd, o);
   console.info();
   return a;
 }
-module.exports = {exec, execLog, execStr, execStrLog};
+module.exports = Object.assign({
+  execLogSync, execStrSync, execStrLogSync,
+}, cp);

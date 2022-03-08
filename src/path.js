@@ -1,5 +1,4 @@
 const path = require('path');
-const {basename, extname, dirname, join} = require('path');
 
 
 
@@ -32,4 +31,6 @@ function symbolname(pth) {
 function keywordname(pth) {
   return filename(pth).replace(/\W/g, '');
 }
-module.exports = {basename, extname, dirname, join, filename, symbolname, keywordname};
+module.exports = Object.assign({
+  filename, symbolname, keywordname
+}, path);

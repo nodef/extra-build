@@ -9,7 +9,7 @@ const os = require('os');
  * @param {string} pth file path
  * @returns {string} file text
  */
-function read(pth) {
+function readFileTextSync(pth) {
   var txt = fs.readFileSync(pth, 'utf8');
   return txt.replace(/\r?\n/g, '\n');
 }
@@ -20,19 +20,9 @@ function read(pth) {
  * @param {string} pth file path
  * @param {string} txt file text
  */
-function write(pth, txt) {
+function writeFileTextSync(pth, txt) {
   var txt = txt.replace(/\r?\n/g, os.EOL);
   fs.writeFileSync(pth, txt);
-}
-
-
-/**
- * Read directory contents.
- * @param {string} dir path of directory
- * @returns {string[]} contents of directory
- */
-function readdir(dir) {
-  return fs.readdirSync(dir);
 }
 
 
@@ -41,8 +31,8 @@ function readdir(dir) {
  * @param {string} pth path of JSON file
  * @returns {object} object
  */
-function readJson(pth) {
-  return JSON.parse(read(pth));
+function readJsonSync(pth) {
+  return JSON.parse(readFileTextSync(pth));
 }
 
 
@@ -51,7 +41,10 @@ function readJson(pth) {
  * @param {string} pth path of JSON file
  * @param {object} val object
  */
-function writeJson(pth, val) {
-  write(pth, JSON.stringify(val, null, 2) + '\n');
+function writeJsonSync(pth, val) {
+  writeFileTextSync(pth, JSON.stringify(val, null, 2) + '\n');
 }
-module.exports = {read, write, readdir, readJson, writeJson};
+module.exports = Object.assign({
+  readFileTextSync, writeFileTextSync,
+  readJsonSync, writeJsonSync,
+}, fs);

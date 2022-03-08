@@ -70,4 +70,6 @@ function stringify(o, fn=null) {
   }
   return a;
 }
-module.exports = {parse, stringify};
+module.exports = {
+  parse, stringify
+};

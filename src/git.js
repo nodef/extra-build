@@ -1,5 +1,5 @@
 const path = require('path');
-const cp   = require('./_child_process');
+const cp   = require('./child_process');
 
 
 
@@ -9,7 +9,7 @@ const cp   = require('./_child_process');
  * @returns {string} remote URL
  */
 function remoteUrl() {
-  return cp.execStr(`git config --get remote.origin.url`);
+  return cp.execStrSync(`git config --get remote.origin.url`);
 }
 
 
@@ -18,7 +18,7 @@ function remoteUrl() {
  * @returns {string} branch name
  */
 function branch() {
-  return cp.execStr(`git rev-parse --abbrev-ref HEAD`);
+  return cp.execStrSync(`git rev-parse --abbrev-ref HEAD`);
 }
 
 
@@ -30,7 +30,7 @@ function branch() {
 function diff(pth) {
   var f   = path.basename(pth);
   var cwd = path.dirname(pth);
-  return cp.execStr(`git diff "${f}"`, {cwd});
+  return cp.execStrSync(`git diff "${f}"`, {cwd});
 }
 
 
@@ -40,9 +40,9 @@ function diff(pth) {
  * @param {string} out output directory
  */
 function addSubmodule(url, out) {
-  if (!url) { cp.execLog(`git submodule update --remote --merge`); return; }
-  cp.execLog(`git submodule add ${url} "${out}"`);
-  cp.execLog(`git submodule update --init`);
+  if (!url) { cp.execLogSync(`git submodule update --remote --merge`); return; }
+  cp.execLogSync(`git submodule add ${url} "${out}"`);
+  cp.execLogSync(`git submodule update --init`);
 }
 
 
@@ -62,9 +62,9 @@ function commitPush(msg='', o=null) {
   if (msg) o.commit += ` -m "${msg}"`;
   else o.commit += ` --amend --no-edit`;
   if (!msg) o.push += ` -f`;
-  cp.execLog(`git add .`, o);
-  cp.execLog(`git commit${o.commit}`, o);
-  cp.execLog(`git push${o.push}`, o);
+  cp.execLogSync(`git add .`, o);
+  cp.execLogSync(`git commit${o.commit}`, o);
+  cp.execLogSync(`git push${o.push}`, o);
 }
 
 
@@ -82,11 +82,14 @@ function commitPush(msg='', o=null) {
 function setupBranch(branch, o=null) {
   var o = Object.assign({}, o);
   console.log(`Creating ${branch} branch ...`);
-  cp.execLog(`git checkout --orphan ${branch}`, o);
-  cp.execLog(`git rm -rf .`, o);
-  cp.execLog(`git clean -fxd`, o);
-  cp.execLog(`touch ${o.file || 'index.html'}`, o);
+  cp.execLogSync(`git checkout --orphan ${branch}`, o);
+  cp.execLogSync(`git rm -rf .`, o);
+  cp.execLogSync(`git clean -fxd`, o);
+  cp.execLogSync(`touch ${o.file || 'index.html'}`, o);
   var co = Object.assign({push: ` --set-upstream origin ${branch}`}, o);
   git.commitPush('initial commit', co);
 }
-module.exports = {branch, remoteUrl, diff, addSubmodule, commitPush, setupBranch};
+module.exports = {
+  branch, remoteUrl, diff,
+  addSubmodule, commitPush, setupBranch
+};

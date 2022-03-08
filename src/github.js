@@ -1,6 +1,6 @@
 const {URL} = require('url');
 const {Octokit} = require('@octokit/rest');
-const console = require('./_console');
+const console = require('./console');
 
 
 
@@ -48,4 +48,7 @@ function updateDetails(owner, repo, o=null) {
   console.info(`Topics: ${(topics || []).join(', ')}`);
   await octokit.repos.update({owner, repo, names: topics});
 }
-module.exports = {urlDetails, updateDetails};
+module.exports = {
+  urlDetails,
+  updateDetails,
+};

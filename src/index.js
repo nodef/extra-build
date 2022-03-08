@@ -1,0 +1,11 @@
+exports.child_process = require('./child_process');
+exports.console    = require('./console');
+exports.fs         = require('./fs');
+exports.git        = require('./git');
+exports.github     = require('./github');
+exports.javascript = require('./javascript');
+exports.jsdoc      = require('./jsdoc');
+exports.markdown   = require('./markdown');
+exports.option     = require('./option');
+exports.path       = require('./path');
+exports.string     = require('./string');
