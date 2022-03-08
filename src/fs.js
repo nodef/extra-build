@@ -44,7 +44,27 @@ function readJsonSync(pth) {
 function writeJsonSync(pth, val) {
   writeFileTextSync(pth, JSON.stringify(val, null, 2) + '\n');
 }
+
+
+/**
+ * Temporary file Write function.
+ * @callback TemporaryFileWriteFunction
+ * @param {string} path file path
+ * @param {string} data file data
+ */
+/**
+ * Restore a file after temporary operation.
+ * @param {string} pth path of file
+ * @param {TemporaryFileWriteFunction} fn temporary file write function
+ */
+function restoreFileSync(pth, fn) {
+  var d = fs.existsSync(pth)? fs.readFileSync(pth, 'utf8') : null;
+  fn(pth, d);
+  if (d != null) fs.writeFileSync(pth, d);
+  else if (fs.existsSync(pth)) fs.unlinkSync(pth);
+}
 module.exports = Object.assign({
   readFileTextSync, writeFileTextSync,
   readJsonSync, writeJsonSync,
+  restoreFileSync,
 }, fs);

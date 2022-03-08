@@ -1,6 +1,6 @@
-const {URL} = require('url');
+const {URL}     = require('url');
 const {Octokit} = require('@octokit/rest');
-const console = require('./console');
+const console   = require('./console');
 
 
 

@@ -7,5 +7,6 @@ exports.javascript = require('./javascript');
 exports.jsdoc      = require('./jsdoc');
 exports.markdown   = require('./markdown');
 exports.option     = require('./option');
+exports.package    = require('./package');
 exports.path       = require('./path');
 exports.string     = require('./string');
