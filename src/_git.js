@@ -55,7 +55,7 @@ function addSubmodule(url, out) {
 /**
  * Commit new changes and push to remote.
  * @param {string} msg commit message (amend if empty)
- * @param {CommitPushOptions} o options {commit, push}
+ * @param {CommitPushOptions} o commit options
  */
 function commitPush(msg='', o=null) {
   var o = Object.assign({commit: '', push: ''}, o);
@@ -66,4 +66,27 @@ function commitPush(msg='', o=null) {
   cp.execLog(`git commit${o.commit}`, o);
   cp.execLog(`git push${o.push}`, o);
 }
-module.exports = {branch, remoteUrl, diff, addSubmodule, commitPush};
+
+
+/**
+ * @typedef SetupBranchOptions
+ * @prop {string} file first file [index.html]
+ * @prop {string} cwd current working directory
+ */
+/**
+ * Setup new branch and push to remote.
+ * @param {string} branch branch name
+ * @param {SetupBranchOptions} o setup options
+ *
+ */
+function setupBranch(branch, o=null) {
+  var o = Object.assign({}, o);
+  console.log(`Creating ${branch} branch ...`);
+  cp.execLog(`git checkout --orphan ${branch}`, o);
+  cp.execLog(`git rm -rf .`, o);
+  cp.execLog(`git clean -fxd`, o);
+  cp.execLog(`touch ${o.file || 'index.html'}`, o);
+  var co = Object.assign({push: ` --set-upstream origin ${branch}`}, o);
+  git.commitPush('initial commit', co);
+}
+module.exports = {branch, remoteUrl, diff, addSubmodule, commitPush, setupBranch};
