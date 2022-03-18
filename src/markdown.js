@@ -260,7 +260,9 @@ const RTABLE = /.*?\n.*?(?:\|[ \t]*---|---[ \t]*\|)[\s\S]*?(?:\n(?=[ \t]*\n)|$)/
  */
 function tableRows(full) {
   var rows = [];
-  for (var l of full.split('\n').splice(1, 1))
+  var ls = full.trim().split('\n');
+  ls.splice(1, 1);
+  for (var l of ls)
     rows.push(l.replace(/(^\s*\|)|(\|\s*$)/g, '').split('|'));
   return rows;
 }
