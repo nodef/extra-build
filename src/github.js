@@ -46,7 +46,7 @@ async function updateDetails(owner, repo, o=null) {
   console.info(`Website: ${homepage || ''}`);
   await octokit.repos.update({owner, repo, description, homepage});
   console.info(`Topics: ${(topics || []).join(', ')}`);
-  await octokit.repos.update({owner, repo, names: topics});
+  await octokit.repos.replaceAllTopics({owner, repo, names: topics});
 }
 module.exports = {
   urlDetails,
