@@ -1,4 +1,5 @@
-const path = require('path');
+const path        = require('path');
+const {kebabCase} = require('./string');
 
 
 
@@ -29,7 +30,7 @@ function symbolname(pth) {
  * @returns {string} keyword name
  */
 function keywordname(pth) {
-  return filename(pth).replace(/\W/g, '');
+  return kebabCase(filename(pth)).replace(/\W+/g, '-');
 }
 module.exports = Object.assign({
   filename, symbolname, keywordname
