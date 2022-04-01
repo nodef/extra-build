@@ -5,7 +5,8 @@ Common build tools for extra-* packages.<br>
 :blue_book: [Wiki](https://github.com/nodef/extra-build/wiki/).
 
 > Stability: [Experimental](https://www.youtube.com/watch?v=L1j93RnIxEo).<br>
-> DOCUMENTATION BELOW TO BE UPDATED!
+> DOCUMENTATION BELOW TO BE UPDATED!<br>
+> TOFIX: comment, string, regex scan
 
 <br>
 

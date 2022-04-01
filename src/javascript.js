@@ -27,11 +27,12 @@ function indexOfClosingString(txt, i) {
  * @param {StringMatchFunction} fn match function
  */
 function forEachString(txt, fn) {
-  var RCOMSTR = /\/\/|\/\*|['"`]/g, m = null;
+  var RCOMSTR = /\/\/|\/\*|(?:[=(]\s*)(\/[^\n]+\/[gimsuy]*)|['"`]/g, m = null;
   while ((m = RCOMSTR.exec(txt)) != null) {
     var i = m.index, I = 0;
-    if (m[0] === '//')       I = txt.indexOf('\n', i + 1);
-    else if (m[0] === '/**') I = txt.indexOf('*/', i + 1);
+    if (m[0] === '//')      I = txt.indexOf('\n', i + 1);
+    else if (m[0] === '/*') I = txt.indexOf('*/', i + 1);
+    else if (m[1] != null)  I = i + m[0].length;
     else {
       I = indexOfClosingString(txt, i);
       fn(txt.substring(i, I + 1));
@@ -66,11 +67,12 @@ function strings(txt) {
  * @returns {string} updated javascript text
  */
 function replaceStrings(txt, fn) {
-  var RCOMSTR = /\/\/|\/\*|['"`]/g, m = null, a = '', ai = 0;
+  var RCOMSTR = /\/\/|\/\*|(?:[=(]\s*)(\/[^\n]+\/[gimsuy]*)|['"`]/g, m = null, a = '', ai = 0;
   while ((m = RCOMSTR.exec(txt)) != null) {
     var i = m.index, I = 0;
     if (m[0] === '//')      I = txt.indexOf('\n', i + 1);
     else if (m[0] === '/*') I = txt.indexOf('*/', i + 1);
+    else if (m[1] != null)  I = i + m[0].length;
     else {
       I  = indexOfClosingString(txt, i);
       a += txt.substring(ai, i) + fn(txt.substring(i, I + 1));
