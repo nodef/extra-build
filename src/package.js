@@ -94,7 +94,8 @@ function publish(dir='.') {
  * @param {string} dir package directory
  * @param {string} owner owner name
  */
- function publishGithub(dir, owner) {
+function publishGithub(dir, owner) {
+  var err = null;
   fs.restoreFileSync(path.join(dir, 'package.json'), () => {
     var m   = read(dir);
     var pkg = m.name.replace('@', '').replace('/', '--');
@@ -102,9 +103,11 @@ function publish(dir='.') {
     write(dir, m);
     fs.restoreFileSync(path.join(dir, '.npmrc'), () => {
       setRegistry(dir, `https://npm.pkg.github.com/${owner}`);
-      publish(dir);
+      try { publish(dir); }
+      catch (e) { err = e; }
     });
   });
+  if (err) throw err;
 }
 module.exports = {
   read, write,
