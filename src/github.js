@@ -1,6 +1,7 @@
 const {URL}     = require('url');
 const {Octokit} = require('@octokit/rest');
 const console   = require('./console');
+const path      = require('./path');
 
 
 
@@ -40,6 +41,7 @@ function urlDetails(url) {
 async function updateDetails(owner, repo, o=null) {
   var E = process.env;
   var {description, homepage, topics} = Object.assign({}, o);
+  var topics = topics.map(path.keywordname).slice(0, 20);
   var octokit = new Octokit({auth: o.auth || E.GITHUB_TOKEN});
   console.info('Updating GitHub details:\n');
   console.info(`Description: ${description || ''}`);
