@@ -43,31 +43,6 @@ function keywords(fil) {
 }
 
 
-// Update GitHub details.
-function updateGithub() {
-  var m = package.read('.');
-  var {name, description} = m;
-  var homepage  = `https://www.npmjs.com/package/${name}`;
-  var topics    = keywords(srcts).map(path.keywordname).filter(k => k.length<=35);
-  github.updateDetails(owner, name, {description, homepage, topics});
-}
-
-
-// Generate and publish docs.
-function publishDocs(fil) {
-  var url = git.remoteUrl();
-  var cwd = fs.mkdtempSync(path.join(os.tmpdir(), '.docs'));
-  cp.execLogSync(`git clone ${url} "${cwd}"`);
-  try { cp.execLogSync(`git checkout gh-pages`, {cwd}); }
-  catch(e) { git.setupBranch('gh-pages', {cwd}); }
-  cp.execLogSync(`typedoc "src/${fil}" --out ".docs"`);
-  cp.execLogSync(`rm -rf "${cwd}"/*`);
-  cp.execLogSync(`mv ".docs"/* "${cwd}"/`);
-  git.commitPush('', {cwd});
-  cp.execLogSync(`rm -rf ${cwd}`);
-}
-
-
 // Webify output files.
 function webifyMain(sym) {
   cp.execLogSync(`browserify "${outjs}" -o "${outjs}.1" -s ${sym}`);

@@ -358,7 +358,7 @@ export interface GithubUrlDetails {
 export function parseGithubUrl(url: string): GithubUrlDetails {
   var p = new URL(url).pathname;
   p = p.replace(/^\/|^.*?:/, "");
-  p = p.replace(/\.git$/, "");
+  p = p.replace(/^git+|\.git$/, "");
   var [owner, repo] = p.split("/");
   return {owner, repo};
 }
@@ -368,31 +368,39 @@ export function parseGithubUrl(url: string): GithubUrlDetails {
 export interface GithubRepoDetails {
   /** Authorization token [$GITHUB_TOKEN]. */
   auth?: string,
+  /** Owner name. */
+  owner?: string,
+  /** Repository name. */
+  repo?: string,
   /** Repository description. */
-  description: string,
+  description?: string,
   /** Respoitory homepage URL. */
-  homepage: string,
+  homepage?: string,
   /** Repository topics. */
-  topics: string[],
+  topics?: string[],
 }
 
 
 /**
  * Update GitHub repository details.
- * @param owner owner name
- * @param repo repository name
  * @param options repository details
  */
-export async function updateGithubRepoDetails(owner: string, repo: string, options: GithubRepoDetails=null): Promise<void> {
+export async function updateGithubRepoDetails(options: GithubRepoDetails=null): Promise<void> {
   var E = process.env;
-  var {description, homepage, topics} = Object.assign({}, options);
-  var topics = topics.map(keywordname).slice(0, 20);
-  var octokit = new Octokit({auth: options.auth || E.GITHUB_TOKEN});
+  var m = readMetadata(".");
+  var u = parseGithubUrl(m.repository.url);
+  var o = Object.assign({}, options);
+  var owner = o.owner || u.owner;
+  var repo  = o.repo  || u.repo;
+  var description = o.description || m.description;
+  var homepage = o.homepage || `https://www.npmjs.com/package/${m.name}`;
+  var topics = (o.topics || m.keywords).map(keywordname).slice(0, 20);
+  var octokit = new Octokit({auth: o.auth || E.GITHUB_TOKEN});
   console.info("Updating GitHub details:\n");
-  console.info(`Description: ${description || ""}`);
-  console.info(`Website: ${homepage || ""}`);
-  await octokit.repos.update({owner, repo, description, homepage});
+  console.info(`Description: ${description}`);
+  console.info(`Website: ${homepage}`);
   console.info(`Topics: ${(topics || []).join(", ")}`);
+  await octokit.repos.update({owner, repo, description, homepage});
   await octokit.repos.replaceAllTopics({owner, repo, names: topics});
 }
 
@@ -407,8 +415,8 @@ export async function updateGithubRepoDetails(owner: string, repo: string, optio
  * @param dir package directory
  * @returns package.json data
  */
-export function readMetadata(dir: string='.'): any {
-  var pth = path.join(dir, 'package.json');
+export function readMetadata(dir: string="."): any {
+  var pth = path.join(dir, "package.json");
   return readJson(pth);
 }
 
@@ -419,7 +427,7 @@ export function readMetadata(dir: string='.'): any {
  * @param val package.json data
  */
 export function writeMetadata(dir: string, val: any): void {
-  var pth = path.join(dir, 'package.json');
+  var pth = path.join(dir, "package.json");
   writeJson(pth, val);
 }
 
@@ -429,7 +437,7 @@ export function writeMetadata(dir: string, val: any): void {
  * @param dir package directory
  * @returns current registry
  */
-export function registry(dir: string='.'): string {
+export function registry(dir: string="."): string {
   var cwd = dir;
   return execStr(`npm config get registry`, {cwd});
 }
@@ -441,12 +449,12 @@ export function registry(dir: string='.'): string {
  * @param url registry url
  */
 export function setRegistry(dir: string, url: string): void {
-  var pth = path.join(dir, '.npmrc');
-  var txt = fs.existsSync(pth)? readFileText(pth) : '';
+  var pth = path.join(dir, ".npmrc");
+  var txt = fs.existsSync(pth)? readFileText(pth) : "";
   var has = /^registry\s*=/.test(txt);
   if (has) txt = txt.replace(/^registry\s*=.*$/gm, `registry=${url}`);
   else     txt = txt + `\nregistry=${url}`;
-  writeFileText(pth, txt.trim() + '\n');
+  writeFileText(pth, txt.trim() + "\n");
 }
 
 
@@ -469,9 +477,9 @@ export function latestVersion(name: string): string {
 export function nextUnpublishedVersion(name: string, ver: string): string {
   var u = latestVersion(name);
   var d = semver.diff(u, ver);
-  if (d==='major' || d==='minor') return ver;
+  if (d==="major" || d==="minor") return ver;
   if (semver.lt(u, ver)) return ver;
-  return semver.inc(u, 'patch');
+  return semver.inc(u, "patch");
 }
 
 
@@ -479,7 +487,7 @@ export function nextUnpublishedVersion(name: string, ver: string): string {
  * Publish package to NPM.
  * @param dir package directory
  */
-export function publish(dir: string='.'): void {
+export function publish(dir: string="."): void {
   var cwd = dir;
   exec(`npm publish`, {cwd});
 }
@@ -492,10 +500,10 @@ export function publish(dir: string='.'): void {
  */
 export function publishGithub(dir: string, owner: string): void {
   var err = null;
-  var _package = readDocument(path.join(dir, 'package.json'));
-  var _npmrc   = readDocument(path.join(dir, '.npmrc'));
+  var _package = readDocument(path.join(dir, "package.json"));
+  var _npmrc   = readDocument(path.join(dir, ".npmrc"));
   var m   = readMetadata(dir);
-  var pkg = m.name.replace('@', '').replace('/', '--');
+  var pkg = m.name.replace("@", "").replace("/", "--");
   m.name  = `@${owner}/${pkg}`;
   writeMetadata(dir, m);
   setRegistry(dir, `https://npm.pkg.github.com/${owner}`);
@@ -504,4 +512,36 @@ export function publishGithub(dir: string, owner: string): void {
   writeDocument(_npmrc);
   writeDocument(_package);
   if (err) throw err;
+}
+
+
+
+
+// DOCS
+// ====
+
+/**
+ * Generate docs using typedoc.
+ * @param src main source file
+ * @param out output directory
+ */
+export function generateDocs(src: string, out: string=".docs"): void {
+  exec(`typedoc "${src}" --out "${out}"`);
+}
+
+
+/**
+ * Publish docs to gh-pages.
+ * @param dir docs directory
+ */
+export function publishDocs(dir: string=".docs"): void {
+  var url = gitRemoteUrl();
+  var cwd = fs.mkdtempSync(path.join(os.tmpdir(), dir));
+  exec(`git clone ${url} "${cwd}"`);
+  try { exec(`git checkout gh-pages`, {cwd}); }
+  catch(e) { gitSetupBranch("gh-pages", {cwd}); }
+  exec(`rm -rf "${cwd}"/*`);
+  exec(`mv "${dir}"/* "${cwd}"/`);
+  gitCommitPush("", {cwd});
+  exec(`rm -rf ${cwd}`);
 }
