@@ -1,6 +1,6 @@
 {
   "name": "extra-build",
-  "version": "2.0.18",
+  "version": "2.0.19",
   "description": "Common build tools for extra-* packages.",
   "main": "index.js",
   "scripts": {
@@ -26,5 +26,8 @@
     "dot-prop": "^6.0.1",
     "kleur": "^4.1.4",
     "semver": "^7.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.35"
   }
 }
