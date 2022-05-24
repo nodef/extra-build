@@ -5,6 +5,7 @@ import * as path from "path";
 import * as cp   from "child_process";
 import * as os   from "os";
 import * as fs   from "fs";
+import * as semver from "semver";
 import kleur     from "kleur";
 import {Octokit} from "@octokit/rest";
 
@@ -208,6 +209,36 @@ export function writeJson(pth: string, val: any): void {
 }
 
 
+/** Records file path and data. */
+export interface Document {
+  /** File path. */
+  path: string,
+  /** File data.  */
+  data: string | Buffer,
+}
+
+
+/**
+ * Read document.
+ * @param pth file path
+ * @returns document {path, data}
+ */
+ export function readDocument(pth: string): Document {
+  var data = fs.existsSync(pth)? fs.readFileSync(pth) : null;
+  return {path: pth, data};
+}
+
+
+/**
+ * Write document.
+ * @param doc document {path, data}
+ */
+export function writeDocument(doc: Document): void {
+  if (doc.data!=null) fs.writeFileSync(doc.path, doc.data);
+  else if (fs.existsSync(doc.path)) fs.unlinkSync(doc.path);
+}
+
+
 
 
 // GIT
@@ -363,4 +394,114 @@ async function updateGithubRepoDetails(owner: string, repo: string, options: Git
   await octokit.repos.update({owner, repo, description, homepage});
   console.info(`Topics: ${(topics || []).join(", ")}`);
   await octokit.repos.replaceAllTopics({owner, repo, names: topics});
+}
+
+
+
+
+// PACKAGE
+// =======
+
+/**
+ * Read package.json data.
+ * @param dir package directory
+ * @returns package.json data
+ */
+export function readMetadata(dir: string='.'): any {
+  var pth = path.join(dir, 'package.json');
+  return readJson(pth);
+}
+
+
+/**
+ * Write package.json data.
+ * @param dir package directory
+ * @param val package.json data
+ */
+export function writeMetadata(dir: string, val: any): void {
+  var pth = path.join(dir, 'package.json');
+  writeJson(pth, val);
+}
+
+
+/**
+ * Get current registry.
+ * @param dir package directory
+ * @returns current registry
+ */
+export function registry(dir: string='.'): string {
+  var cwd = dir;
+  return execStr(`npm config get registry`, {cwd});
+}
+
+
+/**
+ * Set current registry.
+ * @param dir package directory
+ * @param url registry url
+ */
+export function setRegistry(dir: string, url: string): void {
+  var pth = path.join(dir, '.npmrc');
+  var txt = fs.existsSync(pth)? readFileText(pth) : '';
+  var has = /^registry\s*=/.test(txt);
+  if (has) txt = txt.replace(/^registry\s*=.*$/gm, `registry=${url}`);
+  else     txt = txt + `\nregistry=${url}`;
+  writeFileText(pth, txt.trim() + '\n');
+}
+
+
+/**
+ * Get latest package version.
+ * @param name package name
+ * @returns latest package version
+ */
+export function latestVersion(name: string): string {
+  return execStr(`npm view ${name} version`);
+}
+
+
+/**
+ * Get next unpublished version for package.
+ * @param name package name
+ * @param ver package version
+ * @returns next unpublished version
+ */
+export function nextUnpublishedVersion(name: string, ver: string): string {
+  var u = latestVersion(name);
+  var d = semver.diff(u, ver);
+  if (d==='major' || d==='minor') return ver;
+  if (semver.lt(u, ver)) return ver;
+  return semver.inc(u, 'patch');
+}
+
+
+/**
+ * Publish package to NPM.
+ * @param dir package directory
+ */
+export function publish(dir: string='.'): void {
+  var cwd = dir;
+  exec(`npm publish`, {cwd});
+}
+
+
+/**
+ * Publish package to GitHub.
+ * @param dir package directory
+ * @param owner owner name
+ */
+export function publishGithub(dir: string, owner: string): void {
+  var err = null;
+  var _package = readDocument(path.join(dir, 'package.json'));
+  var _npmrc   = readDocument(path.join(dir, '.npmrc'));
+  var m   = readMetadata(dir);
+  var pkg = m.name.replace('@', '').replace('/', '--');
+  m.name  = `@${owner}/${pkg}`;
+  writeMetadata(dir, m);
+  setRegistry(dir, `https://npm.pkg.github.com/${owner}`);
+  try { publish(dir); }
+  catch (e) { err = e; }
+  writeDocument(_npmrc);
+  writeDocument(_package);
+  if (err) throw err;
 }
