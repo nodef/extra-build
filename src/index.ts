@@ -2,6 +2,8 @@ import {ExecSyncOptions} from "child_process";
 import * as util from "util";
 import * as path from "path";
 import * as cp   from "child_process";
+import * as os   from "os";
+import * as fs   from "fs";
 import kleur from "kleur";
 
 
@@ -97,6 +99,53 @@ export function execStr(cmd: string, options?: ExecOptions): string {
   var a = cp.execSync(cmd, o).toString().trim();
   console.info();
   return a;
+}
+
+
+
+
+// FS
+// ==
+
+/**
+ * Read file text with Unix EOL.
+ * @param pth file path
+ * @returns file text
+ */
+export function readFileText(pth: string): string {
+  var txt = fs.readFileSync(pth, 'utf8');
+  return txt.replace(/\r?\n/g, '\n');
+}
+
+
+/**
+ * Write file text with system EOL.
+ * @param pth file path
+ * @param txt file text
+ */
+export function writeFileText(pth: string, txt: string): void {
+  var txt = txt.replace(/\r?\n/g, os.EOL);
+  fs.writeFileSync(pth, txt);
+}
+
+
+/**
+ * Read JSON file as object.
+ * @param pth path of JSON file
+ * @returns object
+ */
+export function readJson(pth: string): any {
+  return JSON.parse(readFileText(pth));
+}
+
+
+/**
+ * Write object to JSON file.
+ * @param pth path of JSON file
+ * @param val object
+ */
+export function writeJson(pth: string, val: any): void {
+  writeFileText(pth, JSON.stringify(val, null, 2) + '\n');
 }
 
 
