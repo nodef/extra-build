@@ -9,6 +9,63 @@ import kleur from "kleur";
 
 
 
+// STRING
+// ======
+
+/**
+ * Convert string to kebab-case.
+ * @param x string
+ * @param sep separator [-]
+ * @returns string in kebab-case
+ */
+function kebabCase(x: string, sep: string="-"): string {
+  var rdelta = /([^A-Z])([A-Z])|(\D)(\d)/g;
+  var rtrim  = /^[^a-zA-Z0-9\.]+|[^a-zA-Z0-9\.]+$/g;
+  var rsep   = /[^a-zA-Z0-9\.]+/g;
+  x = x.replace(rdelta, `$1$3${sep}$2$4`);
+  x = x.replace(rsep, sep);
+  x = x.replace(rtrim, "");
+  return x.toLowerCase();
+}
+
+
+
+
+// PATH
+// ====
+
+/**
+ * Get file name without extension.
+ * @param pth file path
+ * @returns file name
+ */
+function filename(pth: string): string {
+  var f = path.basename(pth);
+  return f.replace(/\..*/, '');
+}
+
+
+/**
+ * Get symbol name for file.
+ * @param pth file path
+ */
+function symbolname(pth: string): string {
+  return filename(pth).replace(/[^\w$]+/g, '_');
+}
+
+
+/**
+ * Get keyword name for file.
+ * @param pth file path
+ * @returns keyword name
+ */
+function keywordname(pth: string): string {
+  return kebabCase(filename(pth)).replace(/\W+/g, '-');
+}
+
+
+
+
 // CONSOLE
 // =======
 
@@ -230,8 +287,8 @@ interface GitSetupBranchOptions extends ExecOptions {
 
 /**
  * Setup new branch and push to remote.
- * @param {string} branch branch name
- * @param {SetupBranchOptions} o setup options
+ * @param branch branch name
+ * @param options setup options
  *
  */
 function gitSetupBranch(branch: string, options: GitSetupBranchOptions=null): void {
