@@ -52,7 +52,7 @@ function filename(pth: string): string {
  * Get symbol name for file.
  * @param pth file path
  */
-function symbolname(pth: string): string {
+export function symbolname(pth: string): string {
   return filename(pth).replace(/[^\w$]+/g, "_");
 }
 
@@ -62,7 +62,7 @@ function symbolname(pth: string): string {
  * @param pth file path
  * @returns keyword name
  */
-function keywordname(pth: string): string {
+export function keywordname(pth: string): string {
   return kebabCase(filename(pth)).replace(/\W+/g, "-");
 }
 
@@ -287,7 +287,7 @@ function gitAddSubmodule(url: string, out: string): void {
 
 
 /** Git commit push options. */
-interface GitCommitPushOptions extends ExecOptions {
+export interface GitCommitPushOptions extends ExecOptions {
   /** Commit options. */
   commit?: string,
   /** Push options. */
@@ -300,7 +300,7 @@ interface GitCommitPushOptions extends ExecOptions {
  * @param msg commit message (amend if empty)
  * @param options commit options
  */
-function gitCommitPush(msg: string="", options: GitCommitPushOptions=null): void {
+export function gitCommitPush(msg: string="", options: GitCommitPushOptions=null): void {
   var o = Object.assign({commit: "", push: ""}, options);
   if (msg) o.commit += ` -m "${msg}"`;
   else o.commit += ` --amend --no-edit`;
@@ -312,7 +312,7 @@ function gitCommitPush(msg: string="", options: GitCommitPushOptions=null): void
 
 
 /** Git setup branch options. */
-interface GitSetupBranchOptions extends ExecOptions {
+export interface GitSetupBranchOptions extends ExecOptions {
   /** First file [index.html]. */
   file?: string,
 }
@@ -324,7 +324,7 @@ interface GitSetupBranchOptions extends ExecOptions {
  * @param options setup options
  *
  */
-function gitSetupBranch(branch: string, options: GitSetupBranchOptions=null): void {
+export function gitSetupBranch(branch: string, options: GitSetupBranchOptions=null): void {
   var o = Object.assign({}, options);
   console.log(`Creating ${branch} branch ...`);
   exec(`git checkout --orphan ${branch}`, o);
@@ -342,7 +342,7 @@ function gitSetupBranch(branch: string, options: GitSetupBranchOptions=null): vo
 // ======
 
 /** GitHub URL details. */
-interface GithubUrlDetails {
+export interface GithubUrlDetails {
   /** Owner name. */
   owner: string,
   /** Repository name. */
@@ -355,7 +355,7 @@ interface GithubUrlDetails {
  * @param url remote url
  * @returns url details
  */
-function parseGithubUrl(url: string): GithubUrlDetails {
+export function parseGithubUrl(url: string): GithubUrlDetails {
   var p = new URL(url).pathname;
   p = p.replace(/^\/|^.*?:/, "");
   p = p.replace(/\.git$/, "");
@@ -365,7 +365,7 @@ function parseGithubUrl(url: string): GithubUrlDetails {
 
 
 /** GitHub Repository details. */
-interface GithubRepoDetails {
+export interface GithubRepoDetails {
   /** Authorization token [$GITHUB_TOKEN]. */
   auth?: string,
   /** Repository description. */
@@ -383,7 +383,7 @@ interface GithubRepoDetails {
  * @param repo repository name
  * @param options repository details
  */
-async function updateGithubRepoDetails(owner: string, repo: string, options: GithubRepoDetails=null): Promise<void> {
+export async function updateGithubRepoDetails(owner: string, repo: string, options: GithubRepoDetails=null): Promise<void> {
   var E = process.env;
   var {description, homepage, topics} = Object.assign({}, options);
   var topics = topics.map(keywordname).slice(0, 20);
