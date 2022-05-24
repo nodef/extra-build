@@ -1,10 +1,12 @@
 import {ExecSyncOptions} from "child_process";
+import {URL} from "url";
 import * as util from "util";
 import * as path from "path";
 import * as cp   from "child_process";
 import * as os   from "os";
 import * as fs   from "fs";
-import kleur from "kleur";
+import kleur     from "kleur";
+import {Octokit} from "@octokit/rest";
 
 
 
@@ -41,7 +43,7 @@ function kebabCase(x: string, sep: string="-"): string {
  */
 function filename(pth: string): string {
   var f = path.basename(pth);
-  return f.replace(/\..*/, '');
+  return f.replace(/\..*/, "");
 }
 
 
@@ -50,7 +52,7 @@ function filename(pth: string): string {
  * @param pth file path
  */
 function symbolname(pth: string): string {
-  return filename(pth).replace(/[^\w$]+/g, '_');
+  return filename(pth).replace(/[^\w$]+/g, "_");
 }
 
 
@@ -60,7 +62,7 @@ function symbolname(pth: string): string {
  * @returns keyword name
  */
 function keywordname(pth: string): string {
-  return kebabCase(filename(pth)).replace(/\W+/g, '-');
+  return kebabCase(filename(pth)).replace(/\W+/g, "-");
 }
 
 
@@ -170,8 +172,8 @@ export function execStr(cmd: string, options?: ExecOptions): string {
  * @returns file text
  */
 export function readFileText(pth: string): string {
-  var txt = fs.readFileSync(pth, 'utf8');
-  return txt.replace(/\r?\n/g, '\n');
+  var txt = fs.readFileSync(pth, "utf8");
+  return txt.replace(/\r?\n/g, "\n");
 }
 
 
@@ -202,7 +204,7 @@ export function readJson(pth: string): any {
  * @param val object
  */
 export function writeJson(pth: string, val: any): void {
-  writeFileText(pth, JSON.stringify(val, null, 2) + '\n');
+  writeFileText(pth, JSON.stringify(val, null, 2) + "\n");
 }
 
 
@@ -267,7 +269,7 @@ interface GitCommitPushOptions extends ExecOptions {
  * @param msg commit message (amend if empty)
  * @param options commit options
  */
-function commitPush(msg: string="", options: GitCommitPushOptions=null): void {
+function gitCommitPush(msg: string="", options: GitCommitPushOptions=null): void {
   var o = Object.assign({commit: "", push: ""}, options);
   if (msg) o.commit += ` -m "${msg}"`;
   else o.commit += ` --amend --no-edit`;
@@ -299,5 +301,66 @@ function gitSetupBranch(branch: string, options: GitSetupBranchOptions=null): vo
   exec(`git clean -fxd`, o);
   exec(`touch ${o.file || "index.html"}`, o);
   var co = Object.assign({push: ` --set-upstream origin ${branch}`}, options);
-  commitPush("initial commit", co);
+  gitCommitPush("initial commit", co);
+}
+
+
+
+
+// GITHUB
+// ======
+
+/** GitHub URL details. */
+interface GithubUrlDetails {
+  /** Owner name. */
+  owner: string,
+  /** Repository name. */
+  repo: string,
+}
+
+
+/**
+ * Get details from GitHub URL.
+ * @param url remote url
+ * @returns url details
+ */
+function parseGithubUrl(url: string): GithubUrlDetails {
+  var p = new URL(url).pathname;
+  p = p.replace(/^\/|^.*?:/, "");
+  p = p.replace(/\.git$/, "");
+  var [owner, repo] = p.split("/");
+  return {owner, repo};
+}
+
+
+/** GitHub Repository details. */
+interface GithubRepoDetails {
+  /** Authorization token [$GITHUB_TOKEN]. */
+  auth?: string,
+  /** Repository description. */
+  description: string,
+  /** Respoitory homepage URL. */
+  homepage: string,
+  /** Repository topics. */
+  topics: string[],
+}
+
+
+/**
+ * Update GitHub repository details.
+ * @param owner owner name
+ * @param repo repository name
+ * @param options repository details
+ */
+async function updateGithubRepoDetails(owner: string, repo: string, options: GithubRepoDetails=null): Promise<void> {
+  var E = process.env;
+  var {description, homepage, topics} = Object.assign({}, options);
+  var topics = topics.map(keywordname).slice(0, 20);
+  var octokit = new Octokit({auth: options.auth || E.GITHUB_TOKEN});
+  console.info("Updating GitHub details:\n");
+  console.info(`Description: ${description || ""}`);
+  console.info(`Website: ${homepage || ""}`);
+  await octokit.repos.update({owner, repo, description, homepage});
+  console.info(`Topics: ${(topics || []).join(", ")}`);
+  await octokit.repos.replaceAllTopics({owner, repo, names: topics});
 }
