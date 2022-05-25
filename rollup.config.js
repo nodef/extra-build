@@ -1,7 +1,8 @@
-import resolve from "@rollup/plugin-node-resolve";
+import exclude  from "rollup-plugin-exclude-dependencies-from-bundle";
+import resolve  from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import cleanup from "rollup-plugin-cleanup";
-import dts from "rollup-plugin-dts";
+import cleanup  from "rollup-plugin-cleanup";
+import dts      from "rollup-plugin-dts";
 
 
 export default [{
@@ -19,7 +20,7 @@ export default [{
     format: "cjs",
     exports: "auto"
   },
-  plugins: [resolve(), commonjs(), cleanup({comments: "none"})]
+  plugins: [exclude(), resolve(), commonjs(), cleanup({comments: "none"})]
 }, {
   input: ".build/index.js",
   output: {
@@ -27,5 +28,5 @@ export default [{
     format: "es",
     exports: "auto"
   },
-  plugins: [resolve(), commonjs(), cleanup({comments: "none"})]
+  plugins: [exclude(), resolve(), commonjs(), cleanup({comments: "none"})]
 }];

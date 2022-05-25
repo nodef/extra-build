@@ -1,13 +1,18 @@
 import {ExecSyncOptions} from "child_process";
 import {URL} from "url";
-import * as util from "util";
-import * as path from "path";
-import * as cp   from "child_process";
-import * as os   from "os";
-import * as fs   from "fs";
-import * as semver from "semver";
-import kleur     from "kleur";
-import {Octokit} from "@octokit/rest";
+import * as util    from "util";
+import * as path    from "path";
+import * as cp      from "child_process";
+import * as os      from "os";
+import * as fs      from "fs";
+import * as semver  from "semver";
+import kleur        from "kleur";
+import {Octokit}    from "@octokit/rest";
+import {Comment}    from "typedoc";
+import {Reflection} from "typedoc";
+import {SignatureReflection} from "typedoc";
+import {ProjectReflection}   from "typedoc";
+import * as typedoc from "typedoc";
 
 
 
@@ -544,4 +549,196 @@ export function publishDocs(dir: string=".docs"): void {
   exec(`mv "${dir}"/* "${cwd}"/`);
   gitCommitPush("", {cwd});
   exec(`rm -rf ${cwd}`);
+}
+
+
+/**
+ * Get the reflection that is referred to.
+ * @param docs docs reflection
+ * @param r reflection
+ * @returns referred reflection, or the same if nothing is referred
+ */
+export function docsRefer<T=Reflection>(docs: ProjectReflection, r: T): T {
+  // @ts-ignore
+  if (!r.target) return r;
+  // @ts-ignore
+  return docsRefer(docs, docs.getReflectionById(r.target));
+}
+
+
+/**
+ * Get name of a reflection.
+ * @param r reflection
+ * @returns reflection name
+ */
+export function docsName(r: Reflection): string {
+  return r.name;
+}
+
+
+/**
+ * Get the kind name of a reflection.
+ * @param r reflection
+ * @returns kind name
+ */
+export function docsKind(r: Reflection): string {
+  return r.kindString;
+}
+
+
+function docsFindSignatures(r: Reflection): SignatureReflection[] {
+  // @ts-ignore
+  if (r.signatures) return r.signatures;
+  // @ts-ignore
+  if (r.declaration) return docsFindSignatures(r.declaration, sig);
+  // @ts-ignore
+  if (r.type) return docsFindSignatures(r.type, sig);
+  return [];
+}
+
+
+function docsFindComment(r: Reflection, sig: number=0): Comment {
+  if (r==null) return null;
+  if (r.comment) return r.comment;
+  return docsFindComment(docsFindSignatures(r)[sig]);
+}
+
+
+/**
+ * Get signature count of a reflection (function).
+ * @param r reflection
+ * @returns signature count
+ */
+export function docsSignatureCount(r: Reflection): number {
+  return docsFindSignatures(r).length;
+}
+
+
+/**
+ * Get the type name of a reflection.
+ * @param r reflection
+ * @returns type name
+ */
+export function docsType(r: Reflection, sig: number=0): string {
+  if (r==null) return null;
+  // @ts-ignore
+  if (r.type) return r.type.toString();
+  if (/class|interface|type/i.test(r.kindString)) return r.name;
+  return docsType(docsFindSignatures(r)[sig]);
+}
+
+
+/**
+ * Get description of a reflection.
+ * @param r reflection
+ * @param sig signature index
+ * @returns description/comment
+ */
+export function docsDescription(r: Reflection, sig: number=0): string {
+  var c = docsFindComment(r, sig);
+  return c==null? null : [c.shortText || "", c.text || ""].join("\n");
+}
+
+
+/**
+ * Get returns description of a reflection (function).
+ * @param r reflection
+ * @param sig signature index
+ * @returns returns description/comment
+ */
+export function docsReturns(r: Reflection, sig: number=0): string {
+  var c = docsFindComment(r, sig);
+  return c==null? null : c.returns || null;
+}
+
+
+/** Details of a parameter. */
+export interface DocsParam {
+  /** Name of parameter. */
+  name: string,
+  /** Type name of parameter. */
+  type: string,
+  /** Description/comment of parameter. */
+  description?: string,
+}
+
+
+/**
+ * Get details of parameters of a reflection (function).
+ * @param r reflection
+ * @param sig signature index
+ * @returns details of parameters [{name, type, description}]
+ */
+export function docsParams(r: Reflection, sig: number=0): DocsParam[] {
+  if (r==null) return null;
+  var s = docsFindSignatures(r)[sig];
+  if (s==null) return null;
+  return s.parameters.map(p => ({
+    name: docsName(p),
+    type: docsType(p),
+    description: docsDescription(p),
+  }));
+}
+
+
+/** Details of a reflection. */
+export interface DocsDetails {
+  /** Name of a reflection. */
+  name: string,
+  /** Kind name of a reflection */
+  kind: string,
+  /** Type name of a reflection. */
+  type: string,
+  /** Description/comment of a reflection. */
+  description?: string,
+  /** Details of parameters of a reflection (function). */
+  params?: DocsParam[],
+  /** Return details/comment of a reflection (function). */
+  returns?: string,
+}
+
+
+/**
+ * Get details of a reflection.
+ * @param r reflection
+ * @returns reflection details {name, kind, type, description, params, returns}
+ */
+export function docsDetails(r: Reflection): DocsDetails {
+  return {
+    name: docsName(r),
+    kind: docsKind(r),
+    type: docsType(r),
+    description: docsDescription(r),
+    params: docsParams(r),
+    returns: docsReturns(r),
+  };
+}
+
+
+/**
+ * Get details of a reflection, referring the necessary details.
+ * @param docs docs reflection
+ * @param r reflection
+ * @returns reflection details {name, kind, type, description, params, returns}
+ */
+export function docsReferDetails(docs: ProjectReflection, r: Reflection): DocsDetails {
+  var s = docsRefer(docs, r);
+  if (s===r) return docsDetails(r);
+  var kind = `${docsKind(r)}/${docsKind(s)}`;
+  return Object.assign(docsDetails(s), docsDetails(r), {kind});
+}
+
+
+/**
+ * Load docs from source file.
+ * @param entryPoints entry source files
+ * @returns docs reflection
+ */
+export function loadDocs(entryPoints?: string[]): ProjectReflection {
+  entryPoints = entryPoints || ["src/index.ts"];
+  var app = new typedoc.Application();
+  app.options.addReader(new typedoc.TSConfigReader());
+  app.options.addReader(new typedoc.TypeDocReader());
+  app.bootstrap({entryPoints});
+  return app.convert();
 }

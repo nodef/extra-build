@@ -1,7 +1,8 @@
-const os = require('os');
-const {child_process: cp, fs, path} = require('extra-build');
-const {git, github, package}        = require('extra-build');
-const {javascript, jsdoc, markdown} = require('extra-build');
+const fs = require('fs');
+const javascript = require('extra-javascript-text');
+const jsdoc      = require('extra-jsdoc-text');
+const markdown   = require('extra-markdown-text');
+const build = require('./');
 
 
 const owner  = 'nodef';
@@ -22,22 +23,22 @@ function isSubmodule(pth) {
 
 // Get filename keywords for main/sub package.
 function filenameKeywords(fil) {
-  if (fil !== srcts) return [path.symbolname(fil)];
-  return fs.readdirSync('src').filter(isSubmodule).map(path.keywordname);
+  if (fil !== srcts) return [build.symbolname(fil)];
+  return fs.readdirSync('src').filter(isSubmodule).map(build.keywordname);
 }
 
 
 // Get export keywords for main/sub package.
 function exportKeywords(fil) {
-  var txt  = fs.readFileTextSync(`src/${fil}`);
+  var txt  = build.readFileText(`src/${fil}`);
   var exps = javascript.exportSymbols(txt);
-  return exps.map(e => path.symbolname(e.name));
+  return exps.map(e => build.symbolname(e.name));
 }
 
 
 // Get keywords for main/sub package.
 function keywords(fil) {
-  var m = package.read('.');
+  var m = build.readMetadata('.');
   var s = new Set([...m.keywords, ...filenameKeywords(fil), ...exportKeywords(fil)]);
   return Array.from(s);
 }
@@ -45,12 +46,12 @@ function keywords(fil) {
 
 // Webify output files.
 function webifyMain(sym) {
-  cp.execLogSync(`browserify "${outjs}" -o "${outjs}.1" -s ${sym}`);
-  cp.execLogSync(`cp "${outmjs}" "${outmjs}.1"`);
-  cp.execLogSync(`terser "${outjs}.1" -o "${outjs}"  -c -m`);
-  cp.execLogSync(`terser "${outmjs}.1" -o "${outmjs}" -c -m`);
-  cp.execLogSync(`rm -f "${outjs}.1"`);
-  cp.execLogSync(`rm -f "${outmjs}.1"`);
+  build.exec(`browserify "${outjs}" -o "${outjs}.1" -s ${sym}`);
+  build.exec(`cp "${outmjs}" "${outmjs}.1"`);
+  build.exec(`terser "${outjs}.1" -o "${outjs}"  -c -m`);
+  build.exec(`terser "${outmjs}.1" -o "${outmjs}" -c -m`);
+  build.exec(`rm -f "${outjs}.1"`);
+  build.exec(`rm -f "${outmjs}.1"`);
 }
 
 
@@ -58,65 +59,65 @@ function webifyMain(sym) {
 function generateMain(fil, sym) {
   var bld = fil.replace(/\.ts/, '.js');
   var env = sym? ` --environment TYPE:web` : '';
-  cp.execLogSync(`rollup -c rollup.config.js -i .build/${bld}` + env);
+  build.exec(`rollup -c rollup.config.js -i .build/${bld}` + env);
   if (sym) webifyMain(sym);
 }
 
 
 // Publish root package to NPM, GitHub.
 function publishRoot(sym, ver) {
-  fs.restoreFileSync('package.json', () => {
-    var m = package.read();
-    m.version  = ver;
-    m.keywords = keywords(srcts);
-    if (sym) { m.name += '.web'; }
-    fs.restoreFileSync('README.md', () => {
-      var txt = fs.readFileTextSync('README.md');
-      if (sym) txt = txt.replace(/\[Files\]\((.*?)\/\)/g, '[Files]($1.web/)');
-      fs.writeFileTextSync('README.md', txt);
-      package.write('.', m);
-      package.publish('.');
-      try { package.publishGithub('.', owner); }
-      catch {}
-    });
-  });
+  var _package = build.readDocument('package.json');
+  var m = build.readMetadata();
+  m.version  = ver;
+  m.keywords = keywords(srcts);
+  if (sym) { m.name += '.web'; }
+  var _readme  = build.readDocument('README.md');
+  var txt = build.readFileText('README.md');
+  if (sym) txt = txt.replace(/\[Files\]\((.*?)\/\)/g, '[Files]($1.web/)');
+  build.writeFileText('README.md', txt);
+  build.writeMetadata('.', m);
+  build.publish('.');
+  try { build.publishGithub('.', owner); }
+  catch {}
+  build.writeDocument(_readme);
+  build.writeDocument(_package);
 }
 
 
 // Get sub package description.
 function subDescription(nam) {
   if (!fs.existsSync(`wiki/${nam}.md`)) return '';
-  var txt = fs.readFileTextSync(`wiki/${nam}.md`);
+  var txt = build.readFileText(`wiki/${nam}.md`);
   return txt.replace(/\n[\s\S]*/g, '').replace(/<br>/g, '');
 }
 
 
 // Publish sub package to NPM, GitHub.
 function publishSub(nam, sym, ver) {
-  fs.restoreFileSync('package.json', () => {
-    var m    = package.read();
-    var desc = `${m.description.slice(0, -1)} {${nam}}.`;
-    m.name = `@${m.name}/${nam}`;
-    m.description = subDescription(nam) || desc;
-    m.version  = ver;
-    m.keywords = keywords(`${nam}.ts`);
-    if (sym) { m.name += '.web'; }
-    fs.restoreFileSync('README.md', () => {
-      var txt = fs.readFileTextSync('README.md');
-      if (sym) txt = txt.replace(/\[Files\]\((.*?)\/\)/g, '[Files]($1.web/)');
-      fs.writeFileTextSync('README.md', txt);
-      package.write('.', m);
-      package.publish('.');
-      package.publishGithub('.', owner);
-    });
-  });
+  var _package = build.readDocument('package.json');
+  var m    = build.readMetadata();
+  var desc = `${m.description.slice(0, -1)} {${nam}}.`;
+  m.name   = `@${m.name}/${nam}`;
+  m.description = subDescription(nam) || desc;
+  m.version  = ver;
+  m.keywords = keywords(`${nam}.ts`);
+  if (sym) { m.name += '.web'; }
+  var _readme  = build.readDocument('README.md');
+  var txt = build.readFileText('README.md');
+  if (sym) txt = txt.replace(/\[Files\]\((.*?)\/\)/g, '[Files]($1.web/)');
+  build.writeFileText('README.md', txt);
+  build.writeMetadata('.', m);
+  build.publish('.');
+  build.publishGithub('.', owner);
+  build.writeDocument(_readme);
+  build.writeDocument(_package);
 }
 
 
 // Deploy root package to NPM, GitHub.
 function deployRoot(ver) {
-  var m   = package.read();
-  var sym = path.symbolname(m.name);
+  var m   = build.readMetadata();
+  var sym = build.symbolname(m.name);
   generateMain(srcts, '');
   publishRoot('', ver);
   // generateMain(srcts, sym);
@@ -124,32 +125,14 @@ function deployRoot(ver) {
 }
 
 
-// Deploy sub package to NPM, GitHub.
-function deploySub(ver) {
-  var m = package.read();
-  for (var f of fs.readdirSync('src')) {
-    if (/^_|index\.ts/.test(f)) continue;
-    var nam = f.replace(/\..*/, '');
-    var sym = path.symbolname(`${m.name}-${nam}`);
-    fs.restoreFileSync('README.md', () => {
-      var md = `wiki/${nam}.md`;
-      if (fs.existsSync(md)) fs.copyFileSync(md, 'README.md');
-      generateMain(f, '');
-      publishSub(nam, '', ver);
-      // generateMain(f, sym);
-      // publishSub(nam, sym, ver);
-    });
-  }
-}
-
-
 // Deploy root, sub packages to NPM, GitHub.
 function deployAll() {
-  var m   = package.read();
-  var ver = package.nextUnpublishedVersion(m.name, m.version);
-  cp.execLogSync(`tsc`);
-  updateGithub();
-  publishDocs(srcts);
+  var m   = build.readMetadata();
+  var ver = build.nextUnpublishedVersion(m.name, m.version);
+  build.exec(`tsc`);
+  build.updateGithubRepoDetails();
+  build.generateDocs(`src/${srcts}`);
+  build.publishDocs();
   deployRoot(ver);
   // deploySub(ver);
 }
@@ -191,7 +174,7 @@ function jsdocSymbolMarkdown(sym, pre, repo) {
 function forEachSourceFile(fn) {
   for (var f of fs.readdirSync('src')) {
     if (f.startsWith('_')) continue;
-    var txt = fs.readFileTextSync(`src/${f}`);
+    var txt = build.readFileText(`src/${f}`);
     var exps = javascript.exportSymbols(txt);
     var docs = javascript.jsdocSymbols(txt);
     var dmap = new Map(docs.map(x => [x.name, x]));
@@ -208,7 +191,7 @@ function createWikiFiles() {
     for (var e of exps) {
       var out = `wiki/${pre}${e.name}.md`;
       if (fs.existsSync(out)) continue;
-      fs.writeFileTextSync(out, '');
+      build.writeFileText(out, '');
     }
   });
 }
@@ -216,17 +199,17 @@ function createWikiFiles() {
 
 // Generate wiki file text for all exported symbols.
 function generateWikiFiles() {
-  var m = package.read('.');
+  var m = build.readMetadata('.');
   forEachSourceFile((f, exps, dmap) => {
     var nam = f.replace(/\..*/, '');
     var pre = f === 'index.ts'? '' : nam;
     for (var e of exps) {
       var out = `wiki/${pre}${e.name}.md`;
       if (!fs.existsSync(out)) continue;
-      if (fs.readFileTextSync(out).length > 0) continue;
+      if (build.readFileText(out).length > 0) continue;
       if (!dmap.has(e.name)) continue;
       var md = jsdocSymbolMarkdown(dmap.get(e.name), pre, m.name);
-      fs.writeFileTextSync(out, md);
+      build.writeFileText(out, md);
     }
   });
 }
@@ -246,7 +229,7 @@ function updateMarkdownIndex(rkind) {
     var pre = f === 'index.ts'? '' : nam;
     var out = pre? `wiki/${nam}.md` : 'README.md';
     if (!fs.existsSync(out)) return;
-    var txt = fs.readFileTextSync(out);
+    var txt = build.readFileText(out);
     txt = markdown.replaceTables(txt, (full, rows) => {
       if (rows.length < 1 || rows[0].length < 2) return full;
       rows = rows.map(r => [r[0].trim(), r[1].trim()]);
@@ -266,7 +249,7 @@ function updateMarkdownIndex(rkind) {
       var bot = rows.slice(1).map(r => '| ' + r.join(' | ') + ' |\n').join('');
       return top + mid + bot;
     });
-    fs.writeFileTextSync(out, txt);
+    build.writeFileText(out, txt);
   });
 }
 
@@ -288,13 +271,13 @@ function docsLinkReference(sym, pre, repo) {
 
 // Update link references for README, wiki.
 function updateMarkdownLinkReferences() {
-  var m = package.read('.');
+  var m = build.readMetadata('.');
   forEachSourceFile((f, exps, dmap) => {
     var nam = f.replace(/\..*/, '');
     var pre = f === 'index.ts'? '' : nam;
     var out = pre? `wiki/${nam}.md` : 'README.md';
     if (!fs.existsSync(out)) return;
-    var txt = fs.readFileTextSync(out);
+    var txt = build.readFileText(out);
     txt = markdown.replaceLinkReferences(txt, (full, name) => {
       if (!dmap.has(name)) return full;
       return docsLinkReference(dmap.get(name), pre, m.name);
@@ -306,7 +289,7 @@ function updateMarkdownLinkReferences() {
       if (!dmap.has(l)) continue;
       txt += docsLinkReference(dmap.get(l), pre, m.name) + '\n';
     }
-    fs.writeFileTextSync(out, txt);
+    build.writeFileText(out, txt);
   });
 }
 
