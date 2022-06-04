@@ -343,6 +343,39 @@ export function gitSetupBranch(branch: string, options: GitSetupBranchOptions=nu
 
 
 
+// BROWSERIFY
+// ==========
+
+function broserifyScriptHeader(txt: string) {
+  txt = txt.trim();
+  if (txt.length===0) return "";
+  if (/^\/\/[^\n]*$|^\/\*[\s\S]*?\*\/$)/.test(txt)) return `${txt}\n`;
+  if (txt.includes("\n")) return `/**\n${txt}\n*/\n`;
+  return `/** ${txt} */\n`;
+}
+
+
+/**
+ * Browserify an script file.
+ * @param format script format (cjs, esm)
+ * @param src source script file
+ * @param dst destination script file
+ * @param symbol standalone symbol name
+ * @param header header text
+ */
+export function browserifyScript(format: string, src: string, dst: string, symbol: string, header?: string): void {
+  var transform = format==="cjs"? "" : "-t babelify";
+  exec(`browserify "${src}" ${transform} -o "${src}.1" -s "${symbol}"`);
+  exec(`terser "${src}.1" -o "${src}.2" -c -m`);
+  var txt = readFileText(`${src}.2`);
+  writeFileText(dst, broserifyScriptHeader(header || "") + txt);
+  exec(`rm -f "${src}.1"`);
+  exec(`rm -f "${src}.2"`);
+}
+
+
+
+
 // GITHUB
 // ======
 
