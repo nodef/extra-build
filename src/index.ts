@@ -12,6 +12,7 @@ import {Comment}    from "typedoc";
 import {Reflection} from "typedoc";
 import {SignatureReflection} from "typedoc";
 import {ProjectReflection}   from "typedoc";
+import {ReflectionFlags}     from "typedoc";
 import * as typedoc from "typedoc";
 
 
@@ -821,4 +822,64 @@ export function loadDocs(entryPoints?: string[]): ProjectReflection {
   app.options.addReader(new typedoc.TypeDocReader());
   app.bootstrap({entryPoints});
   return app.convert();
+}
+
+
+
+
+// WIKI
+// ====
+
+function wikiSignature(d: DocsDetails, prefix?: string): string {
+  var name = prefix? `${prefix}.${d.name}` : d.name;
+  var sig  = d.kind.toLowerCase() + " " + name;
+  if (d.params) sig +=  d.params.map(p => p.name).join(", ");
+  var gap  = Math.max(...d.params.map(p => p.name.length)) + 2;
+  var desc = d.params.map(p => `// ${(p.name+':').padEnd(gap, ' ')}${p.description}`).join('\n');
+  return `${sig};\n${desc}\n`;
+}
+
+function wikiExampleUse(d: DocsDetails): string {
+  if (/function/i.test(d.kind)) return `${d.name}(${d.params.map(p => p.name).join(", ")});`;
+  return `${d.name};\n`;
+  // → OUTPUT
+}
+
+function wikiExample(ds: DocsDetails[], options?: any): string {
+  var [d]  = ds;
+  var repo = options?.repo || "repo";
+  var pre  = options?.prefix;
+  var name = pre? `${pre}.${d.name}` : d.name;
+  var req  = `const ${name} = require('${repo}')`;
+  var use  = ds.map(wikiExampleUse).join("\n");
+  return `${req}\n\n${use}`;
+}
+
+
+function wikiMarkdown(ds: DocsDetails[], options?: any): string {
+  var [d]   = ds;
+  var pre   = options?.prefix;
+  var repo  = options?.repo;
+  var owner = options?.owner || "owner";
+  var name  = pre? `${pre}.${d.name}`   : d.name;
+  var pkg   = pre? `@${repo}/${d.name}` : repo;
+  return `${d.description}<br>\n` +
+    `📦 [NPM](https://www.npmjs.com/package/${pkg}),\n` +
+    `🌐 [Web](https://www.npmjs.com/package/${pkg}.web),\n` +
+    `📜 [Files](https://unpkg.com/${pkg}/),\n` +
+    `📰 [Docs](https://nodef.github.io/${repo}/).\n\n` +
+    `> Alternatives: [${name}].\n` +
+    `> Similar: [${name}].\n\n` +
+    `<br>\n\n` +
+    '```javascript\n' +
+    wikiSignature(d, pre) +
+    '```\n\n' +
+    '```javascript\n' +
+    wikiExample(ds, options) +
+    '```\n\n' +
+    '<br>\n' +
+    '<br>\n\n\n' +
+    `## References\n\n` +
+    `- [Example](https://www.example.com/)\n\n` +
+    `[${name}]: https://github.com/${owner}/${repo}/wiki/${name}\n`
 }
