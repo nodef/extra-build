@@ -659,7 +659,17 @@ export function docsName(r: Reflection): string {
 
 
 /**
- * Get the kind name of a reflection.
+ * Get flags of a reflection.
+ * @param r reflection
+ * @returns flags
+ */
+export function docsFlags(r: Reflection): ReflectionFlags {
+  return r.flags;
+}
+
+
+/**
+ * Get kind name of a reflection.
  * @param r reflection
  * @returns kind name
  */
@@ -687,7 +697,29 @@ function docsFindComment(r: Reflection, sig: number=0): Comment {
 
 
 /**
- * Get signature count of a reflection (function).
+ * Get child count of a reflection.
+ * @param r reflection
+ * @returns child count
+ */
+export function docsChildCount(r: Reflection): number {
+  // @ts-ignore
+  return r.children? r.children.length : 0;
+}
+
+
+/**
+ * Get parameter count of a reflection (function).
+ * @param r reflection
+ * @returns parameter count
+ */
+export function docsParameterCount(r: Reflection): number {
+  // @ts-ignore
+  return r.parameters? r.parameters.length : 0;
+}
+
+
+/**
+ * Get signature count of a reflection.
  * @param r reflection
  * @returns signature count
  */
@@ -697,7 +729,7 @@ export function docsSignatureCount(r: Reflection): number {
 
 
 /**
- * Get the type name of a reflection.
+ * Get type name of a reflection.
  * @param r reflection
  * @returns type name
  */
@@ -734,47 +766,20 @@ export function docsReturns(r: Reflection, sig: number=0): string {
 }
 
 
-/** Details of a parameter. */
-export interface DocsParam {
-  /** Name of parameter. */
-  name: string,
-  /** Type name of parameter. */
-  type: string,
-  /** Description/comment of parameter. */
-  description?: string,
-}
-
-
-/**
- * Get details of parameters of a reflection (function).
- * @param r reflection
- * @param sig signature index
- * @returns details of parameters [{name, type, description}]
- */
-export function docsParams(r: Reflection, sig: number=0): DocsParam[] {
-  if (r==null) return null;
-  var s = docsFindSignatures(r)[sig];
-  if (s==null) return null;
-  return s.parameters.map(p => ({
-    name: docsName(p),
-    type: docsType(p),
-    description: docsDescription(p),
-  }));
-}
-
-
 /** Details of a reflection. */
 export interface DocsDetails {
   /** Name of a reflection. */
   name: string,
+  /** Flags of a reflection. */
+  flags: ReflectionFlags,
   /** Kind name of a reflection */
   kind: string,
   /** Type name of a reflection. */
   type: string,
   /** Description/comment of a reflection. */
   description?: string,
-  /** Details of parameters of a reflection (function). */
-  params?: DocsParam[],
+  /** Details of children/signatures/parameters of a reflection. */
+  children?: DocsDetails[],
   /** Return details/comment of a reflection (function). */
   returns?: string,
 }
@@ -786,14 +791,18 @@ export interface DocsDetails {
  * @returns reflection details {name, kind, type, description, params, returns}
  */
 export function docsDetails(r: Reflection): DocsDetails {
+  // @ts-ignore
+  var s: Reflection[] = r.children || r.parameters || docsFindSignatures(r);
   return {
     name: docsName(r),
+    flags: docsFlags(r),
     kind: docsKind(r),
     type: docsType(r),
     description: docsDescription(r),
-    params: docsParams(r),
+    children: s? s.map(docsDetails) : null,
     returns: docsReturns(r),
   };
+
 }
 
 
@@ -830,6 +839,32 @@ export function loadDocs(entryPoints?: string[]): ProjectReflection {
 
 // WIKI
 // ====
+
+function wikiParam(p: DocsParam, withType?: boolean): string {
+  var a = "", f = p.flags;
+  if (f.isReadonly) a += "readonly ";
+  if (f.isRest)     a += "...";
+  a += p.name;
+  if (f.isOptional && !f.isRest) a += "?";
+  if (withType) a += ": "+p.type;
+  return a;
+}
+
+function wikiKind(d: DocsDetails): string {
+  var a = d.kind.toLowerCase(), f = d.flags;
+  if (f.isConst)          return "const";
+  if (a==="variable")     return "var";
+  if (a.includes("type")) return "type";
+  return a;
+}
+
+function wikiFullKind(d: DocsDetails): string {
+  var a = "", f = d.flags;
+  if (f.isStatic)   a += "static ";
+  if (f.isAbstract) a += "abstract ";
+  if (f.isReadonly) a += "readonly ";
+  return a + wikiKind(d);
+}
 
 function wikiSignature(d: DocsDetails, prefix?: string): string {
   var name = prefix? `${prefix}.${d.name}` : d.name;
