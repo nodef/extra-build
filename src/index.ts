@@ -13,7 +13,8 @@ import {Reflection} from "typedoc";
 import {SignatureReflection} from "typedoc";
 import {ProjectReflection}   from "typedoc";
 import {ReflectionFlags}     from "typedoc";
-import * as typedoc from "typedoc";
+import * as typedoc  from "typedoc";
+import * as markdown from "extra-markdown-text";
 
 
 
@@ -835,7 +836,7 @@ function wikiSignature(d: DocsDetails, prefix?: string): string {
   var sig  = d.kind.toLowerCase() + " " + name;
   if (d.params) sig +=  d.params.map(p => p.name).join(", ");
   var gap  = Math.max(...d.params.map(p => p.name.length)) + 2;
-  var desc = d.params.map(p => `// ${(p.name+':').padEnd(gap, ' ')}${p.description}`).join('\n');
+  var desc = d.params.map(p => `// ${(p.name+":").padEnd(gap, " ")}${p.description}`).join("\n");
   return `${sig};\n${desc}\n`;
 }
 
@@ -871,15 +872,76 @@ function wikiMarkdown(ds: DocsDetails[], options?: any): string {
     `> Alternatives: [${name}].\n` +
     `> Similar: [${name}].\n\n` +
     `<br>\n\n` +
-    '```javascript\n' +
+    "```javascript\n" +
     wikiSignature(d, pre) +
-    '```\n\n' +
-    '```javascript\n' +
+    "```\n\n" +
+    "```javascript\n" +
     wikiExample(ds, options) +
-    '```\n\n' +
-    '<br>\n' +
-    '<br>\n\n\n' +
+    "```\n\n" +
+    "<br>\n" +
+    "<br>\n\n\n" +
     `## References\n\n` +
     `- [Example](https://www.example.com/)\n\n` +
-    `[${name}]: https://github.com/${owner}/${repo}/wiki/${name}\n`
+    `[${name}]: https://github.com/${owner}/${repo}/wiki/${name}\n`;
+}
+
+
+
+
+// README
+// ======
+
+function readmeReindex(txt: string, dm: Map<string, DocsDetails[]>, options?: any): string {
+  return markdown.replaceTables(txt, (full, rows) => {
+    if (rows.length < 1 || rows[0].length < 2) return full;
+    rows = rows.map(r => [r[0].trim(), r[1].trim()]);
+    if (!/property/i.test(rows[0][0]))    return full;
+    if (!/description/i.test(rows[0][1])) return full;
+    var rmap = new Map(rows.map((r, i) => [r[0], i]));
+    for (var ds of dm.values()) {
+      // if (!dmap.has(ds.name)) continue;
+      // if (!rkind.test(ds.kind)) continue;
+      var [d] = ds;
+      var key = `[${d.name}]`;
+      var val = d.description.replace(/\n+/g, " ").trim();
+      if (!rmap.has(key)) rows.push([key, val]);
+      else rows[rmap.get(key)][1] = val;
+    }
+    var top = "| " + rows[0].join(" | ") + " |\n";
+    var mid = "| " + rows[0].map(_ => ` ---- `).join(" | ") + " |\n";
+    var bot =  rows.slice(1).map(r => "| "  + r.join(" | ") + " |\n").join("");
+    return top + mid + bot;
+  });
+}
+
+
+function readmeLinkReference(d: DocsDetails, options?: any): string {
+  var owner = options?.owner || "owner";
+  var repo  = options?.repo  || "repo";
+  var pre   = options?.prefix;
+  var nam   = d.name;
+  var root = `https://${owner}.github.io/${repo}`;
+  var pred = pre? `${pre}.` : "";
+  var prem = pre? `modules/${pre}.html` : "modules.html";
+  switch (d.kind) {
+    case "interface": return `[${nam}]: ${root}/interfaces/${pred}${nam}.html`;
+    case "class":     return `[${nam}]: ${root}/classes/${pred}${nam}.html`;
+    default:          return `[${nam}]: ${root}/${prem}#${nam}`;
+  }
+}
+
+
+function readmeUpdateLinkReferences(txt: string): string {
+  // txt = markdown.replaceLinkReferences(txt, (full, name) => {
+  //   if (!dmap.has(name)) return full;
+  //   return docsLinkReference(dmap.get(name), pre, m.name);
+  // });
+  // var lset = new Set(markdown.links(txt).filter(x => !x.url).map(x => x.ref || x.name));
+  // var rset = new Set(markdown.linkReferences(txt).map(x => x.name));
+  // for (var l of lset) {
+  //   if (rset.has(l)) continue;
+  //   if (!dmap.has(l)) continue;
+  //   txt += docsLinkReference(dmap.get(l), pre, m.name) + "\n";
+  // }
+  return txt;
 }
