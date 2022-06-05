@@ -343,10 +343,15 @@ export function gitSetupBranch(branch: string, options: GitSetupBranchOptions=nu
 
 
 
-// BROWSERIFY
-// ==========
+// BUNDLE / BROWSERIFY
+// ===================
 
-function broserifyScriptHeader(txt: string) {
+/**
+ * Add banner (header comment) to script text.
+ * @param txt script text
+ * @returns script text with banner
+ */
+export function addBanner(txt: string): string {
   txt = txt.trim();
   if (txt.length===0) return "";
   if (/^\/\/[^\n]*$|^\/\*[\s\S]*?\*\/$)/.test(txt)) return `${txt}\n`;
@@ -355,20 +360,62 @@ function broserifyScriptHeader(txt: string) {
 }
 
 
+/** Bundle options. */
+export interface BundleOptions {
+  /** Bundle config script [rollup.config.js]. */
+  config?: string,
+  /** Environment variables for bundle config script. */
+  env?: NodeJS.Dict<string>,
+}
+
+
+function bundleEnvArgs(env?: any): string {
+  var a = "";
+  if (!env) return a;
+  for (var k in env)
+    a += ` --environment ${k}:${env[k]}`;
+  return a;
+}
+
+
 /**
- * Browserify an script file.
- * @param format script format (cjs, esm)
+ * Bundle a script file with config.
+ * @param src source file
+ * @param options bundle options {config, env}
+ */
+export function bundleScript(src?: string, options?: BundleOptions): void {
+  if (src) src = src.replace(/\.ts$/, ".js");
+  var cfg = options?.config || "rollup.config.js";
+  var inp = src? `- "${src}"` : "";
+  var env = bundleEnvArgs(options?.env);
+  exec(`rollup -c "${cfg}" ${inp} ${env}`);
+}
+
+
+/** Webify options. */
+export interface WebifyOptions {
+  /** Source script format (cjs, esm) [cjs]. */
+  format?: string,
+  /** Standalone symbol name. */
+  symbol?: string,
+  /** Banner text for script. */
+  banner?: string,
+}
+
+
+/**
+ * Webify an script file.
  * @param src source script file
  * @param dst destination script file
- * @param symbol standalone symbol name
- * @param header header text
+ * @param options webify options
  */
-export function browserifyScript(format: string, src: string, dst: string, symbol: string, header?: string): void {
-  var transform = format==="cjs"? "" : "-t babelify";
-  exec(`browserify "${src}" ${transform} -o "${src}.1" -s "${symbol}"`);
+export function webifyScript(src: string, dst: string, options?: WebifyOptions): void {
+  var tfm = options?.format==="esm"? "-t babelify" : "";
+  var sym = options?.symbol? `-s "${options.symbol}"` : "";
+  exec(`browserify "${src}" ${tfm} -o "${src}.1" ${sym}`);
   exec(`terser "${src}.1" -o "${src}.2" -c -m`);
   var txt = readFileText(`${src}.2`);
-  writeFileText(dst, broserifyScriptHeader(header || "") + txt);
+  writeFileText(dst, addBanner(options?.banner || "") + txt);
   exec(`rm -f "${src}.1"`);
   exec(`rm -f "${src}.2"`);
 }
