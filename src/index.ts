@@ -381,7 +381,7 @@ export function gitSetupBranch(branch: string, options: GitSetupBranchOptions=nu
 export function addBanner(txt: string): string {
   txt = txt.trim();
   if (txt.length===0) return "";
-  if (/^\/\/[^\n]*$|^\/\*[\s\S]*?\*\/$)/.test(txt)) return `${txt}\n`;
+  if (/^\/\/[^\n]*$|^\/\*[\s\S]*?\*\/$/.test(txt)) return `${txt}\n`;
   if (txt.includes("\n")) return `/**\n${txt}\n*/\n`;
   return `/** ${txt} */\n`;
 }
