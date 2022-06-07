@@ -8,7 +8,7 @@ import * as fs      from "fs";
 import * as semver  from "semver";
 import kleur        from "kleur";
 import {Octokit}    from "@octokit/rest";
-import {Comment}    from "typedoc";
+import {Comment, DeclarationReflection}    from "typedoc";
 import {Reflection} from "typedoc";
 import {SignatureReflection} from "typedoc";
 import {ProjectReflection}   from "typedoc";
@@ -36,6 +36,31 @@ function kebabCase(x: string, sep: string="-"): string {
   x = x.replace(rsep, sep);
   x = x.replace(rtrim, "");
   return x.toLowerCase();
+}
+
+
+/**
+ * Wrap a string by specified column width.
+ * @param x string
+ * @param cols column width [0 => unlimited]
+ * @returns wrapped string
+ */
+function wrapText(x: string, cols: number=0): string {
+  var a = "", cols = cols || x.length;
+  for (var i=0; i<x.length; i+=cols)
+    a += x.substring(i, i+cols) + "\n";
+  return a.substring(0, a.length-1);
+}
+
+
+/**
+ * Indent a string by specified prefix text.
+ * @param x string
+ * @param pre prefix text []
+ * @returns indented text
+ */
+function indentText(x: string, pre: string=""): string {
+  return x.split("\n").map(l => pre + l).join("\n").replace(/[ \t]+\n/g, "\n");
 }
 
 
@@ -750,7 +775,7 @@ export function docsType(r: Reflection, sig: number=0): string {
  */
 export function docsDescription(r: Reflection, sig: number=0): string {
   var c = docsFindComment(r, sig);
-  return c==null? null : [c.shortText || "", c.text || ""].join("\n");
+  return c==null? null : [c.shortText || "", c.text || ""].join("\n\n");
 }
 
 
@@ -802,7 +827,6 @@ export function docsDetails(r: Reflection): DocsDetails {
     children: s? s.map(docsDetails) : null,
     returns: docsReturns(r),
   };
-
 }
 
 
@@ -840,65 +864,121 @@ export function loadDocs(entryPoints?: string[]): ProjectReflection {
 // WIKI
 // ====
 
-function wikiParam(p: DocsParam, withType?: boolean): string {
-  var a = "", f = p.flags;
+interface WikiOptions {
+  owner?: string,
+  repo?: string,
+  prefix?: string,
+  withType?: boolean,
+  wrapText?: number,
+}
+
+
+function wikiDescription(txt: string, cols: number=0): string {
+  return txt? wrapText(txt, cols).split("\n").map(l => `\\ ${l}`).join("\n") + "\n" : "";
+}
+
+function wikiVariable(d: DocsDetails, o?: WikiOptions): string {
+  var text = wikiDescription(d.description, o?.wrapText), f = d.flags;
+  var code = (f.isConst? "const" : "var") + " " + d.name + (o?.withType? ": "+d.type : "") + ";\n";
+  return text + code;
+}
+
+function wikiProperty(d: DocsDetails, o?: WikiOptions): string {
+  var text = wikiDescription(d.description, o?.wrapText);
+  var code = d.name + (o?.withType? ": "+d.type : "") + ",\n";
+  return text + code;
+}
+
+function wikiInterface(d: DocsDetails, o?: WikiOptions): string {
+  var text = wikiDescription(d.description, o?.wrapText);
+  var code = `interface ${d.name} {\n`;
+  for (var c of d.children || [])
+    code += indentText(wikiProperty(c, o), "  ");
+  code += "}\n";
+  return text + code;
+}
+
+function wikiParameter(d: DocsDetails, o?: WikiOptions): string {
+  var a = "", f = d.flags;
   if (f.isReadonly) a += "readonly ";
   if (f.isRest)     a += "...";
-  a += p.name;
+  a += d.name;
   if (f.isOptional && !f.isRest) a += "?";
-  if (withType) a += ": "+p.type;
+  if (o?.withType) a += ": "+d.type;
   return a;
 }
 
-function wikiKind(d: DocsDetails): string {
-  var a = d.kind.toLowerCase(), f = d.flags;
-  if (f.isConst)          return "const";
-  if (a==="variable")     return "var";
-  if (a.includes("type")) return "type";
-  return a;
+function wikiCallSignature(d: DocsDetails, o?: WikiOptions): string {
+  var text = wikiDescription(d.description, o?.wrapText);
+  var code = `function ${d.name}(`, children = d.children || [];
+  for (var c of children)
+    code += wikiParameter(c, o) + ", ";
+  code = code.endsWith("(")? code : code.substring(0, code.length-2);
+  code += ")" + (o.withType? ": "+d.type : "") + ";\n"
+  var gap  = Math.max(...children.map(p => p.name.length)) + 2;
+  var desc = children.map(p => `// ${(p.name+":").padEnd(gap, " ")}${p.description}`).join("\n") + "\n";
+  return text + code + desc;
 }
 
-function wikiFullKind(d: DocsDetails): string {
-  var a = "", f = d.flags;
-  if (f.isStatic)   a += "static ";
-  if (f.isAbstract) a += "abstract ";
-  if (f.isReadonly) a += "readonly ";
-  return a + wikiKind(d);
+function wikiFunction(d: DocsDetails, o?: WikiOptions): string {
+  var children = d.children || [];
+  var text = children.length>1? wikiDescription(d.description, o?.wrapText) : "";
+  var code = children.map(c => wikiCallSignature(c, o)).join("\n\n").trim() + "\n";
+  return text + code;
 }
 
-function wikiSignature(d: DocsDetails, prefix?: string): string {
-  var name = prefix? `${prefix}.${d.name}` : d.name;
-  var sig  = d.kind.toLowerCase() + " " + name;
-  if (d.params) sig +=  d.params.map(p => p.name).join(", ");
-  var gap  = Math.max(...d.params.map(p => p.name.length)) + 2;
-  var desc = d.params.map(p => `// ${(p.name+":").padEnd(gap, " ")}${p.description}`).join("\n");
-  return `${sig};\n${desc}\n`;
-}
-
-function wikiExampleUse(d: DocsDetails): string {
-  if (/function/i.test(d.kind)) return `${d.name}(${d.params.map(p => p.name).join(", ")});`;
-  return `${d.name};\n`;
-  // → OUTPUT
-}
-
-function wikiExample(ds: DocsDetails[], options?: any): string {
-  var [d]  = ds;
-  var repo = options?.repo || "repo";
-  var pre  = options?.prefix;
-  var name = pre? `${pre}.${d.name}` : d.name;
-  var req  = `const ${name} = require('${repo}')`;
-  var use  = ds.map(wikiExampleUse).join("\n");
-  return `${req}\n\n${use}`;
+function wikiTypeAlias(d: DocsDetails, o?: WikiOptions): string {
+  var text = wikiDescription(d.description, o?.wrapText);
+  var code = `type ${d.name} = ${d.type};\n`;
+  return text + code;
 }
 
 
-function wikiMarkdown(ds: DocsDetails[], options?: any): string {
-  var [d]   = ds;
-  var pre   = options?.prefix;
-  var repo  = options?.repo;
-  var owner = options?.owner || "owner";
-  var name  = pre? `${pre}.${d.name}`   : d.name;
-  var pkg   = pre? `@${repo}/${d.name}` : repo;
+/**
+ * Get reference code block for wiki.
+ * @param d docs details
+ * @param o wiki options
+ * @returns reference code block
+ */
+export function wikiCodeReference(d: DocsDetails, o?: WikiOptions): string {
+  switch (d.kind) {
+    case "Variable":   return wikiVariable(d, o);
+    case "Interface":  return wikiInterface(d, o);
+    case "Function":   return wikiFunction(d, o);
+    case "Type alias": return wikiTypeAlias(d, o);
+    default: return "ERROR: UNKNOWN KIND!\n";
+  }
+}
+
+
+
+/**
+ * Get example code block for wiki.
+ * @param d docs details
+ * @param o wiki options
+ * @returns example code block
+ */
+export function wikiCodeExample(d: DocsDetails, o?: WikiOptions): string {
+  var repo = o?.repo || "repo";
+  var name = o?.prefix? `${o.prefix}.${d.name}` : d.name;
+  var code = `const ${name} = require('${repo}')\n\n\n`;
+  var text = `// Example for ${d.name}\n`;
+  var out  = "// → OUTPUT\n";
+  return code + text + out;
+}
+
+
+/**
+ * Get markdown text for wiki.
+ * @param d docs details
+ * @param o wiki options
+ * @returns markdown text
+ */
+export function wikiMarkdown(d: DocsDetails, o?: WikiOptions): string {
+  var owner = o?.owner || "owner";
+  var repo  = o?.repo  || "repo";
+  var name  = o?.prefix? `${o.prefix}.${d.name}` : d.name;
+  var pkg   = o?.prefix? `@${repo}/${d.name}` : repo;
   return `${d.description}<br>\n` +
     `📦 [NPM](https://www.npmjs.com/package/${pkg}),\n` +
     `🌐 [Web](https://www.npmjs.com/package/${pkg}.web),\n` +
@@ -908,10 +988,10 @@ function wikiMarkdown(ds: DocsDetails[], options?: any): string {
     `> Similar: [${name}].\n\n` +
     `<br>\n\n` +
     "```javascript\n" +
-    wikiSignature(d, pre) +
+    wikiCodeReference(d, o) +
     "```\n\n" +
     "```javascript\n" +
-    wikiExample(ds, options) +
+    wikiCodeExample(d, o) +
     "```\n\n" +
     "<br>\n" +
     "<br>\n\n\n" +
