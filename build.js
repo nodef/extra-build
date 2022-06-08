@@ -6,21 +6,19 @@ const srcts  = 'index.ts';
 
 
 // Get keywords for main/sub package.
-function keywords(dm) {
+function keywords(ds) {
   var m = build.readMetadata('.');
-  var k = [...dm.values()].map(d => d.name);
-  var s = new Set([...m.keywords, ...k]);
+  var s = new Set([...m.keywords, ...ds.map(d => d.name)]);
   return Array.from(s);
 }
 
 
 // Publish root package to NPM, GitHub.
-function publishRoot(dm, sym, ver) {
+function publishRoot(ds, ver) {
   var _package = build.readDocument('package.json');
   var m = build.readMetadata();
   m.version  = ver;
-  m.keywords = keywords(dm);
-  if (sym) { m.name += '.web'; }
+  m.keywords = keywords(ds);
   build.writeMetadata('.', m);
   build.publish('.');
   try { build.publishGithub('.', owner); }
@@ -56,9 +54,18 @@ function generateWiki() {
 }
 
 
+// Sort docs details by original order.
+function compareLocation(a, b) {
+  if (a.kind!==b.kind) return 0;
+  return a.location.localeCompare(b.location);
+}
+
+
 // Update README.
-function updateReadme(dm) {
+function updateReadme(ds) {
   var re  = /namespace|function/i;
+  var ds  = ds.slice().sort(compareLocation);
+  var dm  = new Map(ds.map(d => [d.name, d]));
   var txt = build.readFileText('README.md');
   txt = build.wikiUpdateIndex(txt, dm, d => re.test(d.kind));
   txt = build.wikiUpdateLinkReferences(txt, dm, {owner});
@@ -69,11 +76,8 @@ function updateReadme(dm) {
 function main(a) {
   var p  = build.loadDocs([`src/${srcts}`]);
   var ds = p.children.map(build.docsDetails);
-  ds.sort((a, b) => a.sources.localeCompare(b.sources));
-  console.log(ds);
-  var dm = new Map(ds.map(d => [d.name, d]));
-  if (a[2] === 'deploy') deployAll(dm);
-  else if (a[2] === 'wiki') generateWiki(dm);
-  else if (a[2] === 'readme') updateReadme(dm);
+  if (a[2] === 'deploy') deployAll(ds);
+  else if (a[2] === 'wiki') generateWiki(ds);
+  else if (a[2] === 'readme') updateReadme(ds);
 }
 main(process.argv);

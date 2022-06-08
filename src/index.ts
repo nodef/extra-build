@@ -8,7 +8,7 @@ import * as fs      from "fs";
 import * as semver  from "semver";
 import kleur        from "kleur";
 import {Octokit}    from "@octokit/rest";
-import {Comment, DeclarationReflection}    from "typedoc";
+import {Comment}    from "typedoc";
 import {Reflection} from "typedoc";
 import {SignatureReflection} from "typedoc";
 import {ProjectReflection}   from "typedoc";
@@ -684,6 +684,17 @@ export function docsName(r: Reflection): string {
 
 
 /**
+ * Get location of reflection.
+ * @param r reflection
+ * @returns location of reflection
+ */
+export function docsLocation(r: Reflection): string {
+  var [s] = r.sources || [];
+  return s==null? null : s.fileName + ":" + s.line.toString().padStart(6, "0");
+}
+
+
+/**
  * Get flags of a reflection.
  * @param r reflection
  * @returns flags
@@ -791,21 +802,12 @@ export function docsReturns(r: Reflection, sig: number=0): string {
 }
 
 
-/**
- * Get source path(s) of reflection.
- * @param r reflection
- * @returns source path(s) of reflection
- */
-export function docsSources(r: Reflection): string {
-  r.sources[0].
-  return r.sources==null || r.sources.length===0? null : r.sources[0].url;
-}
-
-
 /** Details of a reflection. */
 export interface DocsDetails {
   /** Name of a reflection. */
   name: string,
+  /** Location of reflection. */
+  location?: string,
   /** Flags of a reflection. */
   flags: ReflectionFlags,
   /** Kind name of a reflection */
@@ -818,8 +820,6 @@ export interface DocsDetails {
   children?: DocsDetails[],
   /** Return details/comment of a reflection (function). */
   returns?: string,
-  /** Source path(s) of reflection. */
-  sources?: string,
 }
 
 
@@ -833,13 +833,13 @@ export function docsDetails(r: Reflection): DocsDetails {
   var s: Reflection[] = r.children || r.parameters || docsFindSignatures(r);
   return {
     name: docsName(r),
+    location: docsLocation(r),
     flags: docsFlags(r),
     kind: docsKind(r),
     type: docsType(r),
     description: docsDescription(r),
     children: s? s.map(docsDetails) : null,
     returns: docsReturns(r),
-    sources: docsSources(r),
   };
 }
 
