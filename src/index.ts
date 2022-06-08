@@ -413,7 +413,7 @@ function bundleEnvArgs(env?: any): string {
 export function bundleScript(src?: string, options?: BundleOptions): void {
   if (src) src = src.replace(/\.ts$/, ".js");
   var cfg = options?.config || "rollup.config.js";
-  var inp = src? `- "${src}"` : "";
+  var inp = src? `-i "${src}"` : "";
   var env = bundleEnvArgs(options?.env);
   exec(`rollup -c "${cfg}" ${inp} ${env}`);
 }
@@ -707,9 +707,9 @@ function docsFindSignatures(r: Reflection): SignatureReflection[] {
   // @ts-ignore
   if (r.signatures) return r.signatures;
   // @ts-ignore
-  if (r.declaration) return docsFindSignatures(r.declaration, sig);
+  if (r.declaration) return docsFindSignatures(r.declaration);
   // @ts-ignore
-  if (r.type) return docsFindSignatures(r.type, sig);
+  if (r.type) return docsFindSignatures(r.type);
   return [];
 }
 
