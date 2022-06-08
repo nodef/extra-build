@@ -879,7 +879,7 @@ export function loadDocs(entryPoints?: string[]): ProjectReflection {
 // ====
 
 /** Markdown options. */
-interface MarkdownOptions {
+export interface MarkdownOptions {
   /** GitHub owner name. [owner] */
   owner?: string,
   /** GitHub repo name. [repo] */

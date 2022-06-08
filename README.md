@@ -3,25 +3,61 @@ Common build tools for extra-* packages.<br>
 📜 [Files](https://unpkg.com/extra-build/),
 📰 [Docs](https://nodef.github.io/extra-build/).
 
-> Stability: [Experimental](https://www.youtube.com/watch?v=L1j93RnIxEo).<br>
-> DOCUMENTATION BELOW TO BE UPDATED!
+> Stability: [Experimental](https://www.youtube.com/watch?v=L1j93RnIxEo).
 
 <br>
 
-```bash
-$ ebuild [commands] [options]
-# Commands, Options in Index
-```
+```javascript
+const build = require('extra-build');
 
-```bash
-# Publish JSDoc on gh-pages branch.
-$ ebuild jsdoc
 
-# Update all documentation.
-$ ebuild docs
+// 1. Set version and publish package.
+var m = build.readMetadata('.');
+// → {name, version, description, ...}
+m.version = '2.0.0';
+build.writeMetadata('.', m);
+build.publish('.');
+build.publishGithub('.', 'owner');
 
-# Update export & generate main file, disable cleanup.
-$ ebuild export+main --cleanup=false
+
+// 2. Publish next version, update github details.
+var m   = build.readMetadata('.');
+var ver = build.nextUnpublishedVersion(m.name, m.version);
+m.version = ver;
+build.writeMetadata('.', m);
+build.publish('.');
+build.publishGithub('.', 'owner');
+build.updateGithubRepoDetails();
+
+
+// 3. Update keywords for package.
+var m  = build.readMetadata('.');
+var p  = build.loadDocs(['src/index.ts']);
+var ds = p.children.map(build.docsDetails);
+var s = new Set([...m.keywords, ...ds.map(d => d.name)]);
+m.keywords = Array.from(s);
+build.writeMetadata('.', m);
+
+
+// 4. Restore package.json after publishing with updated version.
+var _package = build.readDocument('package.json');
+var m = build.readMetadata('.');
+m.version = '2.0.0';
+build.writeMetadata('.', m);
+build.publish('.');
+build.writeDocument(_package);
+
+
+// 5. Update README index table.
+var owner = 'owner', repo = 'repo';
+var p  = build.loadDocs(['src/index.ts']);
+var ds = p.children.map(build.docsDetails);
+var re = /namespace|function/i;
+var dm = new Map(ds.map(d => [d.name, d]));
+var txt = build.readFileText('README.md');
+txt = build.wikiUpdateIndex(txt, dm, d => re.test(d.kind));
+txt = build.wikiUpdateLinkReferences(txt, dm, {owner, repo});
+build.writeFileText('README.md', txt);
 ```
 
 <br>
