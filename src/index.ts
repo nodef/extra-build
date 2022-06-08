@@ -775,7 +775,7 @@ export function docsType(r: Reflection, sig: number=0): string {
  */
 export function docsDescription(r: Reflection, sig: number=0): string {
   var c = docsFindComment(r, sig);
-  return c==null? null : [c.shortText || "", c.text || ""].join("\n\n");
+  return c==null? null : [c.shortText || "", c.text || ""].join("\n\n").trim();
 }
 
 
@@ -864,12 +864,19 @@ export function loadDocs(entryPoints?: string[]): ProjectReflection {
 // WIKI
 // ====
 
-interface WikiOptions {
+/** Markdown options. */
+interface MarkdownOptions {
+  /** GitHub owner name. [owner] */
   owner?: string,
+  /** GitHub repo name. [repo] */
   repo?: string,
+  /** Use wiki links? [false] */
   useWiki?: boolean,
+  /** Namespace prefix. */
   prefix?: string,
+  /** Include types? [false] */
   withType?: boolean,
+  /** Wrap comment text after. [0 => unlimited] */
   wrapText?: number,
 }
 
@@ -886,20 +893,20 @@ function wikiFlagsPrefix(d: DocsDetails): string {
   return a;
 }
 
-function wikiVariable(d: DocsDetails, o?: WikiOptions): string {
+function wikiVariable(d: DocsDetails, o?: MarkdownOptions): string {
   var text = wikiDescription(d.description, o?.wrapText), f = d.flags;
   var code = wikiFlagsPrefix(d) + (f.isConst? "const" : "var") + " ";
   code += d.name + (o?.withType? ": "+d.type : "") + ";\n";
   return text + code;
 }
 
-function wikiProperty(d: DocsDetails, o?: WikiOptions): string {
+function wikiProperty(d: DocsDetails, o?: MarkdownOptions): string {
   var text = wikiDescription(d.description, o?.wrapText);
   var code = wikiFlagsPrefix(d) + d.name + (o?.withType? ": "+d.type : "") + ",\n";
   return text + code;
 }
 
-function wikiInterface(d: DocsDetails, o?: WikiOptions): string {
+function wikiInterface(d: DocsDetails, o?: MarkdownOptions): string {
   var text = wikiDescription(d.description, o?.wrapText);
   var code = `interface ${d.name} {\n`;
   for (var c of d.children || [])
@@ -908,7 +915,7 @@ function wikiInterface(d: DocsDetails, o?: WikiOptions): string {
   return text + code;
 }
 
-function wikiParameter(d: DocsDetails, o?: WikiOptions): string {
+function wikiParameter(d: DocsDetails, o?: MarkdownOptions): string {
   var a = "", f = d.flags;
   if (f.isReadonly) a += "readonly ";
   if (f.isRest)     a += "...";
@@ -918,7 +925,7 @@ function wikiParameter(d: DocsDetails, o?: WikiOptions): string {
   return a;
 }
 
-function wikiCallSignature(d: DocsDetails, o?: WikiOptions): string {
+function wikiCallSignature(d: DocsDetails, o?: MarkdownOptions): string {
   var text = wikiDescription(d.description, o?.wrapText);
   var code = wikiFlagsPrefix(d) + `function ${d.name}(`, children = d.children || [];
   for (var c of children)
@@ -930,20 +937,20 @@ function wikiCallSignature(d: DocsDetails, o?: WikiOptions): string {
   return text + code + desc;
 }
 
-function wikiFunction(d: DocsDetails, o?: WikiOptions): string {
+function wikiFunction(d: DocsDetails, o?: MarkdownOptions): string {
   var children = d.children || [];
   var text = children.length>1? wikiDescription(d.description, o?.wrapText) : "";
   var code = children.map(c => wikiCallSignature(c, o)).join("\n\n").trim() + "\n";
   return text + code;
 }
 
-function wikiTypeAlias(d: DocsDetails, o?: WikiOptions): string {
+function wikiTypeAlias(d: DocsDetails, o?: MarkdownOptions): string {
   var text = wikiDescription(d.description, o?.wrapText);
   var code = `type ${d.name} = ${d.type};\n`;
   return text + code;
 }
 
-function wikiClass(d: DocsDetails, o?: WikiOptions): string {
+function wikiClass(d: DocsDetails, o?: MarkdownOptions): string {
   var text = wikiDescription(d.description, o?.wrapText), f = d.flags;
   var code = wikiFlagsPrefix(d) + `class ${d.name} {\n`;
   for (var c of d.children || [])
@@ -956,10 +963,10 @@ function wikiClass(d: DocsDetails, o?: WikiOptions): string {
 /**
  * Get reference code block for wiki.
  * @param d docs details
- * @param o wiki options
+ * @param o markdown options
  * @returns reference code block
  */
-export function wikiCodeReference(d: DocsDetails, o?: WikiOptions): string {
+export function wikiCodeReference(d: DocsDetails, o?: MarkdownOptions): string {
   switch (d.kind) {
     case "Variable":   return wikiVariable(d, o);
     case "Interface":  return wikiInterface(d, o);
@@ -975,10 +982,10 @@ export function wikiCodeReference(d: DocsDetails, o?: WikiOptions): string {
 /**
  * Get example code block for wiki.
  * @param d docs details
- * @param o wiki options
+ * @param o markdown options
  * @returns example code block
  */
-export function wikiCodeExample(d: DocsDetails, o?: WikiOptions): string {
+export function wikiCodeExample(d: DocsDetails, o?: MarkdownOptions): string {
   var repo = o?.repo || "repo";
   var name = o?.prefix? `${o.prefix}.${d.name}` : d.name;
   var code = `const ${name} = require('${repo}')\n\n\n`;
@@ -991,10 +998,10 @@ export function wikiCodeExample(d: DocsDetails, o?: WikiOptions): string {
 /**
  * Get markdown text for wiki.
  * @param d docs details
- * @param o wiki options
+ * @param o markdown options
  * @returns markdown text
  */
-export function wikiMarkdown(d: DocsDetails, o?: WikiOptions): string {
+export function wikiMarkdown(d: DocsDetails, o?: MarkdownOptions): string {
   var owner = o?.owner || "owner";
   var repo  = o?.repo  || "repo";
   var name  = o?.prefix? `${o.prefix}.${d.name}` : d.name;
@@ -1021,18 +1028,47 @@ export function wikiMarkdown(d: DocsDetails, o?: WikiOptions): string {
 }
 
 
+function linkReferenceDocs(d: DocsDetails, o?: MarkdownOptions): string {
+  var owner = o?.owner || "owner";
+  var repo  = o?.repo  || "repo";
+  var root  = `https://${owner}.github.io/${repo}`;
+  var pred  = o?.prefix? `${o.prefix}.` : "";
+  var prem  = o?.prefix? `modules/${o.prefix}.html` : "modules.html";
+  switch (d.kind) {
+    case "Interface": return `[${d.name}]: ${root}/interfaces/${pred}${d.name}.html`;
+    case "Class":     return `[${d.name}]: ${root}/classes/${pred}${d.name}.html`;
+    default:          return `[${d.name}]: ${root}/${prem}#${d.name}`;
+  }
+}
 
+function linkReferenceWiki(d: DocsDetails, o?: MarkdownOptions): string {
+  var owner = o?.owner || "owner";
+  var repo  = o?.repo  || "repo";
+  var name  = o?.prefix? `${o.prefix}.${d.name}` : d.name;
+  return `https://github.com/${owner}/${repo}/wiki/${name}`;
+}
 
-// MAKRDOWN
-// ========
+function linkReference(d: DocsDetails, o?: MarkdownOptions): string {
+  if (o?.useWiki) return linkReferenceWiki(d, o);
+  return linkReferenceDocs(d, o);
+}
+
 
 /**
- * Reindex the "index" (property, description) table in markdown text.
+ * Filter values.
+ * @param x value
+ * @returns whether included
+ */
+export type FilterFunction<T> = (x: T) => boolean;
+
+
+/**
+ * Update the "Index" (property, description) table in markdown text.
  * @param txt markdown text
  * @param dm docs details map
  * @returns updated markdown text
  */
-export function markdownReindex(txt: string, dm: Map<string, DocsDetails>): string {
+export function wikiUpdateIndex(txt: string, dm: Map<string, DocsDetails>, fn?: FilterFunction<DocsDetails>): string {
   return markdown.replaceTables(txt, (full, rows) => {
     if (rows.length < 1 || rows[0].length < 2) return full;
     rows = rows.map(r => [r[0].trim(), r[1].trim()]);
@@ -1040,6 +1076,7 @@ export function markdownReindex(txt: string, dm: Map<string, DocsDetails>): stri
     if (!/description/i.test(rows[0][1])) return full;
     var rmap = new Map(rows.map((r, i) => [r[0], i]));
     for (var d of dm.values()) {
+      if (fn && !fn(d)) continue;
       var key = `[${d.name}]`;
       var val = d.description.replace(/\n+/g, " ").trim();
       if (!rmap.has(key)) rows.push([key, val]);
@@ -1053,50 +1090,24 @@ export function markdownReindex(txt: string, dm: Map<string, DocsDetails>): stri
 }
 
 
-function markdownDocsLinkReference(d: DocsDetails, o?: WikiOptions): string {
-  var owner = o?.owner || "owner";
-  var repo  = o?.repo  || "repo";
-  var root  = `https://${owner}.github.io/${repo}`;
-  var pred  = o?.prefix? `${o.prefix}.` : "";
-  var prem  = o?.prefix? `modules/${o.prefix}.html` : "modules.html";
-  switch (d.kind) {
-    case "Interface": return `[${d.name}]: ${root}/interfaces/${pred}${d.name}.html`;
-    case "Class":     return `[${d.name}]: ${root}/classes/${pred}${d.name}.html`;
-    default:          return `[${d.name}]: ${root}/${prem}#${d.name}`;
-  }
-}
-
-function markdownWikiLinkReference(d: DocsDetails, o?: WikiOptions): string {
-  var owner = o?.owner || "owner";
-  var repo  = o?.repo  || "repo";
-  var name  = o?.prefix? `${o.prefix}.${d.name}` : d.name;
-  return `https://github.com/${owner}/${repo}/wiki/${name}`;
-}
-
-function markdownLinkReference(d: DocsDetails, o?: WikiOptions): string {
-  if (o?.useWiki) return markdownWikiLinkReference(d, o);
-  return markdownDocsLinkReference(d, o);
-}
-
-
 /**
  * Update link references in markdown text.
  * @param txt markdown text
  * @param dm docs details map
- * @param o wiki options
+ * @param o markdown options
  * @returns update markdown text
  */
-export function markdownUpdateLinkReferences(txt: string, dm: Map<string, DocsDetails>, o?: WikiOptions): string {
+export function wikiUpdateLinkReferences(txt: string, dm: Map<string, DocsDetails>, o?: MarkdownOptions): string {
   txt = markdown.replaceLinkReferences(txt, (full, name) => {
     if (!dm.has(name)) return full;
-    return markdownLinkReference(dm.get(name), o);
+    return linkReference(dm.get(name), o);
   });
   var lset = new Set(markdown.links(txt).filter(x => !x.url).map(x => x.reference || x.name));
   var rset = new Set(markdown.linkReferences(txt).map(x => x.name));
   for (var l of lset) {
     if (rset.has(l)) continue;
     if (!dm.has(l)) continue;
-    txt += markdownLinkReference(dm.get(l), o) + "\n";
+    txt += linkReference(dm.get(l), o) + "\n";
   }
   return txt;
 }
