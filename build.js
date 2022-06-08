@@ -30,7 +30,7 @@ function publishRoot(ds, ver) {
 // Deploy root package to NPM, GitHub.
 function deployRoot(dm, ver) {
   // generateMain(srcts, '');
-  publishRoot(dm, '', ver);
+  publishRoot(dm, ver);
 }
 
 
@@ -63,12 +63,14 @@ function compareLocation(a, b) {
 
 // Update README.
 function updateReadme(ds) {
-  var re  = /namespace|function/i;
-  var ds  = ds.slice().sort(compareLocation);
-  var dm  = new Map(ds.map(d => [d.name, d]));
+  var m  = build.readMetadata('.');
+  var repo = m.name;
+  var re = /namespace|function/i;
+  var ds = ds.slice().sort(compareLocation);
+  var dm = new Map(ds.map(d => [d.name, d]));
   var txt = build.readFileText('README.md');
   txt = build.wikiUpdateIndex(txt, dm, d => re.test(d.kind));
-  txt = build.wikiUpdateLinkReferences(txt, dm, {owner});
+  txt = build.wikiUpdateLinkReferences(txt, dm, {owner, repo});
   build.writeFileText('README.md', txt);
 }
 

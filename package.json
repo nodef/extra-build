@@ -1,6 +1,6 @@
 {
   "name": "extra-build",
-  "version": "2.0.45",
+  "version": "2.1.0",
   "description": "Common build tools for extra-* packages.",
   "main": "index.js",
   "module": "index.mjs",
@@ -11,8 +11,7 @@
   },
   "scripts": {
     "test": "exit",
-    "setup": "tsc && rollup -c",
-    "build": "tsc && rollup -c && node ./build",
+    "build": "tsc && rollup -c",
     "deploy": "tsc && rollup -c && node ./build deploy"
   },
   "keywords": [
