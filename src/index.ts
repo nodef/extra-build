@@ -791,6 +791,17 @@ export function docsReturns(r: Reflection, sig: number=0): string {
 }
 
 
+/**
+ * Get source path(s) of reflection.
+ * @param r reflection
+ * @returns source path(s) of reflection
+ */
+export function docsSources(r: Reflection): string {
+  r.sources[0].
+  return r.sources==null || r.sources.length===0? null : r.sources[0].url;
+}
+
+
 /** Details of a reflection. */
 export interface DocsDetails {
   /** Name of a reflection. */
@@ -807,6 +818,8 @@ export interface DocsDetails {
   children?: DocsDetails[],
   /** Return details/comment of a reflection (function). */
   returns?: string,
+  /** Source path(s) of reflection. */
+  sources?: string,
 }
 
 
@@ -826,6 +839,7 @@ export function docsDetails(r: Reflection): DocsDetails {
     description: docsDescription(r),
     children: s? s.map(docsDetails) : null,
     returns: docsReturns(r),
+    sources: docsSources(r),
   };
 }
 

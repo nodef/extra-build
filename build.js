@@ -58,8 +58,9 @@ function generateWiki() {
 
 // Update README.
 function updateReadme(dm) {
+  var re  = /namespace|function/i;
   var txt = build.readFileText('README.md');
-  txt = build.wikiUpdateIndex(txt, dm);
+  txt = build.wikiUpdateIndex(txt, dm, d => re.test(d.kind));
   txt = build.wikiUpdateLinkReferences(txt, dm, {owner});
   build.writeFileText('README.md', txt);
 }
@@ -68,6 +69,8 @@ function updateReadme(dm) {
 function main(a) {
   var p  = build.loadDocs([`src/${srcts}`]);
   var ds = p.children.map(build.docsDetails);
+  ds.sort((a, b) => a.sources.localeCompare(b.sources));
+  console.log(ds);
   var dm = new Map(ds.map(d => [d.name, d]));
   if (a[2] === 'deploy') deployAll(dm);
   else if (a[2] === 'wiki') generateWiki(dm);

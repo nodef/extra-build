@@ -32,7 +32,7 @@ $ ebuild export+main --cleanup=false
 
 ## Index
 
-| Name      | Action                                           |
+| Property  | Description                                      |
 | --------- | ------------------------------------------------ |
 | [jsdoc]   | Publish JSDoc on gh-pages branch.                |
 | [export]  | Generate export file with declarations.          |
