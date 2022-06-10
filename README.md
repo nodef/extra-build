@@ -5,6 +5,65 @@ Common build tools for extra-* packages.<br>
 
 > Stability: [Experimental](https://www.youtube.com/watch?v=L1j93RnIxEo).
 
+**Why** do packages need to be **built**? For [TypeScript]-based source
+libraries (such as this) our main priority is to **generate JavaScript file(s)**
+which can be imported from the runtime ([Node.js]), and **publish** them to a
+**package registry** such as [NPM]. In addition we might like to generate
+associated [type declarations] (`.d.ts` file), which is one of the reasons
+behind choosing to write in TypeScript. We might also like to **bundle** all
+scripts (and type declarations) into a single file to help reduce package size,
+dependencies, or eliminate unused code.
+
+**Documentation** plays a key role in reducing the amount of time spent on
+[Stack Overflow], and thus must be maintained at all costs. Instead of manually
+updating it, most developers choose to **generate** this from **documentation comments**
+in the code. An `Index` can be added to the `README` file that **links to documention**. Thus we have a new build step. In addition, we might like to **update package metadata**
+(in `package.json` or *GitHub repo*), build source files for **another platform**
+(such as the *web*), **update package version** automatically, **generate wiki files**
+(for code examples), or **publish** to [GitHub packages].
+
+This package provides utility functions for all of these operations, and more.
+The previous version of this package provided a [CLI] for all of these
+operations, but was inflexible in its design (it could only be used when the
+source code was arranged is a very specific way). This redesigned version
+provides a **JavaScipt API** instead that allows for **significant customization**,
+in addition to providing a number of helper functions commonly used in build
+steps. Build steps can be written in a script file, say `build.js`, and executed
+on a *CI system* such as [GitHub Actions] using `.github/workflows/*.yml`.
+
+Behind the dial, these are the gears that make this package tick. TypeScript is
+compiled with [tsc], bundled with [rollup], webified with [browserify] and
+[terser]. Documentation is generated with [typedoc], which is also used to
+obtain `DocsDetails` in order to update index table in `README` using
+[extra-markdown-text], generate wiki files, and update package metadata locally
+and on GitHub repo using [@octokit/rest]. Updating of package versions is
+achieved with [npm view] and [semver]. To spice up the console with colors,
+[kleur] is used.
+
+The **goals** for the future include generating example file for [RunKit],
+linking wiki from JsDoc, and duplicating example code from wiki to JsDoc. Did
+you find a bug? Or have a feature request?
+
+[Node.js]: https://nodejs.org/en/
+[NPM]: https://www.npmjs.com
+[CLI]: https://en.wikipedia.org/wiki/Command-line_interface
+[TypeScript]: https://www.typescriptlang.org
+[type declarations]: https://www.typescriptlang.org/docs/handbook/2/type-declarations.html
+[Stack Overflow]: https://stackoverflow.com
+[GitHub packages]: https://github.com/features/packages
+[GitHub Actions]: https://github.com/features/actions
+[tsc]: https://www.npmjs.com/package/typescript
+[rollup]: https://www.npmjs.com/package/rollup
+[browserify]: https://www.npmjs.com/package/browserify
+[terser]: https://www.npmjs.com/package/terser
+[typedoc]: https://www.npmjs.com/package/typedoc
+[extra-markdown-text]: https://www.npmjs.com/package/extra-markdown-text
+[@octokit/rest]: https://www.npmjs.com/package/@octokit/rest
+[npm view]: https://docs.npmjs.com/cli/v7/commands/npm-view
+[semver]: https://www.npmjs.com/package/semver
+[kleur]: https://www.npmjs.com/package/kleur
+[RunKit]: https://runkit.com/home
+
 <br>
 
 ```javascript
@@ -123,6 +182,7 @@ build.writeFileText('README.md', txt);
 <br>
 
 [![](https://img.youtube.com/vi/BCxhQpS5fQ0/maxresdefault.jpg)](https://www.youtube.com/watch?v=BCxhQpS5fQ0)
+
 
 [symbolname]: https://nodef.github.io/extra-build/modules.html#symbolname
 [keywordname]: https://nodef.github.io/extra-build/modules.html#keywordname
