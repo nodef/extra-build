@@ -28,21 +28,21 @@ function publishRoot(ds, ver) {
 
 
 // Deploy root package to NPM, GitHub.
-function deployRoot(dm, ver) {
+function deployRoot(ds, ver) {
   // generateMain(srcts, '');
-  publishRoot(dm, ver);
+  publishRoot(ds, ver);
 }
 
 
 // Deploy root, sub packages to NPM, GitHub.
-function deployAll(dm) {
+function deployAll(ds) {
   var m   = build.readMetadata();
   var ver = build.nextUnpublishedVersion(m.name, m.version);
   // build.exec(`tsc`);
-  build.updateGithubRepoDetails();
+  build.updateGithubRepoDetails({topics: keywords(ds)});
   build.generateDocs(`src/${srcts}`);
   build.publishDocs();
-  deployRoot(dm, ver);
+  deployRoot(ds, ver);
   // deploySub(ver);
 }
 

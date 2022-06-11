@@ -148,7 +148,7 @@ export function log(x?: any): void {
  * @param x data
  */
 export function info(x?: any): void {
-  console.log(kleur.grey(fixup(x)));
+  console.info(kleur.grey(fixup(x)));
 }
 
 
@@ -172,9 +172,9 @@ export interface ExecOptions extends ExecSyncOptions {
  */
 export function exec(cmd: string, options?: ExecOptions): string | Buffer {
   var o = Object.assign({stdio: [0, 1, 2]}, options);
-  if (!o.commandHide) console.info(`$ ${cmd}`);
+  if (!o.commandHide) info(`$ ${cmd}`);
   var a = cp.execSync(cmd, o);
-  if (!o.commandHide) console.info();
+  if (!o.commandHide) info();
   return a;
 }
 
@@ -186,10 +186,10 @@ export function exec(cmd: string, options?: ExecOptions): string | Buffer {
  * @returns command output
  */
 export function execStr(cmd: string, options?: ExecOptions): string {
-  console.info(`$ ${cmd}`);
+  info(`$ ${cmd}`);
   var o = Object.assign({encoding: "utf8"}, options);
   var a = cp.execSync(cmd, o).toString().trim();
-  console.info();
+  info();
   return a;
 }
 
@@ -358,7 +358,7 @@ export interface GitSetupBranchOptions extends ExecOptions {
  */
 export function gitSetupBranch(branch: string, options: GitSetupBranchOptions=null): void {
   var o = Object.assign({}, options);
-  console.log(`Creating ${branch} branch ...`);
+  log(`Creating ${branch} branch ...`);
   exec(`git checkout --orphan ${branch}`, o);
   exec(`git rm -rf .`, o);
   exec(`git clean -fxd`, o);
@@ -493,6 +493,10 @@ export interface GithubRepoDetails {
 }
 
 
+function githubTopics(ks: string[]): string[] {
+  return ks.map(keywordname).filter(k => k.length<=35).slice(0, 20);
+}
+
 /**
  * Update GitHub repository details.
  * @param options repository details
@@ -506,12 +510,12 @@ export async function updateGithubRepoDetails(options: GithubRepoDetails=null): 
   var repo  = o.repo  || u.repo;
   var description = o.description || m.description;
   var homepage = o.homepage || `https://www.npmjs.com/package/${m.name}`;
-  var topics = (o.topics || m.keywords).map(keywordname).slice(0, 20);
+  var topics = githubTopics(o.topics || m.keywords);
   var octokit = new Octokit({auth: o.auth || E.GITHUB_TOKEN});
-  console.info("Updating GitHub details:\n");
-  console.info(`Description: ${description}`);
-  console.info(`Website: ${homepage}`);
-  console.info(`Topics: ${(topics || []).join(", ")}`);
+  info("Updating GitHub details:\n");
+  info(`Description: ${description}`);
+  info(`Website: ${homepage}`);
+  info(`Topics: ${(topics || []).join(", ")}`);
   await octokit.repos.update({owner, repo, description, homepage});
   await octokit.repos.replaceAllTopics({owner, repo, names: topics});
 }
