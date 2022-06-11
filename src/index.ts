@@ -895,8 +895,15 @@ export interface MarkdownOptions {
 }
 
 
+function wikiText(txt: string, short: boolean=false): string {
+  txt = txt.replace(/\{@\w+\s+(.*?)\}/g, "`$1`");
+  if (short) txt = txt.replace(/([\?\!\.])\s[\s\S]*/, "$1").replace(/\s*\n\s*/, " ");
+  return txt.trim();
+}
+
 function wikiDescription(txt: string, cols: number=0): string {
-  return txt? wrapText(txt, cols).split("\n").map(l => `\\ ${l}`).join("\n") + "\n" : "";
+  if (!txt) return "";
+  return wrapText(wikiText(txt), cols).split("\n").map(l => `\\ ${l}`).join("\n") + "\n";
 }
 
 function wikiFlagsPrefix(d: DocsDetails): string {
@@ -1069,11 +1076,11 @@ function linkReference(d: DocsDetails, o?: MarkdownOptions): string {
 
 
 /**
- * Filter values.
- * @param x value
- * @returns whether included
+ * Perform operation on docs details.
+ * @param d docs details
+ * @returns resulting value
  */
-export type FilterFunction<T> = (x: T) => boolean;
+export type OnDocsDetails<T> = (d: DocsDetails) => T;
 
 
 /**
@@ -1082,7 +1089,7 @@ export type FilterFunction<T> = (x: T) => boolean;
  * @param dm docs details map
  * @returns updated markdown text
  */
-export function wikiUpdateIndex(txt: string, dm: Map<string, DocsDetails>, fn?: FilterFunction<DocsDetails>): string {
+export function wikiUpdateIndex(txt: string, dm: Map<string, DocsDetails>, fn?: OnDocsDetails<string>): string {
   return markdown.replaceTables(txt, (full, rows) => {
     if (rows.length < 1 || rows[0].length < 2) return full;
     rows = rows.map(r => [r[0].trim(), r[1].trim()]);
@@ -1090,9 +1097,10 @@ export function wikiUpdateIndex(txt: string, dm: Map<string, DocsDetails>, fn?: 
     if (!/description/i.test(rows[0][1])) return full;
     var rmap = new Map(rows.map((r, i) => [r[0], i]));
     for (var d of dm.values()) {
-      if (fn && !fn(d)) continue;
+      var dsc = fn? fn(d) : d.description || " ";
+      if (!dsc) continue;
       var key = `[${d.name}]`;
-      var val = d.description.replace(/\n+/g, " ").trim();
+      var val = wikiText(dsc, true).trim();
       if (!rmap.has(key)) rows.push([key, val]);
       else rows[rmap.get(key)][1] = val;
     }
