@@ -182,6 +182,7 @@ build.writeFileText('README.md', txt);
 <br>
 
 [![](https://img.youtube.com/vi/BCxhQpS5fQ0/maxresdefault.jpg)](https://www.youtube.com/watch?v=BCxhQpS5fQ0)
+[![DOI](https://zenodo.org/badge/254083559.svg)](https://zenodo.org/badge/latestdoi/254083559)
 
 
 [symbolname]: https://nodef.github.io/extra-build/modules.html#symbolname

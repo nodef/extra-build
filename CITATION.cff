@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Sahu
+    given-names: Subhajit
+    orcid: https://orcid.org/0000-0001-5140-6578
+title: "nodef/extra-build: Common build tools for extra-* packages"
+version: 2.1.20
+doi: 10.5281/zenodo.6647471
+date-released: 2022-06-15
