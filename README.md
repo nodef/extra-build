@@ -16,27 +16,83 @@ dependencies, or eliminate unused code.
 
 **Documentation** plays a key role in reducing the amount of time spent on
 [Stack Overflow], and thus must be maintained at all costs. Instead of manually
-updating it, most developers choose to **generate** this from **documentation comments**
-in the code. An `Index` can be added to the `README` file that **links to documention**. Thus we have a new build step. In addition, we might like to **update package metadata**
-(in `package.json` or *GitHub repo*), build source files for **another platform**
-(such as the *web*), **update package version** automatically, **generate wiki files**
-(for code examples), or **publish** to [GitHub packages].
+updating it, most developers choose to **generate** this from **documentation**
+**comments** in the code. An `Index` can be added to the `README` file that
+**links to documention**. Thus we have a new build step. In addition, we might
+like to **update package metadata** (in `package.json` or *GitHub repo*), build
+source files for **another platform** (such as the *web*), **update package**
+**version** automatically, **generate wiki files** (for code examples), or
+**publish** to [GitHub packages].
 
 This package provides utility functions for all of these operations, and more.
 The previous version of this package provided a [CLI] for all of these
 operations, but was inflexible in its design (it could only be used when the
 source code was arranged is a very specific way). This redesigned version
-provides a **JavaScipt API** instead that allows for **significant customization**,
-in addition to providing a number of helper functions commonly used in build
-steps. Build steps can be written in a script file, say `build.js`, and executed
-on a *CI system* such as [GitHub Actions] using `.github/workflows/*.yml`.
+provides a **JavaScipt API** instead that allows for **significant**
+**customization**, in addition to providing a number of helper functions commonly
+used in build steps. Build steps can be written in a script file, say
+`build.js`, and executed on a *CI system* such as [GitHub Actions] using
+`.github/workflows/*.yml`.
+
+Standalone **symbol name** of a package, such as `@package/submodule`, can be
+obtained with [symbolname] (i.e., `package_submodule`). This is necessary when
+*webifying* (making it accessible with a `script` tag) a package. **Keyword**
+**name** for an identifier can be procured with [keywordname], which can then be
+used to set the *keywords of a package* in the *metadata file* `package.json`.
+
+**Logging** of *error*, *warning*, *log*, and *info* messages with *colors* is
+provided with [error], [warn], [log], and [info] respectively. A *shell command*
+can be executed (displaying the command and its output) with [exec]. The
+*output* of a command can be obtained as a `string` with [execStr].
+Reading/writing of *text/JSON* files is possible with convenience methods
+[readFileText], [writeFileText], [readJson], and [writeJson]. To save the
+*status* and *contents* of a file (*without* having to do any *existence check*)
+is possible with [readDocument] and [writeDocument]. They are useful when it is
+required to update a file *temporarily* and *restore* it later (if it exists, or
+remove if it did not exist).
+
+Helper `git` commands for *commit+push*, and setting up a *new branch* and
+*pushing* *to remote* (for `gh-pages`) is available as [gitCommitPush] and
+[gitSetupBranch]. A JavaScript file can be *bundled* (to a single file) with
+[bundleScript], and *webified* (for access on the web) with [webifyScript]. A
+*banner* can be added to the generated script with [addBanner]. To parse a
+*GitHub URL* (for example from the `repository.url` field in `package.json`)
+[parseGithubUrl] can be used. *GitHub repository* *details* can be updated (by
+default from `package.json`) with [updateGithubRepoDetails].
+
+The *metadata file* of a package (`package.json`) can be read/written with
+[readMetadata] and [writeMetadata] respectively. The *current registry* being
+used for publishing to *NPM* (in `.npmrc` file) can be obtained with [registry],
+and modified with [setRegistry]. The *latest version* of a package can be
+obtained with [latestVersion], and the *next unpublished version* (based on the
+latest package version, and the `version` mentioned in `package.json`) can be
+obtained with [nextUnpublishedVersion].
+
+**JsDoc** for a package can be *generated* with [generateDocs], and published
+with [publishDocs]. **Reflection information** of *docs* can be obtained from
+the *source file* (through `typedoc`) with [loadDocs]. This can then used to
+obtain detailed information on *exported* *symbols* using [docsName],
+[docsLocation], [docsFlags], [docsKind], [docsChildCount], [docsParameterCount],
+[docsSignatureCount], [docsType], [docsDescription], and [docsReturns]. For
+*reference symbols*, the *referred to* *symbol* (which has all the type
+information) can be obtained with [docsRefer]. *Simplified details* of a
+*reflection (symbol)* can be obtained with [docsDetails] and [docsReferDetails]
+(get details of *referred to symbol*).
+
+*Reference code block* for `wiki` can be generated with [wikiCodeReference],
+*example code block* can be generated with [wikiCodeExample], and *full*
+*markdown text* can be generated with [wikiMarkdown]. The *"Index"* table of
+`wiki` or `README.md` can be updated (using *simplified details of exported*
+*symbols*) with [wikiUpdateIndex], and *link references* (named links in
+markdown) can be updated with [wikiUpdateLinkReferences]. Finally a package can
+be published to *NPM* with [publish], and to *GitHub* with [publishGithub].
 
 Behind the dial, these are the gears that make this package tick. TypeScript is
 compiled with [tsc], bundled with [rollup], webified with [browserify] and
 [terser]. Documentation is generated with [typedoc], which is also used to
 obtain `DocsDetails` in order to update index table in `README` using
 [extra-markdown-text], generate wiki files, and update package metadata locally
-and on GitHub repo using [@octokit/rest]. Updating of package versions is
+and on *GitHub* repo using [@octokit/rest]. Updating of package versions is
 achieved with [npm view] and [semver]. To spice up the console with colors,
 [kleur] is used.
 
@@ -171,12 +227,13 @@ build.writeFileText('README.md', txt);
 | [docsDetails] | Get details of a reflection. |
 | [docsReferDetails] | Get details of a reflection, referring the necessary details. |
 | [loadDocs] | Load docs from source file. |
-| [wikiCodeReference] | Get reference code block for wiki. |
-| [wikiCodeExample] | Get example code block for wiki. |
-| [wikiMarkdown] | Get markdown text for wiki. |
+| [wikiCodeReference] | Generate reference code block for wiki. |
+| [wikiCodeExample] | Generate example code block for wiki. |
+| [wikiMarkdown] | Generate markdown text for wiki. |
 | [wikiUpdateIndex] | Update the "Index" (property, description) table in markdown text. |
 | [wikiUpdateLinkReferences] | Update link references in markdown text. |
 | [publish] | Publish package to NPM. |
+| [publishGithub] | Publish package to GitHub. |
 
 <br>
 <br>

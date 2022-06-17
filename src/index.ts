@@ -986,7 +986,7 @@ function wikiClass(d: DocsDetails, o?: MarkdownOptions): string {
 
 
 /**
- * Get reference code block for wiki.
+ * Generate reference code block for wiki.
  * @param d docs details
  * @param o markdown options
  * @returns reference code block
@@ -1005,7 +1005,7 @@ export function wikiCodeReference(d: DocsDetails, o?: MarkdownOptions): string {
 
 
 /**
- * Get example code block for wiki.
+ * Generate example code block for wiki.
  * @param d docs details
  * @param o markdown options
  * @returns example code block
@@ -1021,7 +1021,7 @@ export function wikiCodeExample(d: DocsDetails, o?: MarkdownOptions): string {
 
 
 /**
- * Get markdown text for wiki.
+ * Generate markdown text for wiki.
  * @param d docs details
  * @param o markdown options
  * @returns markdown text
