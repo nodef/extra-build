@@ -437,9 +437,11 @@ export interface WebifyOptions {
  * @param options webify options
  */
 export function webifyScript(src: string, dst: string, options?: WebifyOptions): void {
+  var cjs = !options?.format || /c?js/i.test(options?.format);
   var tfm = options?.format==="esm"? "-t babelify" : "";
   var sym = options?.symbol? `-s "${options.symbol}"` : "";
-  exec(`browserify "${src}" ${tfm} -o "${src}.1" ${sym}`);
+  if (cjs) exec(`browserify "${src}" ${tfm} -o "${src}.1" ${sym}`);
+  else     exec(`cp "${src}" "${src}.1"`);
   exec(`terser "${src}.1" -o "${src}.2" -c -m`);
   var txt = readFileText(`${src}.2`);
   writeFileText(dst, addBanner(options?.banner || "") + txt);

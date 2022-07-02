@@ -3,8 +3,6 @@ Common build tools for extra-* packages.<br>
 📜 [Files](https://unpkg.com/extra-build/),
 📰 [Docs](https://nodef.github.io/extra-build/).
 
-> Stability: [Experimental](https://www.youtube.com/watch?v=L1j93RnIxEo).
-
 **Why** do packages need to be **built**? For [TypeScript]-based source
 libraries (such as this) our main priority is to **generate JavaScript file(s)**
 which can be imported from the runtime ([Node.js]), and **publish** them to a
@@ -99,6 +97,8 @@ achieved with [npm view] and [semver]. To spice up the console with colors,
 The **goals** for the future include generating example file for [RunKit],
 linking wiki from JsDoc, and duplicating example code from wiki to JsDoc. Did
 you find a bug? Or have a feature request?
+
+> Stability: [Experimental](https://www.youtube.com/watch?v=L1j93RnIxEo).
 
 [Node.js]: https://nodejs.org/en/
 [NPM]: https://www.npmjs.com
