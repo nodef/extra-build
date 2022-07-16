@@ -1,6 +1,6 @@
 {
   "name": "extra-build",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Common build tools for extra-* packages.",
   "main": "index.js",
   "module": "index.mjs",
@@ -30,7 +30,7 @@
   "homepage": "https://github.com/nodef/extra-build#readme",
   "dependencies": {
     "@octokit/rest": "^18.12.0",
-    "extra-javascript-text": "^0.1.0",
+    "extra-javascript-text": "^0.1.1",
     "extra-jsdoc-text": "^0.1.9",
     "extra-markdown-text": "^0.1.0",
     "kleur": "^4.1.4",

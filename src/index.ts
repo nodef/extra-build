@@ -461,13 +461,17 @@ export interface JsdocToken extends Jsdoc {
   name: string,
   /** Symbol kind. */
   kind: string,
+  /** Symbol is exported? */
+  isExported: boolean,
+  /** Symbol is default? */
+  isDefault: boolean,
 }
 
 
 /**
  * Perform operation on jsdoc token.
  * @param j jsdoc token
- * @returns resulting jsdoc token
+ * @returns resulting jsdoc token; or null to keep as-is
  */
 export type OnJsdocToken = (j: JsdocToken) => JsdocToken;
 
@@ -480,10 +484,9 @@ export type OnJsdocToken = (j: JsdocToken) => JsdocToken;
  */
 export function jsdocifyScript(src: string, dst: string, fm: OnJsdocToken): void {
   var txt = readFileText(src);
-  txt = javascript.replaceJsdocSymbols(txt, (full, txt, name, kind, isExported) => {
-    if (!isExported) return full;
-    var a = fm(Object.assign(jsdoc.parse(txt), {name, kind}));
-    return full.replace(txt, jsdoc.stringify(a));
+  txt = javascript.replaceJsdocSymbols(txt, (full, txt, name, kind, isExported, isDefault) => {
+    var a = fm(Object.assign(jsdoc.parse(txt), {name, kind, isExported, isDefault}));
+    return a? full.replace(txt, jsdoc.stringify(a)) : full;
   });
   writeFileText(dst, txt);
 }
