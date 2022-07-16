@@ -1073,10 +1073,11 @@ export function wikiMarkdown(d: DocsDetails, o?: MarkdownOptions): string {
   var name  = o?.prefix? `${o.prefix}.${d.name}` : d.name;
   var pkg   = o?.prefix? `@${repo}/${d.name}` : repo;
   return `${d.description}<br>\n` +
-    `📦 [NPM](https://www.npmjs.com/package/${pkg}),\n` +
+    `📦 [Node.js](https://www.npmjs.com/package/${pkg}),\n` +
     `🌐 [Web](https://www.npmjs.com/package/${pkg}.web),\n` +
     `📜 [Files](https://unpkg.com/${pkg}/),\n` +
-    `📰 [Docs](https://nodef.github.io/${repo}/).\n\n` +
+    `📰 [Docs](https://${owner}.github.io/${repo}/),\n` +
+    `📘 [Wiki](https://github.com/${owner}/${repo}/wiki/).\n\n` +
     `> Alternatives: [${name}].\n` +
     `> Similar: [${name}].\n\n` +
     `<br>\n\n` +
