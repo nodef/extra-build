@@ -411,10 +411,11 @@ function bundleEnvArgs(env?: any): string {
  * @param options bundle options {config, env}
  */
 export function bundleScript(src?: string, options?: BundleOptions): void {
+  var o = Object.assign({}, options);
   if (src) src = src.replace(/\.ts$/, ".js");
-  var cfg = options?.config || "rollup.config.js";
+  var cfg = o.config || "rollup.config.js";
   var inp = src? `-i "${src}"` : "";
-  var env = bundleEnvArgs(options?.env);
+  var env = bundleEnvArgs(o.env);
   exec(`rollup -c "${cfg}" ${inp} ${env}`);
 }
 
@@ -437,14 +438,15 @@ export interface WebifyOptions {
  * @param options webify options
  */
 export function webifyScript(src: string, dst: string, options?: WebifyOptions): void {
-  var cjs = !options?.format || /c?js/i.test(options?.format);
-  var tfm = options?.format==="esm"? "-t babelify" : "";
-  var sym = options?.symbol? `-s "${options.symbol}"` : "";
+  var o = Object.assign({}, options);
+  var cjs = !o.format || /c?js/i.test(o.format);
+  var tfm = o.format==="esm"? "-t babelify" : "";
+  var sym = o.symbol? `-s "${o.symbol}"` : "";
   if (cjs) exec(`browserify "${src}" ${tfm} -o "${src}.1" ${sym}`);
   else     exec(`cp "${src}" "${src}.1"`);
   exec(`terser "${src}.1" -o "${src}.2" -c -m`);
   var txt = readFileText(`${src}.2`);
-  writeFileText(dst, addBanner(options?.banner || "") + txt);
+  writeFileText(dst, addBanner(o.banner || "") + txt);
   exec(`rm -f "${src}.1"`);
   exec(`rm -f "${src}.2"`);
 }
