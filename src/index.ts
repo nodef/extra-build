@@ -13,8 +13,11 @@ import {Reflection} from "typedoc";
 import {SignatureReflection} from "typedoc";
 import {ProjectReflection}   from "typedoc";
 import {ReflectionFlags}     from "typedoc";
-import * as typedoc  from "typedoc";
-import * as markdown from "extra-markdown-text";
+import {Jsdoc}         from "extra-jsdoc-text";
+import * as typedoc    from "typedoc";
+import * as markdown   from "extra-markdown-text";
+import * as javascript from "extra-javascript-text";
+import * as jsdoc      from "extra-jsdoc-text";
 
 
 
@@ -432,7 +435,7 @@ export interface WebifyOptions {
 
 
 /**
- * Webify an script file.
+ * Webify a script file.
  * @param src source script file
  * @param dst destination script file
  * @param options webify options
@@ -449,6 +452,40 @@ export function webifyScript(src: string, dst: string, options?: WebifyOptions):
   writeFileText(dst, addBanner(o.banner || "") + txt);
   exec(`rm -f "${src}.1"`);
   exec(`rm -f "${src}.2"`);
+}
+
+
+/** JSDoc details with some symbol details. */
+export interface JsdocToken extends Jsdoc {
+  /** Symbol name. */
+  name: string,
+  /** Symbol kind. */
+  kind: string,
+}
+
+
+/**
+ * Perform operation on jsdoc token.
+ * @param j jsdoc token
+ * @returns resulting jsdoc token
+ */
+export type OnJsdocToken = (j: JsdocToken) => JsdocToken;
+
+
+/**
+ * Transform JSDocs in a script file.
+ * @param src source script file
+ * @param dst destination script file
+ * @param fm jsdoc token transformer (j)
+ */
+export function jsdocifyScript(src: string, dst: string, fm: OnJsdocToken): void {
+  var txt = readFileText(src);
+  txt = javascript.replaceJsdocSymbols(txt, (full, txt, name, kind, isExported) => {
+    if (!isExported) return full;
+    var a = fm(Object.assign(jsdoc.parse(txt), {name, kind}));
+    return full.replace(txt, jsdoc.stringify(a));
+  });
+  writeFileText(dst, txt);
 }
 
 
