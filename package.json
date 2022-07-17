@@ -35,7 +35,7 @@
     "extra-markdown-text": "^0.1.0",
     "kleur": "^4.1.4",
     "semver": "^7.3.7",
-    "typedoc": "^0.22.17"
+    "typedoc": "^0.22.18"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.0",
