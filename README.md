@@ -185,34 +185,46 @@ build.writeFileText('README.md', txt);
 |  ----  |  ----  |
 | [symbolname] | Get symbol name for file. |
 | [keywordname] | Get keyword name for file. |
+|  |  |
 | [error] | Print error message to stderr with newline. |
 | [warn] | Print warning message to stderr with newline. |
 | [log] | Print log message to stdout with newline. |
 | [info] | Print info message to stdout with newline. |
+|  |  |
 | [exec] | Execute command with output, and print the command. |
 | [execStr] | Execute command and get its output as string. |
+|  |  |
 | [readFileText] | Read file text with Unix EOL. |
 | [writeFileText] | Write file text with system EOL. |
 | [readJson] | Read JSON file as object. |
 | [writeJson] | Write object to JSON file. |
 | [readDocument] | Read document. |
 | [writeDocument] | Write document. |
+|  |  |
 | [gitCommitPush] | Commit new changes and push to remote. |
 | [gitSetupBranch] | Setup new branch and push to remote. |
+|  |  |
 | [addBanner] | Add banner (header comment) to script text. |
 | [bundleScript] | Bundle a script file with config. |
-| [webifyScript] | Webify an script file. |
+| [webifyScript] | Webify a script file. |
+| [jsdocifyScript] | Transform JSDocs in a script file. |
+|  |  |
 | [parseGithubUrl] | Get details from GitHub URL. |
 | [updateGithubRepoDetails] | Update GitHub repository details. |
+|  |  |
 | [readMetadata] | Read package.json data. |
 | [writeMetadata] | Write package.json data. |
 | [registry] | Get current registry. |
 | [setRegistry] | Set current registry. |
 | [latestVersion] | Get latest package version. |
 | [nextUnpublishedVersion] | Get next unpublished version for package. |
+|  |  |
+| [publish] | Publish package to NPM. |
 | [publishGithub] | Publish package to GitHub. |
+|  |  |
 | [generateDocs] | Generate docs using typedoc. |
 | [publishDocs] | Publish docs to gh-pages. |
+|  |  |
 | [docsRefer] | Get the reflection that is referred to. |
 | [docsName] | Get name of a reflection. |
 | [docsLocation] | Get location of reflection. |
@@ -227,13 +239,12 @@ build.writeFileText('README.md', txt);
 | [docsDetails] | Get details of a reflection. |
 | [docsReferDetails] | Get details of a reflection, referring the necessary details. |
 | [loadDocs] | Load docs from source file. |
+|  |  |
 | [wikiCodeReference] | Generate reference code block for wiki. |
 | [wikiCodeExample] | Generate example code block for wiki. |
 | [wikiMarkdown] | Generate markdown text for wiki. |
 | [wikiUpdateIndex] | Update the "Index" (property, description) table in markdown text. |
 | [wikiUpdateLinkReferences] | Update link references in markdown text. |
-| [publish] | Publish package to NPM. |
-| [publishGithub] | Publish package to GitHub. |
 
 <br>
 <br>
@@ -292,3 +303,4 @@ build.writeFileText('README.md', txt);
 [wikiMarkdown]: https://nodef.github.io/extra-build/modules.html#wikiMarkdown
 [wikiUpdateIndex]: https://nodef.github.io/extra-build/modules.html#wikiUpdateIndex
 [wikiUpdateLinkReferences]: https://nodef.github.io/extra-build/modules.html#wikiUpdateLinkReferences
+[jsdocifyScript]: https://nodef.github.io/extra-build/modules.html#jsdocifyScript

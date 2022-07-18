@@ -61,6 +61,19 @@ function compareLocation(a, b) {
 }
 
 
+// Get README index descriptions.
+function readmeDescription(d) {
+  var rkind = /namespace|function/i;
+  var sname = /a?sync$/i;
+  if (!rkind.test(d.kind)) return '';
+  if (sname.test(d.name) && d.name!=='spawnAsync') return '';
+  var a = d.description.replace(/The.+method/, 'This method');
+  a = a.replace(', with command-line arguments in ', ' and ');
+  a = a.replace(/(\S)`(.*?)`/, '$1 `$2`');
+  return a;
+}
+
+
 // Update README.
 function updateReadme(ds) {
   var m  = build.readMetadata('.');
@@ -69,7 +82,7 @@ function updateReadme(ds) {
   var ds = ds.slice().sort(compareLocation);
   var dm = new Map(ds.map(d => [d.name, d]));
   var txt = build.readFileText('README.md');
-  txt = build.wikiUpdateIndex(txt, dm, d => re.test(d.kind));
+  txt = build.wikiUpdateIndex(txt, dm, readmeDescription);
   txt = build.wikiUpdateLinkReferences(txt, dm, {owner, repo});
   build.writeFileText('README.md', txt);
 }
