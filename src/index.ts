@@ -8,8 +8,9 @@ import * as fs      from "fs";
 import * as semver  from "semver";
 import kleur        from "kleur";
 import {Octokit}    from "@octokit/rest";
-import {Comment}    from "typedoc";
 import {Reflection} from "typedoc";
+import {Comment}             from "typedoc";
+import {CommentDisplayPart}  from "typedoc";
 import {SignatureReflection} from "typedoc";
 import {ProjectReflection}   from "typedoc";
 import {ReflectionFlags}     from "typedoc";
@@ -826,6 +827,13 @@ export function docsType(r: Reflection, sig: number=0): string {
 }
 
 
+function contentText(ps: CommentDisplayPart[]): string {
+  var a = "";
+  for (var p of ps)
+    a += p.text;
+  return a;
+}
+
 /**
  * Get description of a reflection.
  * @param r reflection
@@ -833,8 +841,9 @@ export function docsType(r: Reflection, sig: number=0): string {
  * @returns description/comment
  */
 export function docsDescription(r: Reflection, sig: number=0): string {
-  var c = docsFindComment(r, sig);
-  return c==null? null : [c.shortText || "", c.text || ""].join("\n\n").trim();
+  var c = docsFindComment(r, sig), a = '';
+  if (c==null || c.summary==null) return null;
+  return contentText(c.summary).trim();
 }
 
 
@@ -846,7 +855,10 @@ export function docsDescription(r: Reflection, sig: number=0): string {
  */
 export function docsReturns(r: Reflection, sig: number=0): string {
   var c = docsFindComment(r, sig);
-  return c==null? null : c.returns || null;
+  if (c==null) return null;
+  var t = c.getTag("@returns");
+  if (t==null) return null;
+  return contentText(t.content);
 }
 
 
