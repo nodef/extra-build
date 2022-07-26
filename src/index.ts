@@ -963,7 +963,7 @@ function wikiText(txt: string, short: boolean=false): string {
 
 function wikiDescription(txt: string, cols: number=0): string {
   if (!txt) return "";
-  return wrapText(wikiText(txt), cols).split("\n").map(l => `\\ ${l}`).join("\n") + "\n";
+  return wrapText(wikiText(txt), cols).split("\n").map(l => `// ${l}`).join("\n") + "\n";
 }
 
 function wikiFlagsPrefix(d: DocsDetails): string {
@@ -977,7 +977,7 @@ function wikiFlagsPrefix(d: DocsDetails): string {
 function wikiVariable(d: DocsDetails, o?: MarkdownOptions): string {
   var text = wikiDescription(d.description, o?.wrapText), f = d.flags;
   var code = wikiFlagsPrefix(d) + (f.isConst? "const" : "var") + " ";
-  code += d.name + (o?.withType? ": "+d.type : "") + ";\n";
+  code += d.name + (o?.withType? ": "+d.type : "") + "\n";
   return text + code;
 }
 
@@ -1012,7 +1012,7 @@ function wikiCallSignature(d: DocsDetails, o?: MarkdownOptions): string {
   for (var c of children)
     code += wikiParameter(c, o) + ", ";
   code = code.endsWith("(")? code : code.substring(0, code.length-2);
-  code += ")" + (o.withType? ": "+d.type : "") + ";\n"
+  code += ")" + (o?.withType? ": "+d.type : "") + "\n"
   var gap  = Math.max(...children.map(p => p.name.length)) + 2;
   var desc = children.map(p => `// ${(p.name+":").padEnd(gap, " ")}${p.description}`).join("\n") + "\n";
   return text + code + desc;
@@ -1027,7 +1027,7 @@ function wikiFunction(d: DocsDetails, o?: MarkdownOptions): string {
 
 function wikiTypeAlias(d: DocsDetails, o?: MarkdownOptions): string {
   var text = wikiDescription(d.description, o?.wrapText);
-  var code = `type ${d.name} = ${d.type};\n`;
+  var code = `type ${d.name} = ${d.type}\n`;
   return text + code;
 }
 
@@ -1068,8 +1068,8 @@ export function wikiCodeReference(d: DocsDetails, o?: MarkdownOptions): string {
  */
 export function wikiCodeExample(d: DocsDetails, o?: MarkdownOptions): string {
   var repo = o?.repo || "repo";
-  var name = o?.prefix? `${o.prefix}.${d.name}` : d.name;
-  var code = `const ${name} = require('${repo}')\n\n\n`;
+  var name = o?.prefix? `${o?.prefix}.${d.name}` : d.name;
+  var code = `const {${name}} = require('${repo}');\n\n\n`;
   var text = `// Example for ${d.name}\n`;
   var out  = "// → OUTPUT\n";
   return code + text + out;
@@ -1086,20 +1086,20 @@ export function wikiMarkdown(d: DocsDetails, o?: MarkdownOptions): string {
   var owner = o?.owner || "owner";
   var repo  = o?.repo  || "repo";
   var name  = o?.prefix? `${o.prefix}.${d.name}` : d.name;
-  return `${d.description}<br>\n` +
-    `> Alternatives: [${name}].\n` +
+  return `${d.description}\n\n` +
+    `> Alternatives: [${name}].<br>\n` +
     `> Similar: [${name}].\n\n` +
     `<br>\n\n` +
     "```javascript\n" +
     wikiCodeReference(d, o) +
-    "```\n\n" +
+    "```\n\n<br>\n\n" +
     "```javascript\n" +
     wikiCodeExample(d, o) +
     "```\n\n" +
     "<br>\n" +
     "<br>\n\n\n" +
     `## References\n\n` +
-    `- [Example](https://www.example.com/)\n\n` +
+    `- [Example](https://www.example.com/)\n\n\n` +
     `[${name}]: https://github.com/${owner}/${repo}/wiki/${name}\n`;
 }
 

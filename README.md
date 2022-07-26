@@ -1,5 +1,5 @@
 Common build tools for extra-* packages.<br>
-📦 [NPM](https://www.npmjs.com/package/extra-build),
+📦 [Node.js](https://www.npmjs.com/package/extra-build),
 📜 [Files](https://unpkg.com/extra-build/),
 📰 [Docs](https://nodef.github.io/extra-build/).
 
