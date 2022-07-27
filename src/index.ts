@@ -948,10 +948,12 @@ export interface MarkdownOptions {
   useWiki?: boolean,
   /** Namespace prefix. */
   prefix?: string,
-  /** Include types? [false] */
-  withType?: boolean,
   /** Wrap comment text after. [0 => unlimited] */
   wrapText?: number,
+  /** Include types? [false] */
+  withType?: boolean,
+  /** Include root description? [false] */
+  withDescription?: boolean,
 }
 
 
@@ -974,29 +976,29 @@ function wikiFlagsPrefix(d: DocsDetails): string {
   return a;
 }
 
-function wikiVariable(d: DocsDetails, o?: MarkdownOptions): string {
-  var text = wikiDescription(d.description, o?.wrapText), f = d.flags;
+function wikiVariable(d: DocsDetails, e: DocsDetails, o?: MarkdownOptions): string {
+  var text = wikiDescription(e?.description, o?.wrapText), f = d.flags;
   var code = wikiFlagsPrefix(d) + (f.isConst? "const" : "var") + " ";
   code += d.name + (o?.withType? ": "+d.type : "") + "\n";
   return text + code;
 }
 
-function wikiProperty(d: DocsDetails, o?: MarkdownOptions): string {
-  var text = wikiDescription(d.description, o?.wrapText);
+function wikiProperty(d: DocsDetails, e: DocsDetails, o?: MarkdownOptions): string {
+  var text = wikiDescription(e?.description, o?.wrapText);
   var code = wikiFlagsPrefix(d) + d.name + (o?.withType? ": "+d.type : "") + ",\n";
   return text + code;
 }
 
-function wikiInterface(d: DocsDetails, o?: MarkdownOptions): string {
-  var text = wikiDescription(d.description, o?.wrapText);
+function wikiInterface(d: DocsDetails, e: DocsDetails, o?: MarkdownOptions): string {
+  var text = wikiDescription(e?.description, o?.wrapText);
   var code = `interface ${d.name} {\n`;
   for (var c of d.children || [])
-    code += indentText(wikiProperty(c, o), "  ");
+    code += indentText(wikiProperty(c, c, o), "  ");
   code += "}\n";
   return text + code;
 }
 
-function wikiParameter(d: DocsDetails, o?: MarkdownOptions): string {
+function wikiParameter(d: DocsDetails, e: DocsDetails, o?: MarkdownOptions): string {
   var a = "", f = d.flags;
   if (f.isReadonly) a += "readonly ";
   if (f.isRest)     a += "...";
@@ -1006,11 +1008,11 @@ function wikiParameter(d: DocsDetails, o?: MarkdownOptions): string {
   return a;
 }
 
-function wikiCallSignature(d: DocsDetails, o?: MarkdownOptions): string {
-  var text = wikiDescription(d.description, o?.wrapText);
+function wikiCallSignature(d: DocsDetails, e?: DocsDetails, o?: MarkdownOptions): string {
+  var text = wikiDescription(e?.description, o?.wrapText);
   var code = wikiFlagsPrefix(d) + `function ${d.name}(`, children = d.children || [];
   for (var c of children)
-    code += wikiParameter(c, o) + ", ";
+    code += wikiParameter(c, c, o) + ", ";
   code = code.endsWith("(")? code : code.substring(0, code.length-2);
   code += ")" + (o?.withType? ": "+d.type : "") + "\n"
   var gap  = Math.max(...children.map(p => p.name.length)) + 2;
@@ -1018,21 +1020,20 @@ function wikiCallSignature(d: DocsDetails, o?: MarkdownOptions): string {
   return text + code + desc;
 }
 
-function wikiFunction(d: DocsDetails, o?: MarkdownOptions): string {
-  var children = d.children || [];
-  var text = children.length>1? wikiDescription(d.description, o?.wrapText) : "";
-  var code = children.map(c => wikiCallSignature(c, o)).join("\n\n").trim() + "\n";
-  return text + code;
+function wikiFunction(d: DocsDetails, e: DocsDetails, o?: MarkdownOptions): string {
+  var children = d.children || [], c1 = e==null && children.length===1;
+  var code = children.map(c => wikiCallSignature(c, c1? null : c, o)).join("\n\n").trim() + "\n";
+  return code;
 }
 
-function wikiTypeAlias(d: DocsDetails, o?: MarkdownOptions): string {
-  var text = wikiDescription(d.description, o?.wrapText);
+function wikiTypeAlias(d: DocsDetails, e: DocsDetails, o?: MarkdownOptions): string {
+  var text = wikiDescription(e?.description, o?.wrapText);
   var code = `type ${d.name} = ${d.type}\n`;
   return text + code;
 }
 
-function wikiClass(d: DocsDetails, o?: MarkdownOptions): string {
-  var text = wikiDescription(d.description, o?.wrapText), f = d.flags;
+function wikiClass(d: DocsDetails, e: DocsDetails, o?: MarkdownOptions): string {
+  var text = wikiDescription(e?.description, o?.wrapText);
   var code = wikiFlagsPrefix(d) + `class ${d.name} {\n`;
   for (var c of d.children || [])
     code += indentText(wikiCodeReference(c, o), "  ") + "\n";
@@ -1048,16 +1049,16 @@ function wikiClass(d: DocsDetails, o?: MarkdownOptions): string {
  * @returns reference code block
  */
 export function wikiCodeReference(d: DocsDetails, o?: MarkdownOptions): string {
+  var e = o?.withDescription? d : null;
   switch (d.kind) {
-    case "Variable":   return wikiVariable(d, o);
-    case "Interface":  return wikiInterface(d, o);
-    case "Function":   return wikiFunction(d, o);
-    case "Type alias": return wikiTypeAlias(d, o);
-    case "Class":      return wikiClass(d, o);
+    case "Variable":   return wikiVariable(d, e, o);
+    case "Interface":  return wikiInterface(d, e, o);
+    case "Function":   return wikiFunction(d, e, o);
+    case "Type alias": return wikiTypeAlias(d, e, o);
+    case "Class":      return wikiClass(d, e, o);
     default: return "ERROR: UNKNOWN KIND!\n";
   }
 }
-
 
 
 /**
@@ -1121,7 +1122,7 @@ function linkReferenceWiki(d: DocsDetails, o?: MarkdownOptions): string {
   var owner = o?.owner || "owner";
   var repo  = o?.repo  || "repo";
   var name  = o?.prefix? `${o.prefix}.${d.name}` : d.name;
-  return `https://github.com/${owner}/${repo}/wiki/${name}`;
+  return `[${d.name}]: https://github.com/${owner}/${repo}/wiki/${name}`;
 }
 
 function linkReference(d: DocsDetails, o?: MarkdownOptions): string {
@@ -1172,7 +1173,7 @@ export function wikiUpdateIndex(txt: string, dm: Map<string, DocsDetails>, fn?: 
  * @param txt markdown text
  * @param dm docs details map
  * @param o markdown options
- * @returns update markdown text
+ * @returns updated markdown text
  */
 export function wikiUpdateLinkReferences(txt: string, dm: Map<string, DocsDetails>, o?: MarkdownOptions): string {
   txt = markdown.replaceLinkReferences(txt, (full, name) => {
@@ -1187,4 +1188,27 @@ export function wikiUpdateLinkReferences(txt: string, dm: Map<string, DocsDetail
     txt += linkReference(dm.get(l), o) + "\n";
   }
   return txt;
+}
+
+
+/**
+ * Update description in markdown text.
+ * @param txt markdown text
+ * @param d docs details
+ * @returns updated markdown text
+ */
+export function wikiUpdateDescription(txt: string, d: DocsDetails): string {
+  return txt.replace(/[\s\S]+?\n\n/, `${d.description}\n\n`);
+}
+
+
+/**
+ * Update code reference in markdown text.
+ * @param txt markdown text
+ * @param d docs details
+ * @param o markdown options
+ * @returns updated markdown text
+ */
+export function wikiUpdateCodeReference(txt: string, d: DocsDetails, o?: MarkdownOptions): string {
+  return txt.replace(/(```javascript\n)[\s\S]+?(```\n\n)/, `$1${wikiCodeReference(d, o)}$2`);
 }
