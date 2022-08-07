@@ -245,6 +245,8 @@ build.writeFileText('README.md', txt);
 | [wikiMarkdown] | Generate markdown text for wiki. |
 | [wikiUpdateIndex] | Update the "Index" (property, description) table in markdown text. |
 | [wikiUpdateLinkReferences] | Update link references in markdown text. |
+| [wikiUpdateDescription] | Update description in markdown text. |
+| [wikiUpdateCodeReference] | Update code reference in markdown text. |
 
 <br>
 <br>
@@ -253,54 +255,56 @@ build.writeFileText('README.md', txt);
 [![DOI](https://zenodo.org/badge/254083559.svg)](https://zenodo.org/badge/latestdoi/254083559)
 
 
-[symbolname]: https://nodef.github.io/extra-build/modules.html#symbolname
-[keywordname]: https://nodef.github.io/extra-build/modules.html#keywordname
-[error]: https://nodef.github.io/extra-build/modules.html#error
-[warn]: https://nodef.github.io/extra-build/modules.html#warn
-[log]: https://nodef.github.io/extra-build/modules.html#log
-[info]: https://nodef.github.io/extra-build/modules.html#info
-[exec]: https://nodef.github.io/extra-build/modules.html#exec
-[execStr]: https://nodef.github.io/extra-build/modules.html#execStr
-[readFileText]: https://nodef.github.io/extra-build/modules.html#readFileText
-[writeFileText]: https://nodef.github.io/extra-build/modules.html#writeFileText
-[readJson]: https://nodef.github.io/extra-build/modules.html#readJson
-[writeJson]: https://nodef.github.io/extra-build/modules.html#writeJson
-[readDocument]: https://nodef.github.io/extra-build/modules.html#readDocument
-[writeDocument]: https://nodef.github.io/extra-build/modules.html#writeDocument
-[gitCommitPush]: https://nodef.github.io/extra-build/modules.html#gitCommitPush
-[gitSetupBranch]: https://nodef.github.io/extra-build/modules.html#gitSetupBranch
-[addBanner]: https://nodef.github.io/extra-build/modules.html#addBanner
-[bundleScript]: https://nodef.github.io/extra-build/modules.html#bundleScript
-[webifyScript]: https://nodef.github.io/extra-build/modules.html#webifyScript
-[parseGithubUrl]: https://nodef.github.io/extra-build/modules.html#parseGithubUrl
-[updateGithubRepoDetails]: https://nodef.github.io/extra-build/modules.html#updateGithubRepoDetails
-[readMetadata]: https://nodef.github.io/extra-build/modules.html#readMetadata
-[writeMetadata]: https://nodef.github.io/extra-build/modules.html#writeMetadata
-[registry]: https://nodef.github.io/extra-build/modules.html#registry
-[setRegistry]: https://nodef.github.io/extra-build/modules.html#setRegistry
-[latestVersion]: https://nodef.github.io/extra-build/modules.html#latestVersion
-[nextUnpublishedVersion]: https://nodef.github.io/extra-build/modules.html#nextUnpublishedVersion
-[publish]: https://nodef.github.io/extra-build/modules.html#publish
-[publishGithub]: https://nodef.github.io/extra-build/modules.html#publishGithub
-[generateDocs]: https://nodef.github.io/extra-build/modules.html#generateDocs
-[publishDocs]: https://nodef.github.io/extra-build/modules.html#publishDocs
-[docsRefer]: https://nodef.github.io/extra-build/modules.html#docsRefer
-[docsName]: https://nodef.github.io/extra-build/modules.html#docsName
-[docsLocation]: https://nodef.github.io/extra-build/modules.html#docsLocation
-[docsFlags]: https://nodef.github.io/extra-build/modules.html#docsFlags
-[docsKind]: https://nodef.github.io/extra-build/modules.html#docsKind
-[docsChildCount]: https://nodef.github.io/extra-build/modules.html#docsChildCount
-[docsParameterCount]: https://nodef.github.io/extra-build/modules.html#docsParameterCount
-[docsSignatureCount]: https://nodef.github.io/extra-build/modules.html#docsSignatureCount
-[docsType]: https://nodef.github.io/extra-build/modules.html#docsType
-[docsDescription]: https://nodef.github.io/extra-build/modules.html#docsDescription
-[docsReturns]: https://nodef.github.io/extra-build/modules.html#docsReturns
-[docsDetails]: https://nodef.github.io/extra-build/modules.html#docsDetails
-[docsReferDetails]: https://nodef.github.io/extra-build/modules.html#docsReferDetails
-[loadDocs]: https://nodef.github.io/extra-build/modules.html#loadDocs
-[wikiCodeReference]: https://nodef.github.io/extra-build/modules.html#wikiCodeReference
-[wikiCodeExample]: https://nodef.github.io/extra-build/modules.html#wikiCodeExample
-[wikiMarkdown]: https://nodef.github.io/extra-build/modules.html#wikiMarkdown
-[wikiUpdateIndex]: https://nodef.github.io/extra-build/modules.html#wikiUpdateIndex
-[wikiUpdateLinkReferences]: https://nodef.github.io/extra-build/modules.html#wikiUpdateLinkReferences
-[jsdocifyScript]: https://nodef.github.io/extra-build/modules.html#jsdocifyScript
+[symbolname]: https://nodef.github.io/extra-build/functions/symbolname.html
+[keywordname]: https://nodef.github.io/extra-build/functions/keywordname.html
+[error]: https://nodef.github.io/extra-build/functions/error.html
+[warn]: https://nodef.github.io/extra-build/functions/warn.html
+[log]: https://nodef.github.io/extra-build/functions/log.html
+[info]: https://nodef.github.io/extra-build/functions/info.html
+[exec]: https://nodef.github.io/extra-build/functions/exec.html
+[execStr]: https://nodef.github.io/extra-build/functions/execStr.html
+[readFileText]: https://nodef.github.io/extra-build/functions/readFileText.html
+[writeFileText]: https://nodef.github.io/extra-build/functions/writeFileText.html
+[readJson]: https://nodef.github.io/extra-build/functions/readJson.html
+[writeJson]: https://nodef.github.io/extra-build/functions/writeJson.html
+[readDocument]: https://nodef.github.io/extra-build/functions/readDocument.html
+[writeDocument]: https://nodef.github.io/extra-build/functions/writeDocument.html
+[gitCommitPush]: https://nodef.github.io/extra-build/functions/gitCommitPush.html
+[gitSetupBranch]: https://nodef.github.io/extra-build/functions/gitSetupBranch.html
+[addBanner]: https://nodef.github.io/extra-build/functions/addBanner.html
+[bundleScript]: https://nodef.github.io/extra-build/functions/bundleScript.html
+[webifyScript]: https://nodef.github.io/extra-build/functions/webifyScript.html
+[jsdocifyScript]: https://nodef.github.io/extra-build/functions/jsdocifyScript.html
+[parseGithubUrl]: https://nodef.github.io/extra-build/functions/parseGithubUrl.html
+[updateGithubRepoDetails]: https://nodef.github.io/extra-build/functions/updateGithubRepoDetails.html
+[readMetadata]: https://nodef.github.io/extra-build/functions/readMetadata.html
+[writeMetadata]: https://nodef.github.io/extra-build/functions/writeMetadata.html
+[registry]: https://nodef.github.io/extra-build/functions/registry.html
+[setRegistry]: https://nodef.github.io/extra-build/functions/setRegistry.html
+[latestVersion]: https://nodef.github.io/extra-build/functions/latestVersion.html
+[nextUnpublishedVersion]: https://nodef.github.io/extra-build/functions/nextUnpublishedVersion.html
+[publish]: https://nodef.github.io/extra-build/functions/publish.html
+[publishGithub]: https://nodef.github.io/extra-build/functions/publishGithub.html
+[generateDocs]: https://nodef.github.io/extra-build/functions/generateDocs.html
+[publishDocs]: https://nodef.github.io/extra-build/functions/publishDocs.html
+[docsRefer]: https://nodef.github.io/extra-build/functions/docsRefer.html
+[docsName]: https://nodef.github.io/extra-build/functions/docsName.html
+[docsLocation]: https://nodef.github.io/extra-build/functions/docsLocation.html
+[docsFlags]: https://nodef.github.io/extra-build/functions/docsFlags.html
+[docsKind]: https://nodef.github.io/extra-build/functions/docsKind.html
+[docsChildCount]: https://nodef.github.io/extra-build/functions/docsChildCount.html
+[docsParameterCount]: https://nodef.github.io/extra-build/functions/docsParameterCount.html
+[docsSignatureCount]: https://nodef.github.io/extra-build/functions/docsSignatureCount.html
+[docsType]: https://nodef.github.io/extra-build/functions/docsType.html
+[docsDescription]: https://nodef.github.io/extra-build/functions/docsDescription.html
+[docsReturns]: https://nodef.github.io/extra-build/functions/docsReturns.html
+[docsDetails]: https://nodef.github.io/extra-build/functions/docsDetails.html
+[docsReferDetails]: https://nodef.github.io/extra-build/functions/docsReferDetails.html
+[loadDocs]: https://nodef.github.io/extra-build/functions/loadDocs.html
+[wikiCodeReference]: https://nodef.github.io/extra-build/functions/wikiCodeReference.html
+[wikiCodeExample]: https://nodef.github.io/extra-build/functions/wikiCodeExample.html
+[wikiMarkdown]: https://nodef.github.io/extra-build/functions/wikiMarkdown.html
+[wikiUpdateIndex]: https://nodef.github.io/extra-build/functions/wikiUpdateIndex.html
+[wikiUpdateLinkReferences]: https://nodef.github.io/extra-build/functions/wikiUpdateLinkReferences.html
+[wikiUpdateDescription]: https://nodef.github.io/extra-build/functions/wikiUpdateDescription.html
+[wikiUpdateCodeReference]: https://nodef.github.io/extra-build/functions/wikiUpdateCodeReference.html
