@@ -358,7 +358,6 @@ export interface GitSetupBranchOptions extends ExecOptions {
  * Setup new branch and push to remote.
  * @param branch branch name
  * @param options setup options
- *
  */
 export function gitSetupBranch(branch: string, options: GitSetupBranchOptions=null): void {
   var o = Object.assign({}, options);
@@ -1112,9 +1111,12 @@ function linkReferenceDocs(d: DocsDetails, o?: MarkdownOptions): string {
   var pred  = o?.prefix? `${o.prefix}.` : "";
   var prem  = o?.prefix? `modules/${o.prefix}.html` : "modules.html";
   switch (d.kind) {
-    case "Interface": return `[${d.name}]: ${root}/interfaces/${pred}${d.name}.html`;
-    case "Class":     return `[${d.name}]: ${root}/classes/${pred}${d.name}.html`;
-    default:          return `[${d.name}]: ${root}/${prem}#${d.name}`;
+    case "Interface":  return `[${d.name}]: ${root}/interfaces/` + `${pred}${d.name}.html`;
+    case "Type alias": return `[${d.name}]: ${root}/types/`      + `${pred}${d.name}.html`;
+    case "Class":      return `[${d.name}]: ${root}/classes/`    + `${pred}${d.name}.html`;
+    case "Function":   return `[${d.name}]: ${root}/functions/`  + `${pred}${d.name}.html`;
+    case "Variable":   return `[${d.name}]: ${root}/variables/`  + `${pred}${d.name}.html`;
+    default:           return `[${d.name}]: ${root}/${prem}#${d.name}`;
   }
 }
 
