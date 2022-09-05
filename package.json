@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/nodef/extra-build#readme",
   "dependencies": {
-    "@octokit/rest": "^19.0.3",
+    "@octokit/rest": "^19.0.4",
     "extra-javascript-text": "^0.1.11",
     "extra-jsdoc-text": "^0.1.11",
     "extra-markdown-text": "^0.1.2",
