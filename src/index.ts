@@ -257,7 +257,7 @@ export interface Document {
 /**
  * Read document.
  * @param pth file path
- * @returns document {path, data}
+ * @returns document \{path, data\}
  */
  export function readDocument(pth: string): Document {
   var data = fs.existsSync(pth)? fs.readFileSync(pth) : null;
@@ -267,7 +267,7 @@ export interface Document {
 
 /**
  * Write document.
- * @param doc document {path, data}
+ * @param doc document \{path, data\}
  */
 export function writeDocument(doc: Document): void {
   if (doc.data!=null) fs.writeFileSync(doc.path, doc.data);
@@ -411,7 +411,7 @@ function bundleEnvArgs(env?: any): string {
 /**
  * Bundle a script file with config.
  * @param src source file
- * @param options bundle options {config, env}
+ * @param options bundle options \{config, env\}
  */
 export function bundleScript(src?: string, options?: BundleOptions): void {
   var o = Object.assign({}, options);
@@ -885,7 +885,7 @@ export interface DocsDetails {
 /**
  * Get details of a reflection.
  * @param r reflection
- * @returns reflection details {name, kind, type, description, params, returns}
+ * @returns reflection details \{name, kind, type, description, params, returns\}
  */
 export function docsDetails(r: Reflection): DocsDetails {
   // @ts-ignore
@@ -907,7 +907,7 @@ export function docsDetails(r: Reflection): DocsDetails {
  * Get details of a reflection, referring the necessary details.
  * @param docs docs reflection
  * @param r reflection
- * @returns reflection details {name, kind, type, description, params, returns}
+ * @returns reflection details \{name, kind, type, description, params, returns\}
  */
 export function docsReferDetails(docs: ProjectReflection, r: Reflection): DocsDetails {
   var s = docsRefer(docs, r);
