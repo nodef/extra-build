@@ -73,6 +73,6 @@ jobs:
           node-version: 18.x
       - run: git clone https://${GITHUB_TOKEN}@github.com/nodef/deploy "$HOME/deploy"
       - run: bash "$HOME/deploy/setup.sh"
-      - run: npm i -g typescript rollup typedoc browserify terser
+      - run: npm i -g typescript rollup browserify terser typedoc
       - run: npm ci
       - run: npm run publish-packages

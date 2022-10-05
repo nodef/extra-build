@@ -686,7 +686,7 @@ export function publishGithub(dir: string, owner: string): void {
  * @param out output directory
  */
 export function generateDocs(src: string, out: string=".docs"): void {
-  exec(`typedoc "${src}" --out "${out}"`);
+  exec(`typedoc --plugin extra-typedoc-theme "${src}" --out "${out}"`);
 }
 
 

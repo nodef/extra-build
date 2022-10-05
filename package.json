@@ -1,6 +1,6 @@
 {
   "name": "extra-build",
-  "version": "2.2.12",
+  "version": "2.2.13",
   "description": "Common build tools for extra-* packages.",
   "main": "index.js",
   "module": "index.mjs",
@@ -34,6 +34,7 @@
     "extra-javascript-text": "^0.1.11",
     "extra-jsdoc-text": "^0.1.11",
     "extra-markdown-text": "^0.1.2",
+    "extra-typedoc-theme": "^0.0.12",
     "kleur": "^4.1.5",
     "semver": "^7.3.7",
     "typedoc": "^0.23.10"
