@@ -1,24 +1,26 @@
-import {ExecSyncOptions} from "child_process";
-import {URL} from "url";
-import * as util    from "util";
-import * as path    from "path";
-import * as cp      from "child_process";
-import * as os      from "os";
-import * as fs      from "fs";
-import * as semver  from "semver";
-import kleur        from "kleur";
-import {Octokit}    from "@octokit/rest";
-import {Reflection} from "typedoc";
-import {Comment}             from "typedoc";
-import {CommentDisplayPart}  from "typedoc";
-import {SignatureReflection} from "typedoc";
-import {ProjectReflection}   from "typedoc";
-import {ReflectionFlags}     from "typedoc";
-import {Jsdoc}         from "extra-jsdoc-text";
+import * as util   from "util";
+import * as path   from "path";
+import * as cp     from "child_process";
+import * as os     from "os";
+import * as fs     from "fs";
+import * as semver from "semver";
 import * as typedoc    from "typedoc";
 import * as markdown   from "extra-markdown-text";
 import * as javascript from "extra-javascript-text";
 import * as jsdoc      from "extra-jsdoc-text";
+import kleur from "kleur";
+import {ExecSyncOptions} from "child_process";
+import {URL}     from "url";
+import {Octokit} from "@octokit/rest";
+import {Jsdoc}   from "extra-jsdoc-text";
+import {
+  Reflection,
+  Comment,
+  CommentDisplayPart,
+  SignatureReflection,
+  ProjectReflection,
+  ReflectionFlags,
+} from "typedoc";
 
 
 
@@ -87,6 +89,7 @@ function filename(pth: string): string {
 /**
  * Get symbol name for file.
  * @param pth file path
+ * @returns symbol name
  */
 export function symbolname(pth: string): string {
   return filename(pth).replace(/[^\w$]+/g, "_");
@@ -281,7 +284,7 @@ export function writeDocument(doc: Document): void {
 // ===
 
 /**
- * Get get repository"s remote URL.
+ * Get repository's remote URL.
  * @returns remote URL
  */
 function gitRemoteUrl(): string {
