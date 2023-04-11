@@ -15,8 +15,10 @@ import {Octokit} from "@octokit/rest";
 import {Jsdoc}   from "extra-jsdoc-text";
 import {
   Reflection,
+  ReflectionKind,
   Comment,
   CommentDisplayPart,
+  DeclarationReflection,
   SignatureReflection,
   ProjectReflection,
   ReflectionFlags,
@@ -740,7 +742,7 @@ export function docsName(r: Reflection): string {
  * @returns location of reflection
  */
 export function docsLocation(r: Reflection): string {
-  var [s] = r.sources || [];
+  var [s] = (r as DeclarationReflection).sources || [];
   return s==null? null : s.fileName + ":" + s.line.toString().padStart(6, "0");
 }
 
@@ -761,7 +763,7 @@ export function docsFlags(r: Reflection): ReflectionFlags {
  * @returns kind name
  */
 export function docsKind(r: Reflection): string {
-  return r.kindString;
+  return ReflectionKind[r.kind];
 }
 
 
@@ -824,7 +826,7 @@ export function docsType(r: Reflection, sig: number=0): string {
   if (r==null) return null;
   // @ts-ignore
   if (r.type) return r.type.toString();
-  if (/class|interface|type/i.test(r.kindString)) return r.name;
+  if (/class|interface|type/i.test(ReflectionKind[r.kind])) return r.name;
   return docsType(docsFindSignatures(r)[sig]);
 }
 

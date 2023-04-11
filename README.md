@@ -123,56 +123,56 @@ you find a bug? Or have a feature request?
 <br>
 
 ```javascript
-const build = require('extra-build');
+const xbuild = require('extra-build');
 
 
 // 1. Set version and publish package.
-var m = build.readMetadata('.');
+var m = xbuild.readMetadata('.');
 // → {name, version, description, ...}
 m.version = '2.0.0';
-build.writeMetadata('.', m);
-build.publish('.');
-build.publishGithub('.', 'owner');
+xbuild.writeMetadata('.', m);
+xbuild.publish('.');
+xbuild.publishGithub('.', 'owner');
 
 
 // 2. Publish next version, update github details.
-var m   = build.readMetadata('.');
-var ver = build.nextUnpublishedVersion(m.name, m.version);
+var m   = xbuild.readMetadata('.');
+var ver = xbuild.nextUnpublishedVersion(m.name, m.version);
 m.version = ver;
-build.writeMetadata('.', m);
-build.publish('.');
-build.publishGithub('.', 'owner');
-build.updateGithubRepoDetails();
+xbuild.writeMetadata('.', m);
+xbuild.publish('.');
+xbuild.publishGithub('.', 'owner');
+xbuild.updateGithubRepoDetails();
 
 
 // 3. Update keywords for package.
-var m  = build.readMetadata('.');
-var p  = build.loadDocs(['src/index.ts']);
-var ds = p.children.map(build.docsDetails);
+var m  = xbuild.readMetadata('.');
+var p  = xbuild.loadDocs(['src/index.ts']);
+var ds = p.children.map(xbuild.docsDetails);
 var s = new Set([...m.keywords, ...ds.map(d => d.name)]);
 m.keywords = Array.from(s);
-build.writeMetadata('.', m);
+xbuild.writeMetadata('.', m);
 
 
 // 4. Restore package.json after publishing with updated version.
-var _package = build.readDocument('package.json');
-var m = build.readMetadata('.');
+var _package = xbuild.readDocument('package.json');
+var m = xbuild.readMetadata('.');
 m.version = '2.0.0';
-build.writeMetadata('.', m);
-build.publish('.');
-build.writeDocument(_package);
+xbuild.writeMetadata('.', m);
+xbuild.publish('.');
+xbuild.writeDocument(_package);
 
 
 // 5. Update README index table.
 var owner = 'owner', repo = 'repo';
-var p  = build.loadDocs(['src/index.ts']);
-var ds = p.children.map(build.docsDetails);
+var p  = xbuild.loadDocs(['src/index.ts']);
+var ds = p.children.map(xbuild.docsDetails);
 var re = /namespace|function/i;
 var dm = new Map(ds.map(d => [d.name, d]));
-var txt = build.readFileText('README.md');
-txt = build.wikiUpdateIndex(txt, dm, d => re.test(d.kind));
-txt = build.wikiUpdateLinkReferences(txt, dm, {owner, repo});
-build.writeFileText('README.md', txt);
+var txt = xbuild.readFileText('README.md');
+txt = xbuild.wikiUpdateIndex(txt, dm, d => re.test(d.kind));
+txt = xbuild.wikiUpdateLinkReferences(txt, dm, {owner, repo});
+xbuild.writeFileText('README.md', txt);
 ```
 
 <br>
