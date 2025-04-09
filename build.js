@@ -139,8 +139,8 @@ function updateReadme(ds) {
 
 
 // Finally.
-function main(a) {
-  var p  = build.loadDocs([`src/${srcts}`]);
+async function main(a) {
+  var p  = await build.loadDocs([`src/${srcts}`]);
   var ds = p.children.map(build.docsDetails);
   if (a[2]==='wiki') generateWiki(ds);
   else if (a[2]==='readme') updateReadme(ds);

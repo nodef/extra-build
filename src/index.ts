@@ -691,7 +691,7 @@ export function publishGithub(dir: string, owner: string): void {
  * @param out output directory
  */
 export function generateDocs(src: string, out: string=".docs"): void {
-  exec(`typedoc --plugin extra-typedoc-theme "${src}" --out "${out}"`);
+  exec(`typedoc "${src}" --out "${out}"`);
 }
 
 
@@ -927,12 +927,11 @@ export function docsReferDetails(docs: ProjectReflection, r: Reflection): DocsDe
  * @param entryPoints entry source files
  * @returns docs reflection
  */
-export function loadDocs(entryPoints?: string[]): ProjectReflection {
+export async function loadDocs(entryPoints?: string[]): Promise<ProjectReflection> {
   entryPoints = entryPoints || ["src/index.ts"];
-  var app = new typedoc.Application();
+  var app = await typedoc.Application.bootstrap({entryPoints});
   app.options.addReader(new typedoc.TSConfigReader());
   app.options.addReader(new typedoc.TypeDocReader());
-  app.bootstrap({entryPoints});
   return app.convert();
 }
 
